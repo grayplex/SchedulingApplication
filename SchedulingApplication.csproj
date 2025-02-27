@@ -112,6 +112,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppointmentAlertForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AppointmentAlertForm.Designer.cs">
+      <DependentUpon>AppointmentAlertForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AppointmentDetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
