@@ -124,6 +124,12 @@
     <Compile Include="AppointmentDetailsForm.Designer.cs">
       <DependentUpon>AppointmentDetailsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AppointmentEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AppointmentEditorForm.Designer.cs">
+      <DependentUpon>AppointmentEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CalendarUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
