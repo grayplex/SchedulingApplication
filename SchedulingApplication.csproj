@@ -183,6 +183,12 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportsUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReportsUserControl.Designer.cs">
+      <DependentUpon>ReportsUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\LocalizationManager.cs" />
     <Compile Include="Utilities\LoginLogger.cs" />
     <Compile Include="Utilities\TimeZoneHelper.cs" />
