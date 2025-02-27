@@ -158,7 +158,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AppointmentAlertForm";
-            this.StartPosition = System.Windows.Forms.FormStartupLocation.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Appointment Alert";
             this.pnlHeader.ResumeLayout(false);
             this.pnlButtons.ResumeLayout(false);
