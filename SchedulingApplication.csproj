@@ -198,6 +198,9 @@
     <Compile Include="Utilities\LocalizationManager.cs" />
     <Compile Include="Utilities\LoginLogger.cs" />
     <Compile Include="Utilities\TimeZoneHelper.cs" />
+    <EmbeddedResource Include="AppointmentEditorForm.resx">
+      <DependentUpon>AppointmentEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

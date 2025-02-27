@@ -33,12 +33,6 @@ namespace SchedulingApplication
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblWindowTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.pnlButtons = new System.Windows.Forms.Panel();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.lblValidation = new System.Windows.Forms.Label();
-
-            // Basic Information Group
             this.grpBasicInfo = new System.Windows.Forms.GroupBox();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.cboCustomer = new System.Windows.Forms.ComboBox();
@@ -48,8 +42,6 @@ namespace SchedulingApplication
             this.cboType = new System.Windows.Forms.ComboBox();
             this.lblDescription = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
-
-            // Contact Information Group
             this.grpContactInfo = new System.Windows.Forms.GroupBox();
             this.lblLocation = new System.Windows.Forms.Label();
             this.txtLocation = new System.Windows.Forms.TextBox();
@@ -57,163 +49,350 @@ namespace SchedulingApplication
             this.txtContact = new System.Windows.Forms.TextBox();
             this.lblUrl = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.TextBox();
-
-            // Schedule Group
             this.grpSchedule = new System.Windows.Forms.GroupBox();
             this.lblStartDate = new System.Windows.Forms.Label();
             this.dtStart = new System.Windows.Forms.DateTimePicker();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.dtEnd = new System.Windows.Forms.DateTimePicker();
-
+            this.lblTimezoneSelection = new System.Windows.Forms.Label();
+            this.rbBusinessTimezone = new System.Windows.Forms.RadioButton();
+            this.rbUserTimezone = new System.Windows.Forms.RadioButton();
+            this.lblValidation = new System.Windows.Forms.Label();
+            this.pnlButtons = new System.Windows.Forms.Panel();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.pnlHeader.SuspendLayout();
+            this.pnlContent.SuspendLayout();
+            this.grpBasicInfo.SuspendLayout();
+            this.grpContactInfo.SuspendLayout();
+            this.grpSchedule.SuspendLayout();
+            this.pnlButtons.SuspendLayout();
+            this.SuspendLayout();
             // 
             // pnlHeader
             // 
             this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(212)))));
             this.pnlHeader.Controls.Add(this.lblWindowTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Height = 60;
-
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(600, 60);
+            this.pnlHeader.TabIndex = 2;
             // 
             // lblWindowTitle
             // 
             this.lblWindowTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
             this.lblWindowTitle.ForeColor = System.Drawing.Color.White;
             this.lblWindowTitle.Location = new System.Drawing.Point(10, 15);
+            this.lblWindowTitle.Name = "lblWindowTitle";
+            this.lblWindowTitle.Size = new System.Drawing.Size(100, 23);
+            this.lblWindowTitle.TabIndex = 0;
             this.lblWindowTitle.Text = "Add/Edit Appointment";
-
             // 
             // pnlContent
             // 
+            this.pnlContent.Controls.Add(this.grpBasicInfo);
+            this.pnlContent.Controls.Add(this.grpContactInfo);
+            this.pnlContent.Controls.Add(this.grpSchedule);
+            this.pnlContent.Controls.Add(this.lblValidation);
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContent.Location = new System.Drawing.Point(0, 60);
+            this.pnlContent.Name = "pnlContent";
             this.pnlContent.Padding = new System.Windows.Forms.Padding(20);
-
+            this.pnlContent.Size = new System.Drawing.Size(600, 500);
+            this.pnlContent.TabIndex = 0;
             // 
-            // pnlButtons
+            // grpBasicInfo
             // 
-            this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.Height = 60;
-            this.pnlButtons.Controls.AddRange(new System.Windows.Forms.Control[] { this.btnCancel, this.btnSave });
-
+            this.grpBasicInfo.Controls.Add(this.lblCustomer);
+            this.grpBasicInfo.Controls.Add(this.cboCustomer);
+            this.grpBasicInfo.Controls.Add(this.lblTitle);
+            this.grpBasicInfo.Controls.Add(this.txtTitle);
+            this.grpBasicInfo.Controls.Add(this.lblType);
+            this.grpBasicInfo.Controls.Add(this.cboType);
+            this.grpBasicInfo.Controls.Add(this.lblDescription);
+            this.grpBasicInfo.Controls.Add(this.txtDescription);
+            this.grpBasicInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpBasicInfo.Location = new System.Drawing.Point(20, 220);
+            this.grpBasicInfo.Name = "grpBasicInfo";
+            this.grpBasicInfo.Size = new System.Drawing.Size(560, 250);
+            this.grpBasicInfo.TabIndex = 0;
+            this.grpBasicInfo.TabStop = false;
+            this.grpBasicInfo.Text = "Basic Information";
             // 
-            // btnSave
+            // lblCustomer
             // 
-            this.btnSave.Text = "Save";
-            this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnSave.Location = new System.Drawing.Point(400, 15);
-            this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-
+            this.lblCustomer.Location = new System.Drawing.Point(10, 30);
+            this.lblCustomer.Name = "lblCustomer";
+            this.lblCustomer.Size = new System.Drawing.Size(100, 23);
+            this.lblCustomer.TabIndex = 0;
+            this.lblCustomer.Text = "Customer:";
             // 
-            // btnCancel
+            // cboCustomer
             // 
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnCancel.Location = new System.Drawing.Point(510, 15);
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-
+            this.cboCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboCustomer.Location = new System.Drawing.Point(150, 30);
+            this.cboCustomer.Name = "cboCustomer";
+            this.cboCustomer.Size = new System.Drawing.Size(300, 21);
+            this.cboCustomer.TabIndex = 1;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.Location = new System.Drawing.Point(10, 70);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(100, 23);
+            this.lblTitle.TabIndex = 2;
+            this.lblTitle.Text = "Title:";
+            // 
+            // txtTitle
+            // 
+            this.txtTitle.Location = new System.Drawing.Point(150, 70);
+            this.txtTitle.Name = "txtTitle";
+            this.txtTitle.Size = new System.Drawing.Size(300, 20);
+            this.txtTitle.TabIndex = 3;
+            // 
+            // lblType
+            // 
+            this.lblType.Location = new System.Drawing.Point(10, 110);
+            this.lblType.Name = "lblType";
+            this.lblType.Size = new System.Drawing.Size(100, 23);
+            this.lblType.TabIndex = 4;
+            this.lblType.Text = "Type:";
+            // 
+            // cboType
+            // 
+            this.cboType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboType.Location = new System.Drawing.Point(150, 110);
+            this.cboType.Name = "cboType";
+            this.cboType.Size = new System.Drawing.Size(300, 21);
+            this.cboType.TabIndex = 5;
+            // 
+            // lblDescription
+            // 
+            this.lblDescription.Location = new System.Drawing.Point(10, 150);
+            this.lblDescription.Name = "lblDescription";
+            this.lblDescription.Size = new System.Drawing.Size(100, 23);
+            this.lblDescription.TabIndex = 6;
+            this.lblDescription.Text = "Description:";
+            // 
+            // txtDescription
+            // 
+            this.txtDescription.Location = new System.Drawing.Point(150, 150);
+            this.txtDescription.Multiline = true;
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(300, 80);
+            this.txtDescription.TabIndex = 7;
+            // 
+            // grpContactInfo
+            // 
+            this.grpContactInfo.Controls.Add(this.lblLocation);
+            this.grpContactInfo.Controls.Add(this.txtLocation);
+            this.grpContactInfo.Controls.Add(this.lblContact);
+            this.grpContactInfo.Controls.Add(this.txtContact);
+            this.grpContactInfo.Controls.Add(this.lblUrl);
+            this.grpContactInfo.Controls.Add(this.txtUrl);
+            this.grpContactInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpContactInfo.Location = new System.Drawing.Point(20, 120);
+            this.grpContactInfo.Name = "grpContactInfo";
+            this.grpContactInfo.Size = new System.Drawing.Size(560, 160);
+            this.grpContactInfo.TabIndex = 1;
+            this.grpContactInfo.TabStop = false;
+            this.grpContactInfo.Text = "Contact Information";
+            // 
+            // lblLocation
+            // 
+            this.lblLocation.Location = new System.Drawing.Point(10, 30);
+            this.lblLocation.Name = "lblLocation";
+            this.lblLocation.Size = new System.Drawing.Size(100, 23);
+            this.lblLocation.TabIndex = 0;
+            this.lblLocation.Text = "Location:";
+            // 
+            // txtLocation
+            // 
+            this.txtLocation.Location = new System.Drawing.Point(150, 30);
+            this.txtLocation.Name = "txtLocation";
+            this.txtLocation.Size = new System.Drawing.Size(300, 20);
+            this.txtLocation.TabIndex = 1;
+            // 
+            // lblContact
+            // 
+            this.lblContact.Location = new System.Drawing.Point(10, 70);
+            this.lblContact.Name = "lblContact";
+            this.lblContact.Size = new System.Drawing.Size(100, 23);
+            this.lblContact.TabIndex = 2;
+            this.lblContact.Text = "Contact Name:";
+            // 
+            // txtContact
+            // 
+            this.txtContact.Location = new System.Drawing.Point(150, 70);
+            this.txtContact.Name = "txtContact";
+            this.txtContact.Size = new System.Drawing.Size(300, 20);
+            this.txtContact.TabIndex = 3;
+            // 
+            // lblUrl
+            // 
+            this.lblUrl.Location = new System.Drawing.Point(10, 110);
+            this.lblUrl.Name = "lblUrl";
+            this.lblUrl.Size = new System.Drawing.Size(100, 23);
+            this.lblUrl.TabIndex = 4;
+            this.lblUrl.Text = "URL:";
+            // 
+            // txtUrl
+            // 
+            this.txtUrl.Location = new System.Drawing.Point(150, 110);
+            this.txtUrl.Name = "txtUrl";
+            this.txtUrl.Size = new System.Drawing.Size(300, 20);
+            this.txtUrl.TabIndex = 5;
+            // 
+            // grpSchedule
+            // 
+            this.grpSchedule.Controls.Add(this.lblStartDate);
+            this.grpSchedule.Controls.Add(this.dtStart);
+            this.grpSchedule.Controls.Add(this.lblEndDate);
+            this.grpSchedule.Controls.Add(this.dtEnd);
+            this.grpSchedule.Controls.Add(this.lblTimezoneSelection);
+            this.grpSchedule.Controls.Add(this.rbBusinessTimezone);
+            this.grpSchedule.Controls.Add(this.rbUserTimezone);
+            this.grpSchedule.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpSchedule.Location = new System.Drawing.Point(20, 20);
+            this.grpSchedule.Name = "grpSchedule";
+            this.grpSchedule.Size = new System.Drawing.Size(560, 160);
+            this.grpSchedule.TabIndex = 2;
+            this.grpSchedule.TabStop = false;
+            this.grpSchedule.Text = "Schedule";
+            // 
+            // lblStartDate
+            // 
+            this.lblStartDate.Location = new System.Drawing.Point(10, 30);
+            this.lblStartDate.Name = "lblStartDate";
+            this.lblStartDate.Size = new System.Drawing.Size(100, 23);
+            this.lblStartDate.TabIndex = 0;
+            this.lblStartDate.Text = "Start Date/Time:";
+            // 
+            // dtStart
+            // 
+            this.dtStart.CustomFormat = "MM/dd/yyyy hh:mm tt";
+            this.dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtStart.Location = new System.Drawing.Point(150, 30);
+            this.dtStart.Name = "dtStart";
+            this.dtStart.ShowUpDown = true;
+            this.dtStart.Size = new System.Drawing.Size(250, 20);
+            this.dtStart.TabIndex = 1;
+            // 
+            // lblEndDate
+            // 
+            this.lblEndDate.Location = new System.Drawing.Point(10, 70);
+            this.lblEndDate.Name = "lblEndDate";
+            this.lblEndDate.Size = new System.Drawing.Size(100, 23);
+            this.lblEndDate.TabIndex = 2;
+            this.lblEndDate.Text = "End Date/Time:";
+            // 
+            // dtEnd
+            // 
+            this.dtEnd.CustomFormat = "MM/dd/yyyy hh:mm tt";
+            this.dtEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtEnd.Location = new System.Drawing.Point(150, 70);
+            this.dtEnd.Name = "dtEnd";
+            this.dtEnd.ShowUpDown = true;
+            this.dtEnd.Size = new System.Drawing.Size(250, 20);
+            this.dtEnd.TabIndex = 3;
+            // 
+            // lblTimezoneSelection
+            // 
+            this.lblTimezoneSelection.Location = new System.Drawing.Point(10, 110);
+            this.lblTimezoneSelection.Name = "lblTimezoneSelection";
+            this.lblTimezoneSelection.Size = new System.Drawing.Size(100, 23);
+            this.lblTimezoneSelection.TabIndex = 4;
+            this.lblTimezoneSelection.Text = "Timezone:";
+            // 
+            // rbBusinessTimezone
+            // 
+            this.rbBusinessTimezone.AutoSize = true;
+            this.rbBusinessTimezone.Location = new System.Drawing.Point(150, 110);
+            this.rbBusinessTimezone.Name = "rbBusinessTimezone";
+            this.rbBusinessTimezone.Size = new System.Drawing.Size(97, 17);
+            this.rbBusinessTimezone.TabIndex = 5;
+            this.rbBusinessTimezone.Text = "Business (EST)";
+            // 
+            // rbUserTimezone
+            // 
+            this.rbUserTimezone.AutoSize = true;
+            this.rbUserTimezone.Checked = true;
+            this.rbUserTimezone.Location = new System.Drawing.Point(270, 110);
+            this.rbUserTimezone.Name = "rbUserTimezone";
+            this.rbUserTimezone.Size = new System.Drawing.Size(103, 17);
+            this.rbUserTimezone.TabIndex = 6;
+            this.rbUserTimezone.TabStop = true;
+            this.rbUserTimezone.Text = "User\'s Timezone";
             // 
             // lblValidation
             // 
-            this.lblValidation.ForeColor = System.Drawing.Color.Red;
             this.lblValidation.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblValidation.Height = 30;
-
-            // Basic Information Group
+            this.lblValidation.ForeColor = System.Drawing.Color.Red;
+            this.lblValidation.Location = new System.Drawing.Point(20, 450);
+            this.lblValidation.Name = "lblValidation";
+            this.lblValidation.Size = new System.Drawing.Size(560, 30);
+            this.lblValidation.TabIndex = 3;
+            this.lblValidation.Visible = false;
             // 
-            this.grpBasicInfo.Text = "Basic Information";
-            this.grpBasicInfo.Dock = System.Windows.Forms.DockStyle.Top;
-
-            // Customer Dropdown
-            this.lblCustomer.Text = "Customer:";
-            this.cboCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-
-            // Title Textbox
-            this.lblTitle.Text = "Title:";
-
-            // Type Dropdown
-            this.lblType.Text = "Type:";
-            this.cboType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-
-            // Description Textbox
-            this.lblDescription.Text = "Description:";
-            this.txtDescription.Multiline = true;
-            this.txtDescription.Height = 80;
-
-            // Contact Information Group
-            this.grpContactInfo.Text = "Contact Information";
-            this.grpContactInfo.Dock = System.Windows.Forms.DockStyle.Top;
-
-            // Location Textbox
-            this.lblLocation.Text = "Location:";
-
-            // Contact Textbox
-            this.lblContact.Text = "Contact:";
-
-            // URL Textbox
-            this.lblUrl.Text = "URL:";
-
-            // Schedule Group
-            this.grpSchedule.Text = "Schedule";
-            this.grpSchedule.Dock = System.Windows.Forms.DockStyle.Top;
-
-            // Start Date/Time Picker
-            this.lblStartDate.Text = "Start Date/Time:";
-            this.dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtStart.CustomFormat = "MM/dd/yyyy hh:mm tt";
-            this.dtStart.ShowUpDown = true;
-
-            // End Date/Time Picker
-            this.lblEndDate.Text = "End Date/Time:";
-            this.dtEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtEnd.CustomFormat = "MM/dd/yyyy hh:mm tt";
-            this.dtEnd.ShowUpDown = true;
-
-            // Organize Layout
-            this.grpBasicInfo.Controls.AddRange(new System.Windows.Forms.Control[] {
-            this.lblCustomer, this.cboCustomer,
-            this.lblTitle, this.txtTitle,
-            this.lblType, this.cboType,
-            this.lblDescription, this.txtDescription
-        });
-
-            this.grpContactInfo.Controls.AddRange(new System.Windows.Forms.Control[] {
-            this.lblLocation, this.txtLocation,
-            this.lblContact, this.txtContact,
-            this.lblUrl, this.txtUrl
-        });
-
-            this.grpSchedule.Controls.AddRange(new System.Windows.Forms.Control[] {
-            this.lblStartDate, this.dtStart,
-            this.lblEndDate, this.dtEnd
-        });
-
-            this.pnlContent.Controls.AddRange(new System.Windows.Forms.Control[] {
-            this.grpSchedule,
-            this.grpContactInfo,
-            this.grpBasicInfo,
-            this.lblValidation
-        });
-
+            // pnlButtons
+            // 
+            this.pnlButtons.Controls.Add(this.btnSave);
+            this.pnlButtons.Controls.Add(this.btnCancel);
+            this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlButtons.Location = new System.Drawing.Point(0, 560);
+            this.pnlButtons.Name = "pnlButtons";
+            this.pnlButtons.Size = new System.Drawing.Size(600, 60);
+            this.pnlButtons.TabIndex = 1;
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(212)))));
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(300, 15);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(100, 32);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = false;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Location = new System.Drawing.Point(410, 15);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(100, 32);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = false;
             // 
             // AppointmentEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 550);
-            this.Controls.AddRange(new System.Windows.Forms.Control[] {
-            this.pnlContent,
-            this.pnlButtons,
-            this.pnlHeader
-        });
+            this.ClientSize = new System.Drawing.Size(600, 750);
+            this.Controls.Add(this.pnlContent);
+            this.Controls.Add(this.pnlButtons);
+            this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AppointmentEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add/Edit Appointment";
-
-            // Perform layout
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlContent.ResumeLayout(false);
+            this.grpBasicInfo.ResumeLayout(false);
+            this.grpBasicInfo.PerformLayout();
+            this.grpContactInfo.ResumeLayout(false);
+            this.grpContactInfo.PerformLayout();
+            this.grpSchedule.ResumeLayout(false);
+            this.grpSchedule.PerformLayout();
+            this.pnlButtons.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
+
         }
 
         #endregion
@@ -246,5 +425,8 @@ namespace SchedulingApplication
         private System.Windows.Forms.DateTimePicker dtStart;
         private System.Windows.Forms.Label lblEndDate;
         private System.Windows.Forms.DateTimePicker dtEnd;
+        private System.Windows.Forms.RadioButton rbBusinessTimezone;
+        private System.Windows.Forms.RadioButton rbUserTimezone;
+        private System.Windows.Forms.Label lblTimezoneSelection;
     }
 }
