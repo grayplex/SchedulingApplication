@@ -30,7 +30,6 @@
         {
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
-
             this.pnlFilter = new System.Windows.Forms.Panel();
             this.lblTimeFilter = new System.Windows.Forms.Label();
             this.cbTimeFilter = new System.Windows.Forms.ComboBox();
@@ -39,14 +38,19 @@
             this.lblEndDate = new System.Windows.Forms.Label();
             this.dtEnd = new System.Windows.Forms.DateTimePicker();
             this.btnAddAppointment = new System.Windows.Forms.Button();
-
             this.pnlGrid = new System.Windows.Forms.Panel();
             this.dgvAppointments = new System.Windows.Forms.DataGridView();
-
             this.pnlButtons = new System.Windows.Forms.Panel();
             this.btnViewDetails = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.pnlHeader.SuspendLayout();
+            this.pnlFilter.SuspendLayout();
+            this.pnlGrid.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
+            this.pnlButtons.SuspendLayout();
+            this.SuspendLayout();
+
 
             // 
             // pnlHeader
@@ -210,11 +214,14 @@
             // 
             // AppointmentsUserControl
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlGrid);
             this.Controls.Add(this.pnlButtons);
             this.Controls.Add(this.pnlFilter);
             this.Controls.Add(this.pnlHeader);
-
+            this.Name = "AppointmentsUserControl";
+            this.Size = new System.Drawing.Size(900, 600);
             // Add controls to panels
             this.pnlGrid.Controls.Add(this.dgvAppointments);
             this.pnlFilter.Controls.AddRange(new System.Windows.Forms.Control[] {
@@ -231,9 +238,13 @@
                 this.btnEdit,
                 this.btnDelete
             });
-
-            this.Name = "AppointmentsUserControl";
-            this.Size = new System.Drawing.Size(900, 600);
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlFilter.ResumeLayout(false);
+            this.pnlGrid.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
+            this.pnlButtons.ResumeLayout(false);
+            this.ResumeLayout(false);
         }
 
         #endregion

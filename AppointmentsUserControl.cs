@@ -217,37 +217,5 @@ namespace SchedulingApplication
         {
             LoadAppointments();
         }
-
-        // InitializeComponent method should be designed in the Designer 
-        // It will set up the UI elements like:
-        // - DataGridView for appointments
-        // - Buttons for actions
-        // - Time filter dropdown
-        // - Date range pickers
-        private void InitializeComponent()
-        {
-            this.dgvAppointments = new System.Windows.Forms.DataGridView();
-            this.btnAddAppointment = new System.Windows.Forms.Button();
-            this.btnViewDetails = new System.Windows.Forms.Button();
-            this.btnEdit = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.cbTimeFilter = new System.Windows.Forms.ComboBox();
-            this.dtStart = new System.Windows.Forms.DateTimePicker();
-            this.dtEnd = new System.Windows.Forms.DateTimePicker();
-
-            // Configure DataGridView columns
-            dgvAppointments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Id", HeaderText = "ID", Visible = false },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Title", HeaderText = "Title" },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Customer", HeaderText = "Customer" },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Type", HeaderText = "Type" },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Start", HeaderText = "Start" },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "End", HeaderText = "End" },
-                new System.Windows.Forms.DataGridViewTextBoxColumn { Name = "Location", HeaderText = "Location" }
-            });
-
-            // Additional UI setup would go here
-            // This is a basic template and would need to be fully implemented in the Designer
-        }
     }
 }
