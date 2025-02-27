@@ -201,6 +201,9 @@
     <EmbeddedResource Include="AppointmentEditorForm.resx">
       <DependentUpon>AppointmentEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomerAppointmentsForm.resx">
+      <DependentUpon>CustomerAppointmentsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
