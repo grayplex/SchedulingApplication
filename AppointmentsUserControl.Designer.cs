@@ -44,6 +44,13 @@
             this.btnViewDetails = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCustomer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlHeader.SuspendLayout();
             this.pnlFilter.SuspendLayout();
             this.pnlGrid.SuspendLayout();
@@ -143,42 +150,49 @@
 
             // Configure DataGridView Columns
             this.dgvAppointments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-                new System.Windows.Forms.DataGridViewTextBoxColumn {
-                    Name = "Id",
-                    HeaderText = "ID",
-                    Visible = false
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn {
-                    Name = "Title",
-                    HeaderText = "Title",
-                    Width = 180
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn {
-                    Name = "Customer",
-                    HeaderText = "Customer",
-                    Width = 180
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn {
-                    Name = "Type",
-                    HeaderText = "Type",
-                    Width = 120
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn {
-                    Name = "Start",
-                    HeaderText = "Start",
-                    Width = 170
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn {
-                    Name = "End",
-                    HeaderText = "End",
-                    Width = 170
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn {
-                    Name = "Location",
-                    HeaderText = "Location",
-                    Width = 150
-                }
+                this.colId,
+                this.colTitle,
+                this.colCustomer,
+                this.colType,
+                this.colStart,
+                this.colEnd,
+                this.colLocation
             });
+            this.colId.Name = "Id";
+            this.colId.HeaderText = "ID";
+            this.colId.Visible = false;
+            this.colId.ReadOnly = true;
+
+            this.colTitle.Name = "Title";
+            this.colTitle.HeaderText = "Title";
+            this.colTitle.Width = 180;
+            this.colTitle.ReadOnly = true;
+
+            this.colCustomer.Name = "Customer";
+            this.colCustomer.HeaderText = "Customer";
+            this.colCustomer.Width = 180;
+            this.colCustomer.ReadOnly = true;
+
+            this.colType.Name = "Type";
+            this.colType.HeaderText = "Type";
+            this.colType.Width = 120;
+            this.colType.ReadOnly = true;
+
+            this.colStart.Name = "Start";
+            this.colStart.HeaderText = "Start";
+            this.colStart.Width = 170;
+            this.colStart.ReadOnly = true;
+
+            this.colEnd.Name = "End";
+            this.colEnd.HeaderText = "End";
+            this.colEnd.Width = 170;
+            this.colEnd.ReadOnly = true;
+
+            this.colLocation.Name = "Location";
+            this.colLocation.HeaderText = "Location";
+            this.colLocation.Width = 150;
+            this.colLocation.ReadOnly = true;
+
 
             // 
             // pnlButtons
@@ -272,5 +286,15 @@
         private System.Windows.Forms.Button btnViewDetails;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDelete;
+
+        // DataGridView Columns
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTitle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCustomer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colStart;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEnd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
+
     }
 }
