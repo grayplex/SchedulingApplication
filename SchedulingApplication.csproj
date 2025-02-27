@@ -136,6 +136,12 @@
     <Compile Include="CustomerEditorForm.Designer.cs">
       <DependentUpon>CustomerEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomersUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomersUserControl.Designer.cs">
+      <DependentUpon>CustomersUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data\ApplicationDbContext.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
