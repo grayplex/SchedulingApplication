@@ -42,6 +42,8 @@ namespace SchedulingApplication
         {
             try
             {
+                
+
                 var query = Program.DbContext.Appointments
                     .Include(a => a.Customer)
                     .Include(a => a.User)
@@ -76,6 +78,12 @@ namespace SchedulingApplication
                 {
                     appt.Start = TimeZoneHelper.ToUserTime(appt.Start);
                     appt.End = TimeZoneHelper.ToUserTime(appt.End);
+
+                    LogTimeInfo("Original Start from DB", appt.Start);
+                    LogTimeInfo("After UTC conversion", DateTime.SpecifyKind(appt.Start, DateTimeKind.Utc));
+                    LogTimeInfo("After local conversion", TimeZoneInfo.ConvertTimeFromUtc(
+                        DateTime.SpecifyKind(appt.Start, DateTimeKind.Utc),
+                        TimeZoneInfo.Local));
                 }
 
                 // Clear existing rows
@@ -103,6 +111,13 @@ namespace SchedulingApplication
                 MessageBox.Show($"Error loading appointments: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void LogTimeInfo(string label, DateTime time)
+        {
+            Console.WriteLine($"{label}: {time} - Kind: {time.Kind} - " +
+                              $"Local: {TimeZoneInfo.Local.DisplayName} - " +
+                              $"UTC Offset: {TimeZoneInfo.Local.GetUtcOffset(time)}");
         }
 
         private void FilterChanged(object sender, EventArgs e)

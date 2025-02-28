@@ -200,15 +200,17 @@ namespace SchedulingApplication
                     // Convert appointment times from database (UTC) to user's local time
                     foreach (var appointment in _selectedDateAppointments)
                     {
-                        appointment.Start = TimeZoneHelper.ToUserTime(appointment.Start);
-                        appointment.End = TimeZoneHelper.ToUserTime(appointment.End);
-                    }
+                        // Ensure UTC kind is set explicitly
+                        appointment.Start = DateTime.SpecifyKind(appointment.Start, DateTimeKind.Utc);
+                        appointment.End = DateTime.SpecifyKind(appointment.End, DateTimeKind.Utc);
 
-                    // Add rows to the DataGridView
-                    foreach (var appointment in _selectedDateAppointments)
-                    {
+                        // Convert to local time
+                        DateTime localStart = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local);
+                        DateTime localEnd = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, TimeZoneInfo.Local);
+
+                        // Use temporary variables for display only - don't modify the original appointment
                         int rowIndex = dgvAppointments.Rows.Add(
-                            appointment.Start.ToString("hh:mm tt"),
+                            localStart.ToString("hh:mm tt"),
                             appointment.Title,
                             appointment.Customer?.CustomerName ?? "Unknown",
                             appointment.Type
@@ -258,11 +260,11 @@ namespace SchedulingApplication
         {
             try
             {
-                // Get the start and end dates for the day
-                DateTime startDate = day.Date;
+                // Convert local day to UTC day range for database query
+                DateTime startDate = DateTime.SpecifyKind(day.Date, DateTimeKind.Local).ToUniversalTime();
                 DateTime endDate = startDate.AddDays(1).AddSeconds(-1);
 
-                // Query appointments for the current user on this day
+                // Query appointments for the current user on this day in UTC time
                 var appointments = Program.DbContext.Appointments
                     .Where(a => a.UserId == LoginForm.LoggedInUser.UserId &&
                            a.Start >= startDate && a.Start <= endDate)

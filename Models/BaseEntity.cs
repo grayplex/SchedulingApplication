@@ -69,5 +69,21 @@ namespace SchedulingApplication.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        protected DateTime ToUtcForDatabase(DateTime localDateTime)
+        {
+            if (localDateTime.Kind == DateTimeKind.Utc)
+                return localDateTime;
+
+            return DateTime.SpecifyKind(localDateTime, DateTimeKind.Local).ToUniversalTime();
+        }
+
+        protected DateTime FromUtcToLocal(DateTime utcDateTime)
+        {
+            if (utcDateTime.Kind == DateTimeKind.Local)
+                return utcDateTime;
+
+            return DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc).ToLocalTime();
+        }
     }
 }

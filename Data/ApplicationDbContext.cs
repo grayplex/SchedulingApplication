@@ -1,5 +1,7 @@
 ﻿using SchedulingApplication.Models;
+using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace SchedulingApplication.Data
 {
@@ -83,6 +85,42 @@ namespace SchedulingApplication.Data
             modelBuilder.Entity<Address>()
                 .Property(a => a.AddressLine2)
                 .HasColumnName("address2");
+        }
+
+        // In ApplicationDbContext.cs
+        public override int SaveChanges()
+        {
+            // Iterate through all Added/Modified entities
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                {
+                    // Check if it's our entity type with DateTime properties
+                    if (entry.Entity is BaseEntity)
+                    {
+                        // Get entity props
+                        var entityType = entry.Entity.GetType();
+                        var properties = entityType.GetProperties()
+                            .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+
+                        // For all DateTime properties, ensure they're UTC
+                        foreach (var prop in properties)
+                        {
+                            // Get current value
+                            var value = prop.GetValue(entry.Entity) as DateTime?;
+
+                            if (value.HasValue && value.Value.Kind != DateTimeKind.Utc)
+                            {
+                                // Convert to UTC and set back
+                                DateTime utcValue = DateTime.SpecifyKind(value.Value, DateTimeKind.Local).ToUniversalTime();
+                                prop.SetValue(entry.Entity, utcValue);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return base.SaveChanges();
         }
     }
 }

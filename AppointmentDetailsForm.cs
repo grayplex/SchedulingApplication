@@ -32,12 +32,18 @@ namespace SchedulingApplication
                 lblConsultant.Text = _appointment.User?.UserName ?? "Unknown";
                 lblType.Text = _appointment.Type;
 
-                // Times - Display in user's local time
-                DateTime startTime = TimeZoneHelper.ToUserTime(_appointment.Start);
-                DateTime endTime = TimeZoneHelper.ToUserTime(_appointment.End);
-                lblStart.Text = startTime.ToString("MM/dd/yyyy hh:mm tt");
-                lblEnd.Text = endTime.ToString("MM/dd/yyyy hh:mm tt");
-                lblTimeZone.Text = $"(Time Zone: {TimeZoneHelper.GetUserTimeZone().DisplayName})";
+                // Ensure times are treated as UTC from database
+                DateTime utcStart = DateTime.SpecifyKind(_appointment.Start, DateTimeKind.Utc);
+                DateTime utcEnd = DateTime.SpecifyKind(_appointment.End, DateTimeKind.Utc);
+
+                // Convert to user's local time for display
+                DateTime localStart = utcStart.ToLocalTime();
+                DateTime localEnd = utcEnd.ToLocalTime();
+
+                // Display times in user's timezone
+                lblStart.Text = localStart.ToString("MM/dd/yyyy hh:mm tt");
+                lblEnd.Text = localEnd.ToString("MM/dd/yyyy hh:mm tt");
+                lblTimeZone.Text = $"(Time Zone: {TimeZoneInfo.Local.DisplayName})";
 
                 // Additional Details
                 txtDescription.Text = _appointment.Description;

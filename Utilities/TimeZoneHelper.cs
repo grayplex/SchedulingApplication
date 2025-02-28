@@ -4,93 +4,73 @@ namespace SchedulingApplication.Utilities
 {
     public static class TimeZoneHelper
     {
-        private const string DatabaseTimeZoneId = "UTC";
         private const string BusinessHoursTimeZoneId = "Eastern Standard Time";
 
         public static TimeZoneInfo GetUserTimeZone()
         {
-            try
-            {
-                return TimeZoneInfo.Local;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error getting local time zone: {ex.Message}. Falling back to UTC.");
-                return TimeZoneInfo.Utc;
-            }
+            return TimeZoneInfo.Local;
         }
 
-        public static DateTime ToUserTime(DateTime dbTime)
+        public static TimeZoneInfo GetBusinessTimeZone()
         {
-            try
-            {
-                TimeZoneInfo userTimeZone = GetUserTimeZone();
-                return TimeZoneInfo.ConvertTimeFromUtc(dbTime, userTimeZone);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error converting to user time: {ex.Message}");
-                return dbTime;
-            }
+            return TimeZoneInfo.FindSystemTimeZoneById(BusinessHoursTimeZoneId);
         }
 
-        public static DateTime ToDatabaseTime(DateTime userTime)
+        // Convert UTC time to local time
+        public static DateTime ToUserTime(DateTime utcTime)
         {
-            try
-            {
-                TimeZoneInfo userTimeZone = GetUserTimeZone();
-                return TimeZoneInfo.ConvertTimeToUtc(userTime, userTimeZone);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error converting to database time: {ex.Message}");
-                return userTime;
-            }
+            // Ensure we're working with UTC time
+            DateTime normalizedUtc = DateTime.SpecifyKind(utcTime, DateTimeKind.Utc);
+            return normalizedUtc.ToLocalTime();
         }
 
-        public static DateTime ToBusinessHoursTimeZone(DateTime userTime)
+        // Convert local time to UTC
+        public static DateTime ToDatabaseTime(DateTime localTime)
         {
-            try
-            {
-                TimeZoneInfo businessHoursTimeZone = TimeZoneInfo.FindSystemTimeZoneById(BusinessHoursTimeZoneId);
-                TimeZoneInfo userTimeZone = GetUserTimeZone();
-
-                DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(userTime, userTimeZone);
-                return TimeZoneInfo.ConvertTimeFromUtc(utcTime, businessHoursTimeZone);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error converting to business hours time zone: {ex.Message}");
-                return userTime;
-            }
+            // Ensure we're working with local time
+            DateTime normalizedLocal = DateTime.SpecifyKind(localTime, DateTimeKind.Local);
+            return normalizedLocal.ToUniversalTime();
         }
 
-        public static string FormatWithTimeZone(DateTime dateTime)
+        // Convert between Business (EST) and User timezones
+        public static DateTime BusinessToUserTime(DateTime businessTime)
         {
-            TimeZoneInfo userTimeZone = GetUserTimeZone();
-            bool isDST = userTimeZone.IsDaylightSavingTime(dateTime);
-            string dstIndicator = isDST ? " (DST)" : "";
+            // Convert from business timezone to user's timezone
+            TimeZoneInfo businessTz = GetBusinessTimeZone();
+            TimeZoneInfo userTz = GetUserTimeZone();
 
-            return $"{dateTime:MM/dd/yyyy hh:mm tt} ({userTimeZone.DisplayName}{dstIndicator})";
+            // Use unspecified kind to avoid conflicts
+            DateTime unspecifiedTime = DateTime.SpecifyKind(businessTime, DateTimeKind.Unspecified);
+
+            // First to UTC then to user's timezone
+            return TimeZoneInfo.ConvertTime(unspecifiedTime, businessTz, userTz);
         }
 
-        public static bool IsWithinBusinessHours(DateTime userTime)
+        public static DateTime UserToBusinessTime(DateTime userTime)
         {
-            try
-            {
-                DateTime businessTime = ToBusinessHoursTimeZone(userTime);
+            // Convert from user timezone to business timezone
+            TimeZoneInfo businessTz = GetBusinessTimeZone();
+            TimeZoneInfo userTz = GetUserTimeZone();
 
-                bool isWeekday = businessTime.DayOfWeek != DayOfWeek.Saturday &&
-                               businessTime.DayOfWeek != DayOfWeek.Sunday;
-                bool isBusinessHours = businessTime.Hour >= 9 && businessTime.Hour < 17;
+            // Use unspecified kind to avoid conflicts
+            DateTime unspecifiedTime = DateTime.SpecifyKind(userTime, DateTimeKind.Unspecified);
 
-                return isWeekday && isBusinessHours;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error checking business hours: {ex.Message}");
-                return false;
-            }
+            // Direct conversion between timezones
+            return TimeZoneInfo.ConvertTime(unspecifiedTime, userTz, businessTz);
+        }
+
+        // Check if a time falls within business hours when converted to EST
+        public static bool IsWithinBusinessHours(DateTime localTime)
+        {
+            // Convert to business timezone
+            DateTime businessTime = UserToBusinessTime(localTime);
+
+            // Check if it's a weekday between 9am-5pm
+            bool isWeekday = businessTime.DayOfWeek != DayOfWeek.Saturday &&
+                             businessTime.DayOfWeek != DayOfWeek.Sunday;
+            bool isBusinessHours = businessTime.Hour >= 9 && businessTime.Hour < 17;
+
+            return isWeekday && isBusinessHours;
         }
     }
 }

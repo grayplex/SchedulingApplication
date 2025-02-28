@@ -1,6 +1,7 @@
 ﻿using SchedulingApplication.Data;
 using SchedulingApplication.Utilities;
 using System;
+using System.Data.Entity.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -33,6 +34,9 @@ namespace SchedulingApplication
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            AppDomain.CurrentDomain.SetData("EntityFramework.TimeZoneOffset", TimeZoneInfo.Local.BaseUtcOffset);
+
 
             try
             {

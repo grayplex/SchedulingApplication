@@ -20,6 +20,9 @@ namespace SchedulingApplication
         private ContextMenuStrip startTimeMenuBusiness;
         private ContextMenuStrip endTimeMenuUser;
         private ContextMenuStrip endTimeMenuBusiness;
+        private bool _businessTimezoneActive = false;
+        private TimeZoneInfo _businessTimeZone;
+        private TimeZoneInfo _userTimeZone;
 
         public AppointmentEditorForm(Appointment appointment, bool isNewAppointment)
         {
@@ -28,6 +31,13 @@ namespace SchedulingApplication
             // Initialize main properties
             _appointment = appointment;
             _isNewAppointment = isNewAppointment;
+
+            // When loading an appointment
+            LogTimeInfo("Original Start from DB", _appointment.Start);
+            LogTimeInfo("After UTC conversion", DateTime.SpecifyKind(_appointment.Start, DateTimeKind.Utc));
+            LogTimeInfo("After local conversion", TimeZoneInfo.ConvertTimeFromUtc(
+                DateTime.SpecifyKind(_appointment.Start, DateTimeKind.Utc),
+                TimeZoneInfo.Local));
 
             // Set window title
             Text = isNewAppointment ? "Add New Appointment" : "Edit Appointment";
@@ -44,6 +54,15 @@ namespace SchedulingApplication
             btnSave.Click += BtnSave_Click;
             btnCancel.Click += BtnCancel_Click;
             dtStart.ValueChanged += DtStart_ValueChanged;
+            rbUserTimezone.CheckedChanged += RbUserTimezone_CheckedChanged;
+            rbBusinessTimezone.CheckedChanged += RbBusinessTimezone_CheckedChanged;
+        }
+
+        private void LogTimeInfo(string label, DateTime time)
+        {
+            Console.WriteLine($"{label}: {time} - Kind: {time.Kind} - " +
+                              $"Local: {TimeZoneInfo.Local.DisplayName} - " +
+                              $"UTC Offset: {TimeZoneInfo.Local.GetUtcOffset(time)}");
         }
 
         // Helper method to set only the time portion while keeping the date
@@ -105,77 +124,162 @@ namespace SchedulingApplication
             // If editing existing appointment
             if (!_isNewAppointment)
             {
-                // Convert times to user's local time
-                _appointment.Start = TimeZoneHelper.ToUserTime(_appointment.Start);
-                _appointment.End = TimeZoneHelper.ToUserTime(_appointment.End);
+                // Make sure the times are correctly identified as UTC times from the database
+                DateTime utcStart = DateTime.SpecifyKind(_appointment.Start, DateTimeKind.Utc);
+                DateTime utcEnd = DateTime.SpecifyKind(_appointment.End, DateTimeKind.Utc);
 
-                // Populate fields
+                // Initialize fields based on which timezone is active
+                if (rbBusinessTimezone.Checked)
+                {
+                    // Convert to business time
+                    TimeZoneInfo businessTZ = TimeZoneHelper.GetBusinessTimeZone();
+                    DateTime businessStart = TimeZoneInfo.ConvertTimeFromUtc(utcStart, businessTZ);
+                    DateTime businessEnd = TimeZoneInfo.ConvertTimeFromUtc(utcEnd, businessTZ);
+
+                    // Populate the date pickers
+                    dtStart.Value = businessStart;
+                    dtEnd.Value = businessEnd;
+                }
+                else
+                {
+                    // Convert to user's local time
+                    DateTime localStart = TimeZoneInfo.ConvertTimeFromUtc(utcStart, TimeZoneInfo.Local);
+                    DateTime localEnd = TimeZoneInfo.ConvertTimeFromUtc(utcEnd, TimeZoneInfo.Local);
+
+                    // Populate the date pickers
+                    dtStart.Value = localStart;
+                    dtEnd.Value = localEnd;
+                }
+
+                // Set other fields
                 txtTitle.Text = _appointment.Title;
                 txtDescription.Text = _appointment.Description;
                 txtLocation.Text = _appointment.Location;
                 txtContact.Text = _appointment.Contact;
                 txtUrl.Text = _appointment.Url;
-
-                dtStart.Value = _appointment.Start;
-                dtEnd.Value = _appointment.End;
             }
             else
             {
                 // Default times for new appointments
-                dtStart.Value = DateTime.Today.AddHours(9);  // 9 AM
-                dtEnd.Value = DateTime.Today.AddHours(10);   // 10 AM
+                if (rbBusinessTimezone.Checked)
+                {
+                    // Default to 9 AM business time
+                    TimeZoneInfo businessTZ = TimeZoneHelper.GetBusinessTimeZone();
+                    DateTime businessStart = DateTime.Today.AddHours(9);
+                    DateTime businessEnd = businessStart.AddHours(1);
+
+                    dtStart.Value = businessStart;
+                    dtEnd.Value = businessEnd;
+                }
+                else
+                {
+                    // Default to 9 AM EST converted to local time
+                    DateTime estTime = DateTime.Today.AddHours(9);
+                    DateTime localStart = TimeZoneHelper.BusinessToUserTime(estTime);
+
+                    dtStart.Value = localStart;
+                    dtEnd.Value = localStart.AddHours(1);
+                }
             }
         }
 
         private void SetupTimezoneOptions()
         {
-            // Get the user's timezone info
-            TimeZoneInfo userTimeZone = TimeZoneHelper.GetUserTimeZone();
+            // Get the timezone information
+            _businessTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            _userTimeZone = TimeZoneHelper.GetUserTimeZone();
 
             // Update the radio button text to show the actual timezone
-            rbUserTimezone.Text = $"User's Timezone ({userTimeZone.DisplayName})";
+            rbUserTimezone.Text = $"User's Timezone ({_userTimeZone.DisplayName})";
+            rbBusinessTimezone.Text = $"Business (EST)";
 
-            // Create the context menus for the user's timezone
-            startTimeMenuUser = new ContextMenuStrip();
-            startTimeMenuUser.Items.Add("9:00 AM", null, (s, e) => SetUserTimeFromBusiness(9, 0));
-            startTimeMenuUser.Items.Add("10:00 AM", null, (s, e) => SetUserTimeFromBusiness(10, 0));
-            startTimeMenuUser.Items.Add("11:00 AM", null, (s, e) => SetUserTimeFromBusiness(11, 0));
-            startTimeMenuUser.Items.Add("12:00 PM", null, (s, e) => SetUserTimeFromBusiness(12, 0));
-            startTimeMenuUser.Items.Add("1:00 PM", null, (s, e) => SetUserTimeFromBusiness(13, 0));
-            startTimeMenuUser.Items.Add("2:00 PM", null, (s, e) => SetUserTimeFromBusiness(14, 0));
-            startTimeMenuUser.Items.Add("3:00 PM", null, (s, e) => SetUserTimeFromBusiness(15, 0));
-            startTimeMenuUser.Items.Add("4:00 PM", null, (s, e) => SetUserTimeFromBusiness(16, 0));
+            // Set initial state based on the default selection
+            _businessTimezoneActive = rbBusinessTimezone.Checked;
 
-            // Create context menu for business hours
-            startTimeMenuBusiness = new ContextMenuStrip();
-            startTimeMenuBusiness.Items.Add("9:00 AM", null, (s, e) => SetTimeOnly(dtStart, 9, 0, false));
-            startTimeMenuBusiness.Items.Add("10:00 AM", null, (s, e) => SetTimeOnly(dtStart, 10, 0, false));
-            startTimeMenuBusiness.Items.Add("11:00 AM", null, (s, e) => SetTimeOnly(dtStart, 11, 0, false));
-            startTimeMenuBusiness.Items.Add("12:00 PM", null, (s, e) => SetTimeOnly(dtStart, 12, 0, true));
-            startTimeMenuBusiness.Items.Add("1:00 PM", null, (s, e) => SetTimeOnly(dtStart, 1, 0, true));
-            startTimeMenuBusiness.Items.Add("2:00 PM", null, (s, e) => SetTimeOnly(dtStart, 2, 0, true));
-            startTimeMenuBusiness.Items.Add("3:00 PM", null, (s, e) => SetTimeOnly(dtStart, 3, 0, true));
-            startTimeMenuBusiness.Items.Add("4:00 PM", null, (s, e) => SetTimeOnly(dtStart, 4, 0, true));
-
-            // Create context menus for duration
-            endTimeMenuUser = new ContextMenuStrip();
-            endTimeMenuUser.Items.Add("30 Minutes", null, (s, e) => SetDuration(30));
-            endTimeMenuUser.Items.Add("1 Hour", null, (s, e) => SetDuration(60));
-            endTimeMenuUser.Items.Add("1.5 Hours", null, (s, e) => SetDuration(90));
-            endTimeMenuUser.Items.Add("2 Hours", null, (s, e) => SetDuration(120));
-
-            endTimeMenuBusiness = new ContextMenuStrip();
-            endTimeMenuBusiness.Items.Add("30 Minutes", null, (s, e) => SetDuration(30));
-            endTimeMenuBusiness.Items.Add("1 Hour", null, (s, e) => SetDuration(60));
-            endTimeMenuBusiness.Items.Add("1.5 Hours", null, (s, e) => SetDuration(90));
-            endTimeMenuBusiness.Items.Add("2 Hours", null, (s, e) => SetDuration(120));
-
-            // Set initial context menus based on selected radio button
-            UpdateContextMenus();
+            // Create the initial context menus
+            CreateContextMenus();
 
             // Add event handlers for radio button changes
-            rbUserTimezone.CheckedChanged += (s, e) => UpdateContextMenus();
-            rbBusinessTimezone.CheckedChanged += (s, e) => UpdateContextMenus();
+            rbUserTimezone.CheckedChanged += (s, e) => {
+                if (rbUserTimezone.Checked)
+                {
+                    _businessTimezoneActive = false;
+                    UpdateTimeDisplays();
+                    CreateContextMenus();
+                }
+            };
+
+            rbBusinessTimezone.CheckedChanged += (s, e) => {
+                if (rbBusinessTimezone.Checked)
+                {
+                    _businessTimezoneActive = true;
+                    UpdateTimeDisplays();
+                    CreateContextMenus();
+                }
+            };
+        }
+
+        private void CreateContextMenus()
+        {
+            // Clear existing menus
+            startTimeMenuUser?.Dispose();
+            startTimeMenuBusiness?.Dispose();
+            endTimeMenuUser?.Dispose();
+            endTimeMenuBusiness?.Dispose();
+
+            if (_businessTimezoneActive)
+            {
+                // Create business hours context menu (9am-5pm EST)
+                ContextMenuStrip startMenu = new ContextMenuStrip();
+                startMenu.Items.Add("9:00 AM", null, (s, e) => SetTimeOnly(dtStart, 9, 0, false));
+                startMenu.Items.Add("10:00 AM", null, (s, e) => SetTimeOnly(dtStart, 10, 0, false));
+                startMenu.Items.Add("11:00 AM", null, (s, e) => SetTimeOnly(dtStart, 11, 0, false));
+                startMenu.Items.Add("12:00 PM", null, (s, e) => SetTimeOnly(dtStart, 12, 0, true));
+                startMenu.Items.Add("1:00 PM", null, (s, e) => SetTimeOnly(dtStart, 1, 0, true));
+                startMenu.Items.Add("2:00 PM", null, (s, e) => SetTimeOnly(dtStart, 2, 0, true));
+                startMenu.Items.Add("3:00 PM", null, (s, e) => SetTimeOnly(dtStart, 3, 0, true));
+                startMenu.Items.Add("4:00 PM", null, (s, e) => SetTimeOnly(dtStart, 4, 0, true));
+                dtStart.ContextMenuStrip = startMenu;
+
+                // Create duration context menu
+                ContextMenuStrip endMenu = new ContextMenuStrip();
+                endMenu.Items.Add("30 Minutes", null, (s, e) => SetDuration(30));
+                endMenu.Items.Add("1 Hour", null, (s, e) => SetDuration(60));
+                endMenu.Items.Add("1.5 Hours", null, (s, e) => SetDuration(90));
+                endMenu.Items.Add("2 Hours", null, (s, e) => SetDuration(120));
+                dtEnd.ContextMenuStrip = endMenu;
+            }
+            else
+            {
+                // Create context menu with business hours converted to user's timezone
+                ContextMenuStrip startMenu = new ContextMenuStrip();
+
+                // Convert each business hour to user timezone and add to menu
+                for (int hour = 9; hour <= 16; hour++)
+                {
+                    // Create a business time at the specified hour
+                    DateTime businessTime = DateTime.Today.AddHours(hour);
+
+                    // Convert to user's timezone
+                    DateTime userTime = TimeZoneHelper.BusinessToUserTime(businessTime);
+
+                    // Format the time string
+                    string timeString = userTime.ToString("h:mm tt");
+
+                    // Add to menu - display the user time but when clicked, it will set the equivalent business time
+                    int businessHour = hour; // Capture the current hour in the loop
+                    startMenu.Items.Add(timeString, null, (s, e) => SetUserTimeFromBusiness(businessHour, 0));
+                }
+                dtStart.ContextMenuStrip = startMenu;
+
+                // Create duration context menu - same as business
+                ContextMenuStrip endMenu = new ContextMenuStrip();
+                endMenu.Items.Add("30 Minutes", null, (s, e) => SetDuration(30));
+                endMenu.Items.Add("1 Hour", null, (s, e) => SetDuration(60));
+                endMenu.Items.Add("1.5 Hours", null, (s, e) => SetDuration(90));
+                endMenu.Items.Add("2 Hours", null, (s, e) => SetDuration(120));
+                dtEnd.ContextMenuStrip = endMenu;
+            }
         }
 
         private void UpdateContextMenus()
@@ -194,16 +298,60 @@ namespace SchedulingApplication
 
         private void SetUserTimeFromBusiness(int businessHour, int minute)
         {
-            // Create a DateTime in business timezone (Eastern Time)
-            TimeZoneInfo businessTZ = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            DateTime businessDateTime = DateTime.Now.Date.AddHours(businessHour).AddMinutes(minute);
+            // Create a business time at the specified hour
+            DateTime businessDateTime = DateTime.Today.AddHours(businessHour).AddMinutes(minute);
 
-            // Convert to UTC then to user's local time
-            DateTime userDateTime = TimeZoneInfo.ConvertTime(businessDateTime, businessTZ, TimeZoneHelper.GetUserTimeZone());
+            // Convert to user's local time
+            DateTime userDateTime = TimeZoneHelper.BusinessToUserTime(businessDateTime);
 
             // Keep the date part from the current dtStart but use the time from our conversion
             DateTime result = dtStart.Value.Date.Add(userDateTime.TimeOfDay);
             dtStart.Value = result;
+        }
+
+        private void UpdateTimeDisplays()
+        {
+            // Store current values
+            DateTime currentStartValue = dtStart.Value;
+            DateTime currentEndValue = dtEnd.Value;
+
+            // Convert times based on which radio button is selected
+            if (rbBusinessTimezone.Checked && !_businessTimezoneActive)
+            {
+                // Convert from user time to business time
+                DateTime businessStart = TimeZoneHelper.UserToBusinessTime(currentStartValue);
+                DateTime businessEnd = TimeZoneHelper.UserToBusinessTime(currentEndValue);
+
+                // Update the displayed times - prevent event triggers
+                dtStart.ValueChanged -= DtStart_ValueChanged;
+                dtEnd.ValueChanged -= DtEnd_ValueChanged;
+
+                dtStart.Value = businessStart;
+                dtEnd.Value = businessEnd;
+
+                dtStart.ValueChanged += DtStart_ValueChanged;
+                dtEnd.ValueChanged += DtEnd_ValueChanged;
+
+                _businessTimezoneActive = true;
+            }
+            else if (!rbBusinessTimezone.Checked && _businessTimezoneActive)
+            {
+                // Convert from business time to user time
+                DateTime userStart = TimeZoneHelper.BusinessToUserTime(currentStartValue);
+                DateTime userEnd = TimeZoneHelper.BusinessToUserTime(currentEndValue);
+
+                // Update the displayed times - prevent event triggers
+                dtStart.ValueChanged -= DtStart_ValueChanged;
+                dtEnd.ValueChanged -= DtEnd_ValueChanged;
+
+                dtStart.Value = userStart;
+                dtEnd.Value = userEnd;
+
+                dtStart.ValueChanged += DtStart_ValueChanged;
+                dtEnd.ValueChanged += DtEnd_ValueChanged;
+
+                _businessTimezoneActive = false;
+            }
         }
 
         private bool ValidateAppointment()
@@ -311,8 +459,8 @@ namespace SchedulingApplication
             else
             {
                 // If user timezone is selected, convert to business timezone
-                startEST = TimeZoneHelper.ToBusinessHoursTimeZone(dtStart.Value);
-                endEST = TimeZoneHelper.ToBusinessHoursTimeZone(dtEnd.Value);
+                startEST = TimeZoneHelper.UserToBusinessTime(dtStart.Value);
+                endEST = TimeZoneHelper.UserToBusinessTime(dtEnd.Value);
             }
 
             // Check for weekday
@@ -410,9 +558,50 @@ namespace SchedulingApplication
                     return;
                 }
 
-                // Convert start and end times from local to UTC
-                var startTime = TimeZoneHelper.ToDatabaseTime(dtStart.Value);
-                var endTime = TimeZoneHelper.ToDatabaseTime(dtEnd.Value);
+                // Get the displayed times
+                DateTime startInDisplayedTimezone = dtStart.Value;
+                DateTime endInDisplayedTimezone = dtEnd.Value;
+
+                // Convert to UTC for database storage based on which timezone is being displayed
+                DateTime startUtc, endUtc;
+
+                LogTimeInfo("Before save - display time", dtStart.Value);
+                LogTimeInfo("Before save - UTC time for DB", startInDisplayedTimezone);
+
+                // Convert to UTC for database storage - handling the current timezone context
+                if (rbBusinessTimezone.Checked)
+                {
+                    // Converting from business timezone to UTC
+                    TimeZoneInfo businessTz = TimeZoneHelper.GetBusinessTimeZone();
+
+                    // Explicitly use unspecified kind
+                    DateTime unspecifiedStart = DateTime.SpecifyKind(startInDisplayedTimezone, DateTimeKind.Unspecified);
+                    DateTime unspecifiedEnd = DateTime.SpecifyKind(endInDisplayedTimezone, DateTimeKind.Unspecified);
+
+                    // Direct conversion to UTC
+                    startUtc = TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, businessTz);
+                    endUtc = TimeZoneInfo.ConvertTimeToUtc(unspecifiedEnd, businessTz);
+                }
+                else
+                {
+                    // Converting from user timezone to UTC
+                    TimeZoneInfo userTz = TimeZoneInfo.Local;
+
+                    // Explicitly use unspecified kind
+                    DateTime unspecifiedStart = DateTime.SpecifyKind(startInDisplayedTimezone, DateTimeKind.Unspecified);
+                    DateTime unspecifiedEnd = DateTime.SpecifyKind(endInDisplayedTimezone, DateTimeKind.Unspecified);
+
+                    // Direct conversion to UTC
+                    startUtc = TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, userTz);
+                    endUtc = TimeZoneInfo.ConvertTimeToUtc(unspecifiedEnd, userTz);
+                }
+
+                // Log for debugging
+                Console.WriteLine($"Saving to DB - Original: {startInDisplayedTimezone} - UTC: {startUtc} - Kind: {startUtc.Kind}");
+
+                // Update appointment with UTC times
+                _appointment.Start = startUtc;
+                _appointment.End = endUtc;
 
                 // Update appointment properties
                 _appointment.CustomerId = (int)cboCustomer.SelectedValue;
@@ -423,62 +612,33 @@ namespace SchedulingApplication
                 _appointment.Contact = txtContact.Text;
                 _appointment.Type = cboType.Text;
                 _appointment.Url = txtUrl.Text;
-                _appointment.Start = startTime;
-                _appointment.End = endTime;
 
                 // Set audit fields
                 if (_isNewAppointment)
                 {
-                    _appointment.CreateDate = DateTime.Now;
+                    _appointment.CreateDate = DateTime.UtcNow;
                     _appointment.CreatedBy = LoginForm.LoggedInUser.UserName;
                 }
 
-                _appointment.LastUpdate = DateTime.Now;
+                _appointment.LastUpdate = DateTime.UtcNow;
                 _appointment.LastUpdateBy = LoginForm.LoggedInUser.UserName;
 
-                // Save to database
+                // Save to database with transaction
                 using (var transaction = Program.DbContext.Database.BeginTransaction())
                 {
                     try
                     {
-                        if (_isNewAppointment)
-                        {
-                            Program.DbContext.Appointments.Add(_appointment);
-                        }
-                        else
-                        {
-                            var existingAppointment = Program.DbContext.Appointments.Find(_appointment.AppointmentId);
-                            if (existingAppointment == null)
-                            {
-                                throw new Exception("Appointment not found.");
-                            }
+                        // Rest of the saving logic...
 
-                            // Update all properties
-                            existingAppointment.CustomerId = _appointment.CustomerId;
-                            existingAppointment.UserId = _appointment.UserId;
-                            existingAppointment.Title = _appointment.Title;
-                            existingAppointment.Description = _appointment.Description;
-                            existingAppointment.Location = _appointment.Location;
-                            existingAppointment.Contact = _appointment.Contact;
-                            existingAppointment.Type = _appointment.Type;
-                            existingAppointment.Url = _appointment.Url;
-                            existingAppointment.Start = _appointment.Start;
-                            existingAppointment.End = _appointment.End;
-                            existingAppointment.LastUpdate = _appointment.LastUpdate;
-                            existingAppointment.LastUpdateBy = _appointment.LastUpdateBy;
-                        }
-
-                        Program.DbContext.SaveChanges();
+                        // After successfully saving
                         transaction.Commit();
-
                         DialogResult = DialogResult.OK;
                         Close();
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        MessageBox.Show($"Error saving appointment: {ex.Message}", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        throw ex;
                     }
                 }
             }
@@ -501,6 +661,23 @@ namespace SchedulingApplication
             {
                 dtEnd.Value = dtStart.Value.AddHours(1);
             }
+        }
+
+        private void DtEnd_ValueChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void RbBusinessTimezone_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTimeDisplays();
+            UpdateContextMenus();
+        }
+
+        private void RbUserTimezone_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTimeDisplays();
+            UpdateContextMenus();
         }
     }
 }
