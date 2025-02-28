@@ -97,7 +97,14 @@ namespace SchedulingApplication
                     .ToList();
 
                 // Populate DataGridView
-                dgvReport.DataSource = _appointmentTypesByMonth;
+                dgvAppointmentTypes.DataSource = _appointmentTypesByMonth;
+
+                if (_appointmentTypesByMonth.Count == 0)
+                {
+                    MessageBox.Show($"No appointments found for {selectedYear}.", "No Data",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
             }
             catch (Exception ex)
             {
@@ -137,7 +144,13 @@ namespace SchedulingApplication
                 }
 
                 // Populate DataGridView
-                dgvReport.DataSource = _consultantSchedule;
+                dgvConsultantSchedule.DataSource = _consultantSchedule;
+
+                if (_consultantSchedule.Count == 0)
+                {
+                    MessageBox.Show($"No appointments found for {_selectedConsultant}.", "No Data",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
@@ -185,6 +198,12 @@ namespace SchedulingApplication
 
                 // Populate DataGridView
                 dgvReport.DataSource = _customerStats;
+
+                if (_customerStats.Count == 0)
+                {
+                    MessageBox.Show("No customer stats found.", "No Data",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
