@@ -1,0 +1,11 @@
+﻿root_mysql_pass="a98a4ad3b64d3319291335cab58848487fa7b371f2c2bf46"
+admin_mysql_pass="774c02399ae521a0b59cd103f42223594598ef32cd0b65fd"
+app_mysql_pass="5b6606b1da840262784f49a05c1f054d77dc5aadadc22537"
+phpMyAdmin BlowFish Secret = ";4'i[c%]]I$Z^Qto(y^H&qS8Ke7\%1BE"
+
+AudienceDB user = "t4rdhh9m2vv95t01u7jrwmd5wjwl23m012k2upj00qsbe03e"
+
+'/usr/share/phpmyadmin/tmp'
+
+
+    "AudienceDB": "server=audiencedb-cluster-do-user-10484201-0.m.db.ondigitalocean.com; port=25060; database=AudienceDB; user=AudienceDB; password=AVNS_CP_GU-tX5zPOoL6ZbPQ; sslmode=required"
