@@ -138,6 +138,12 @@ namespace SchedulingApplication
 
             if (result == DialogResult.Yes)
             {
+                // Clear the current user
+                _currentUser = null;
+
+                // Hide the main form
+                this.Hide();
+
                 // Show login window again
                 var loginForm = new LoginForm();
                 if (loginForm.ShowDialog() == DialogResult.OK)
@@ -145,8 +151,13 @@ namespace SchedulingApplication
                     // Reload data with new user
                     _currentUser = LoginForm.LoggedInUser;
                     lblWelcome.Text = string.Format(LocalizationManager.GetTranslation("WelcomeMessage"), _currentUser.UserName);
+                    lblUser.Text = $"Logged in as: {_currentUser.UserName}";
+
                     LoadUpcomingAppointments();
                     ShowCalendarView();
+
+                    // Show the main form again
+                    this.Show();
                 }
                 else
                 {
