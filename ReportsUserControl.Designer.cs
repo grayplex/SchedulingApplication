@@ -122,18 +122,15 @@
             this.btnAppointmentTypes.Size = new System.Drawing.Size(120, 23);
             this.btnAppointmentTypes.TabIndex = 2;
             this.btnAppointmentTypes.Text = "Generate Report";
-            // 
-            // dgvReport
-            // 
-            this.dgvReport.AllowUserToAddRows = false;
-            this.dgvReport.AllowUserToDeleteRows = false;
-            this.dgvReport.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvReport.Location = new System.Drawing.Point(0, 0);
-            this.dgvReport.Name = "dgvReport";
-            this.dgvReport.ReadOnly = true;
-            this.dgvReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvReport.Size = new System.Drawing.Size(892, 524);
-            this.dgvReport.TabIndex = 3;
+            //
+            // dgvAppointmentTypes
+            //
+            this.dgvAppointmentTypes.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvAppointmentTypes.Size = new System.Drawing.Size(892, 450);
+            this.dgvAppointmentTypes.Location = new System.Drawing.Point(0, 50);
+            this.dgvAppointmentTypes.AllowUserToAddRows = false;
+            this.dgvAppointmentTypes.AllowUserToDeleteRows = false;
+            this.dgvAppointmentTypes.ReadOnly = true;
             // 
             // tabConsultantSchedule
             // 
@@ -170,6 +167,15 @@
             this.btnConsultantSchedule.Size = new System.Drawing.Size(120, 23);
             this.btnConsultantSchedule.TabIndex = 2;
             this.btnConsultantSchedule.Text = "Generate Report";
+            //
+            // dgvConsultantSchedule
+            //
+            this.dgvConsultantSchedule.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvConsultantSchedule.Size = new System.Drawing.Size(892, 450);
+            this.dgvConsultantSchedule.Location = new System.Drawing.Point(0, 50);
+            this.dgvConsultantSchedule.AllowUserToAddRows = false;
+            this.dgvConsultantSchedule.AllowUserToDeleteRows = false;
+            this.dgvConsultantSchedule.ReadOnly = true;
             // 
             // tabCustomerStats
             // 
@@ -188,24 +194,18 @@
             this.btnCustomerStats.Size = new System.Drawing.Size(120, 23);
             this.btnCustomerStats.TabIndex = 0;
             this.btnCustomerStats.Text = "Generate Report";
-            //
-            // dgvAppointmentTypes
-            //
-            this.dgvAppointmentTypes.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dgvAppointmentTypes.Size = new System.Drawing.Size(892, 450);
-            this.dgvAppointmentTypes.Location = new System.Drawing.Point(0, 50);
-            this.dgvAppointmentTypes.AllowUserToAddRows = false;
-            this.dgvAppointmentTypes.AllowUserToDeleteRows = false;
-            this.dgvAppointmentTypes.ReadOnly = true;
-            //
-            // dgvConsultantSchedule
-            //
-            this.dgvConsultantSchedule.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dgvConsultantSchedule.Size = new System.Drawing.Size(892, 450);
-            this.dgvConsultantSchedule.Location = new System.Drawing.Point(0, 50);
-            this.dgvConsultantSchedule.AllowUserToAddRows = false;
-            this.dgvConsultantSchedule.AllowUserToDeleteRows = false;
-            this.dgvConsultantSchedule.ReadOnly = true;
+            // 
+            // dgvReport
+            // 
+            this.dgvReport.AllowUserToAddRows = false;
+            this.dgvReport.AllowUserToDeleteRows = false;
+            this.dgvReport.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvReport.Location = new System.Drawing.Point(0, 50);
+            this.dgvReport.Name = "dgvReport";
+            this.dgvReport.ReadOnly = true;
+            this.dgvReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvReport.Size = new System.Drawing.Size(892, 450);
+            this.dgvReport.TabIndex = 3;
             // 
             // ReportsUserControl
             // 
