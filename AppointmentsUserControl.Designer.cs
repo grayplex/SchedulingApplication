@@ -87,12 +87,12 @@
             // 
             this.lblTimeFilter.Text = "Filter:";
             this.lblTimeFilter.Location = new System.Drawing.Point(10, 15);
-            this.lblTimeFilter.Width = 100;
+            this.lblTimeFilter.Width = 50;
 
             // 
             // cbTimeFilter
             // 
-            this.cbTimeFilter.Location = new System.Drawing.Point(120, 12);
+            this.cbTimeFilter.Location = new System.Drawing.Point(70, 12);
             this.cbTimeFilter.Width = 200;
             this.cbTimeFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 
@@ -100,38 +100,42 @@
             // lblStartDate
             // 
             this.lblStartDate.Text = "Start:";
-            this.lblStartDate.Location = new System.Drawing.Point(330, 15);
-            this.lblStartDate.Width = 100;
+            this.lblStartDate.Location = new System.Drawing.Point(280, 15);
+            this.lblStartDate.Width = 50;
 
             // 
             // dtStart
             // 
-            this.dtStart.Location = new System.Drawing.Point(430, 12);
-            this.dtStart.Width = 120;
+            this.dtStart.Location = new System.Drawing.Point(330, 12);
+            this.dtStart.Width = 100;
+            this.dtStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtStart.Enabled = false;
 
             // 
             // lblEndDate
             // 
             this.lblEndDate.Text = "End:";
-            this.lblEndDate.Location = new System.Drawing.Point(560, 15);
-            this.lblEndDate.Width = 100;
+            this.lblEndDate.Location = new System.Drawing.Point(450, 15);
+            this.lblEndDate.Width = 50;
 
             // 
             // dtEnd
             // 
-            this.dtEnd.Location = new System.Drawing.Point(660, 12);
-            this.dtEnd.Width = 120;
+            this.dtEnd.Location = new System.Drawing.Point(500, 12);
+            this.dtEnd.Width = 100;
+            this.dtEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtEnd.Enabled = false;
 
             // 
             // btnAddAppointment
             // 
             this.btnAddAppointment.Text = "Add Appointment";
-            this.btnAddAppointment.Location = new System.Drawing.Point(790, 12);
-            this.btnAddAppointment.Width = 120;
+            this.btnAddAppointment.Location = new System.Drawing.Point(700, 12);
             this.btnAddAppointment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(212)))));
             this.btnAddAppointment.ForeColor = System.Drawing.Color.White;
+            this.btnAddAppointment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddAppointment.Size = new System.Drawing.Size(120, 30);
+            this.btnAddAppointment.UseVisualStyleBackColor = false;
 
             // 
             // pnlGrid
@@ -165,7 +169,7 @@
 
             this.colTitle.Name = "Title";
             this.colTitle.HeaderText = "Title";
-            this.colTitle.Width = 180;
+            this.colTitle.Width = 150;
             this.colTitle.ReadOnly = true;
 
             this.colCustomer.Name = "Customer";
@@ -180,12 +184,12 @@
 
             this.colStart.Name = "Start";
             this.colStart.HeaderText = "Start";
-            this.colStart.Width = 170;
+            this.colStart.Width = 125;
             this.colStart.ReadOnly = true;
 
             this.colEnd.Name = "End";
             this.colEnd.HeaderText = "End";
-            this.colEnd.Width = 170;
+            this.colEnd.Width = 125;
             this.colEnd.ReadOnly = true;
 
             this.colLocation.Name = "Location";
@@ -204,26 +208,44 @@
             // 
             // btnViewDetails
             // 
-            this.btnViewDetails.Text = "View Details";
+            this.btnViewDetails.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(122)))), ((int)(((byte)(122)))));
             this.btnViewDetails.Enabled = false;
-            this.btnViewDetails.Location = new System.Drawing.Point(400, 15);
-            this.btnViewDetails.Width = 120;
+            this.btnViewDetails.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnViewDetails.ForeColor = System.Drawing.Color.White;
+            this.btnViewDetails.Location = new System.Drawing.Point(460, 15);
+            this.btnViewDetails.Name = "btnViewDetails";
+            this.btnViewDetails.Size = new System.Drawing.Size(90, 30);
+            this.btnViewDetails.TabIndex = 0;
+            this.btnViewDetails.Text = "View Details";
+            this.btnViewDetails.UseVisualStyleBackColor = false;
 
             // 
             // btnEdit
             // 
-            this.btnEdit.Text = "Edit";
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
             this.btnEdit.Enabled = false;
-            this.btnEdit.Location = new System.Drawing.Point(530, 15);
-            this.btnEdit.Width = 120;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.ForeColor = System.Drawing.Color.White;
+            this.btnEdit.Location = new System.Drawing.Point(556, 15);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(90, 30);
+            this.btnEdit.TabIndex = 1;
+            this.btnEdit.Text = "Edit";
+            this.btnEdit.UseVisualStyleBackColor = false;
 
             // 
             // btnDelete
             // 
-            this.btnDelete.Text = "Delete";
+            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(57)))), ((int)(((byte)(53)))));
             this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(660, 15);
-            this.btnDelete.Width = 120;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.ForeColor = System.Drawing.Color.White;
+            this.btnDelete.Location = new System.Drawing.Point(652, 15);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(90, 30);
+            this.btnDelete.TabIndex = 2;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = false;
 
             // 
             // AppointmentsUserControl
