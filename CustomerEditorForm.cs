@@ -88,22 +88,52 @@ namespace SchedulingApplication
         {
             try
             {
-                if (cboCountry.SelectedValue != null)
+                if (cboCountry.SelectedItem != null)
                 {
-                    int countryId = (int)cboCountry.SelectedValue;
-                    var cities = Program.DbContext.Cities
-                        .Where(c => c.CountryId == countryId)
-                        .OrderBy(c => c.CityName)
-                        .ToList();
-                    cboCity.DataSource = cities;
-                    cboCity.DisplayMember = "CityName";
-                    cboCity.ValueMember = "CityId";
-
-                    // Set initial selection if editing
-                    if (!_isNewCustomer && _address?.CityId > 0)
+                    // Get the selected Country object directly
+                    Country selectedCountry = cboCountry.SelectedItem as Country;
+                    if (selectedCountry != null)
                     {
-                        cboCity.SelectedValue = _address.CityId;
+                        int countryId = selectedCountry.CountryId;
+
+                        var cities = Program.DbContext.Cities
+                            .Where(c => c.CountryId == countryId)
+                            .OrderBy(c => c.CityName)
+                            .ToList();
+
+                        // Store the current selection if there is one
+                        object currentSelection = cboCity.SelectedValue;
+
+                        cboCity.DataSource = cities;
+                        cboCity.DisplayMember = "CityName";
+                        cboCity.ValueMember = "CityId";
+
+                        // Set initial selection if editing
+                        if (!_isNewCustomer && _address?.CityId > 0)
+                        {
+                            cboCity.SelectedValue = _address.CityId;
+                        }
+                        // If we had a previous selection, try to restore it
+                        else if (currentSelection != null)
+                        {
+                            try
+                            {
+                                cboCity.SelectedValue = currentSelection;
+                            }
+                            catch
+                            {
+                                // If the previous value isn't in the new list, select the first item
+                                if (cboCity.Items.Count > 0)
+                                    cboCity.SelectedIndex = 0;
+                            }
+                        }
                     }
+                }
+                else
+                {
+                    // Clear the cities list if no country is selected
+                    cboCity.DataSource = null;
+                    cboCity.Items.Clear();
                 }
             }
             catch (Exception ex)
