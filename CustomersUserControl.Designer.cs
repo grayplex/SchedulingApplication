@@ -71,7 +71,7 @@
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.Location = new System.Drawing.Point(15, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(112, 24);
+            this.lblTitle.Size = new System.Drawing.Size(109, 24);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Customers";
             // 
@@ -113,6 +113,8 @@
             // 
             // txtSearch
             // 
+            this.txtSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.txtSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtSearch.Location = new System.Drawing.Point(135, 19);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(253, 20);
@@ -123,7 +125,7 @@
             this.lblSearch.AutoSize = true;
             this.lblSearch.Location = new System.Drawing.Point(15, 22);
             this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(114, 13);
+            this.lblSearch.Size = new System.Drawing.Size(111, 13);
             this.lblSearch.TabIndex = 0;
             this.lblSearch.Text = "Search for Customers:";
             // 

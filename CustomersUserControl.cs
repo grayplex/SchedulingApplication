@@ -60,6 +60,16 @@ namespace SchedulingApplication
                 _customers = query.ToList();
                 Console.WriteLine($"Customers found: {_customers.Count}");
 
+                AutoCompleteStringCollection allowedTypes = new AutoCompleteStringCollection();
+                // Convert _customers into string array
+                foreach ( var customer in _customers )
+                {
+                    allowedTypes.Add(customer.CustomerName);
+                }
+                txtSearch.AutoCompleteCustomSource = allowedTypes;
+                txtSearch.AutoCompleteMode = AutoCompleteMode.Suggest;
+                txtSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
                 // Clear the current grid
                 dgvCustomers.DataSource = null;
                 dgvCustomers.Rows.Clear();
