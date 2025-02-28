@@ -78,29 +78,50 @@ namespace SchedulingApplication
                 _username = txtUsername.Text;
                 _password = txtPassword.Text;
 
-                // Validate credentials against the database
-                var user = Program.DbContext.Users
-                    .FirstOrDefault(u => u.UserName == _username && u.Password == _password && u.Active);
-
-                if (user != null)
+                // Perform DB operations on background thread so progress bar animates correctly
+                Task.Run(() =>
                 {
-                    // Set the logged-in user globally
-                    LoggedInUser = user;
+                    try
+                    {
+                        // DB operations
+                        var user = Program.DbContext.Users
+                            .FirstOrDefault(u => u.UserName == _username && u.Password == _password && u.Active);
 
-                    // Log successful login
-                    LoginLogger.LogLogin(_username);
+                        // Update UI on the UI thread
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            if (user != null)
+                            {
+                                // Set the logged-in user globally
+                                LoggedInUser = user;
 
-                    // Close with success
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-                else
-                {
-                    // Invalid credentials
-                    lblError.Text = LocalizationManager.GetTranslation("InvalidCredentials");
-                    panelLoading.Visible = false;
-                    _isLoading = false;
-                }
+                                // Log successful login
+                                LoginLogger.LogLogin(_username);
+
+                                // Close with success
+                                this.DialogResult = DialogResult.OK;
+                                this.Close();
+                            }
+                            else
+                            {
+                                // Invalid creds
+                                lblError.Text = LocalizationManager.GetTranslation("InvalidCredentials");
+                                panelLoading.Visible = false;
+                                _isLoading = false;
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle execptions and update UI on UI thread
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            lblError.Text = LocalizationManager.GetTranslation("LoginError", ex.Message);
+                            panelLoading.Visible = false;
+                            _isLoading = false;
+                        });
+                    }
+                });
             }
             catch (Exception ex)
             {
