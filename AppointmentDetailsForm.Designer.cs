@@ -165,7 +165,7 @@
             this.lblLastUpdated.AutoSize = true;
             this.lblLastUpdated.Location = new System.Drawing.Point(120, 60);
             this.lblLastUpdated.Name = "lblLastUpdated";
-            this.lblLastUpdated.Size = new System.Drawing.Size(116, 13);
+            this.lblLastUpdated.Size = new System.Drawing.Size(109, 13);
             this.lblLastUpdated.TabIndex = 3;
             this.lblLastUpdated.Text = "test on 01/01/2025...";
             // 
@@ -175,7 +175,7 @@
             this.lblLastUpdatedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLastUpdatedLabel.Location = new System.Drawing.Point(20, 60);
             this.lblLastUpdatedLabel.Name = "lblLastUpdatedLabel";
-            this.lblLastUpdatedLabel.Size = new System.Drawing.Size(89, 13);
+            this.lblLastUpdatedLabel.Size = new System.Drawing.Size(87, 13);
             this.lblLastUpdatedLabel.TabIndex = 2;
             this.lblLastUpdatedLabel.Text = "Last Updated:";
             // 
@@ -184,7 +184,7 @@
             this.lblCreatedBy.AutoSize = true;
             this.lblCreatedBy.Location = new System.Drawing.Point(120, 30);
             this.lblCreatedBy.Name = "lblCreatedBy";
-            this.lblCreatedBy.Size = new System.Drawing.Size(116, 13);
+            this.lblCreatedBy.Size = new System.Drawing.Size(109, 13);
             this.lblCreatedBy.TabIndex = 1;
             this.lblCreatedBy.Text = "test on 01/01/2025...";
             // 
@@ -194,7 +194,7 @@
             this.lblCreatedByLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCreatedByLabel.Location = new System.Drawing.Point(20, 30);
             this.lblCreatedByLabel.Name = "lblCreatedByLabel";
-            this.lblCreatedByLabel.Size = new System.Drawing.Size(72, 13);
+            this.lblCreatedByLabel.Size = new System.Drawing.Size(73, 13);
             this.lblCreatedByLabel.TabIndex = 0;
             this.lblCreatedByLabel.Text = "Created By:";
             // 
@@ -221,7 +221,7 @@
             this.lblUrl.AutoSize = true;
             this.lblUrl.Location = new System.Drawing.Point(120, 130);
             this.lblUrl.Name = "lblUrl";
-            this.lblUrl.Size = new System.Drawing.Size(119, 13);
+            this.lblUrl.Size = new System.Drawing.Size(127, 13);
             this.lblUrl.TabIndex = 7;
             this.lblUrl.Text = "http://www.example.com";
             // 
@@ -230,7 +230,7 @@
             this.lblContact.AutoSize = true;
             this.lblContact.Location = new System.Drawing.Point(120, 100);
             this.lblContact.Name = "lblContact";
-            this.lblContact.Size = new System.Drawing.Size(74, 13);
+            this.lblContact.Size = new System.Drawing.Size(75, 13);
             this.lblContact.TabIndex = 6;
             this.lblContact.Text = "Contact Name";
             // 
@@ -239,13 +239,13 @@
             this.lblLocation.AutoSize = true;
             this.lblLocation.Location = new System.Drawing.Point(120, 70);
             this.lblLocation.Name = "lblLocation";
-            this.lblLocation.Size = new System.Drawing.Size(110, 13);
+            this.lblLocation.Size = new System.Drawing.Size(109, 13);
             this.lblLocation.TabIndex = 5;
             this.lblLocation.Text = "Conference Room 3A";
             // 
             // txtDescription
             // 
-            this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescription.BackColor = System.Drawing.Color.White;
             this.txtDescription.Location = new System.Drawing.Point(120, 27);
@@ -261,7 +261,7 @@
             this.lblUrlLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUrlLabel.Location = new System.Drawing.Point(20, 130);
             this.lblUrlLabel.Name = "lblUrlLabel";
-            this.lblUrlLabel.Size = new System.Drawing.Size(38, 13);
+            this.lblUrlLabel.Size = new System.Drawing.Size(36, 13);
             this.lblUrlLabel.TabIndex = 3;
             this.lblUrlLabel.Text = "URL:";
             // 
@@ -271,7 +271,7 @@
             this.lblContactLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblContactLabel.Location = new System.Drawing.Point(20, 100);
             this.lblContactLabel.Name = "lblContactLabel";
-            this.lblContactLabel.Size = new System.Drawing.Size(57, 13);
+            this.lblContactLabel.Size = new System.Drawing.Size(55, 13);
             this.lblContactLabel.TabIndex = 2;
             this.lblContactLabel.Text = "Contact:";
             // 
@@ -316,7 +316,7 @@
             this.lblTimeZone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblTimeZone.Location = new System.Drawing.Point(120, 70);
             this.lblTimeZone.Name = "lblTimeZone";
-            this.lblTimeZone.Size = new System.Drawing.Size(175, 13);
+            this.lblTimeZone.Size = new System.Drawing.Size(174, 13);
             this.lblTimeZone.TabIndex = 4;
             this.lblTimeZone.Text = "(Time Zone: Pacific Standard Time)";
             // 
@@ -325,7 +325,7 @@
             this.lblEnd.AutoSize = true;
             this.lblEnd.Location = new System.Drawing.Point(120, 50);
             this.lblEnd.Name = "lblEnd";
-            this.lblEnd.Size = new System.Drawing.Size(158, 13);
+            this.lblEnd.Size = new System.Drawing.Size(154, 13);
             this.lblEnd.TabIndex = 3;
             this.lblEnd.Text = "02/02/2025 11:00:00 AM PDT";
             // 
@@ -334,7 +334,7 @@
             this.lblStart.AutoSize = true;
             this.lblStart.Location = new System.Drawing.Point(120, 30);
             this.lblStart.Name = "lblStart";
-            this.lblStart.Size = new System.Drawing.Size(157, 13);
+            this.lblStart.Size = new System.Drawing.Size(154, 13);
             this.lblStart.TabIndex = 2;
             this.lblStart.Text = "02/02/2025 10:00:00 AM PDT";
             // 
@@ -383,7 +383,7 @@
             this.lblType.AutoSize = true;
             this.lblType.Location = new System.Drawing.Point(120, 110);
             this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(59, 13);
+            this.lblType.Size = new System.Drawing.Size(58, 13);
             this.lblType.TabIndex = 9;
             this.lblType.Text = "Discussion";
             // 
@@ -392,7 +392,7 @@
             this.lblConsultant.AutoSize = true;
             this.lblConsultant.Location = new System.Drawing.Point(120, 90);
             this.lblConsultant.Name = "lblConsultant";
-            this.lblConsultant.Size = new System.Drawing.Size(27, 13);
+            this.lblConsultant.Size = new System.Drawing.Size(28, 13);
             this.lblConsultant.TabIndex = 8;
             this.lblConsultant.Text = "Test";
             // 
@@ -401,7 +401,7 @@
             this.lblCustomer.AutoSize = true;
             this.lblCustomer.Location = new System.Drawing.Point(120, 70);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(56, 13);
+            this.lblCustomer.Size = new System.Drawing.Size(53, 13);
             this.lblCustomer.TabIndex = 7;
             this.lblCustomer.Text = "John Doe";
             // 
@@ -462,19 +462,19 @@
             this.lblTitleLabel.Size = new System.Drawing.Size(36, 13);
             this.lblTitleLabel.TabIndex = 1;
             this.lblTitleLabel.Text = "Title:";
-            //
+            // 
             // lblAppointmentIdLabel
-            //
+            // 
             this.lblAppointmentIdLabel.AutoSize = true;
             this.lblAppointmentIdLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAppointmentIdLabel.Location = new System.Drawing.Point(20, 30);
             this.lblAppointmentIdLabel.Name = "lblAppointmentIdLabel";
-            this.lblAppointmentIdLabel.Size = new System.Drawing.Size(91, 13);
+            this.lblAppointmentIdLabel.Size = new System.Drawing.Size(98, 13);
             this.lblAppointmentIdLabel.TabIndex = 0;
             this.lblAppointmentIdLabel.Text = "Appointment ID:";
-            //
+            // 
             // AppointmentDetailsForm
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 671);
@@ -489,6 +489,18 @@
             this.Text = "Appointment Details";
             this.pnlHeader.ResumeLayout(false);
             this.pnlHeader.PerformLayout();
+            this.pnlButtons.ResumeLayout(false);
+            this.pnlContent.ResumeLayout(false);
+            this.groupSystemInfo.ResumeLayout(false);
+            this.groupSystemInfo.PerformLayout();
+            this.groupDetails.ResumeLayout(false);
+            this.groupDetails.PerformLayout();
+            this.groupSchedule.ResumeLayout(false);
+            this.groupSchedule.PerformLayout();
+            this.groupBasic.ResumeLayout(false);
+            this.groupBasic.PerformLayout();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
