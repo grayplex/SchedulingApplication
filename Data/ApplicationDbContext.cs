@@ -6,7 +6,12 @@ namespace SchedulingApplication.Data
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext() : base("DefaultConnection")
-        { }
+        {
+            //this.Database.Log = s => Console.WriteLine(s);
+
+            // Disable migration checks
+            Database.SetInitializer<ApplicationDbContext>(null);
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Country> Countries { get; set; }
