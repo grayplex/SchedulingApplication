@@ -159,41 +159,41 @@ namespace SchedulingApplication
         private void ShowCalendarView()
         {
             SetActiveButton(btnCalendar);
-            panelContent.Controls.Clear();
+            pnlContent.Controls.Clear();
 
             var calendarView = new CalendarUserControl();
             calendarView.Dock = DockStyle.Fill;
-            panelContent.Controls.Add(calendarView);
+            pnlContent.Controls.Add(calendarView);
         }
 
         private void ShowAppointmentsView()
         {
             SetActiveButton(btnAppointments);
-            panelContent.Controls.Clear();
+            pnlContent.Controls.Clear();
 
             var appointmentsView = new AppointmentsUserControl();
             appointmentsView.Dock = DockStyle.Fill;
-            panelContent.Controls.Add(appointmentsView);
+            pnlContent.Controls.Add(appointmentsView);
         }
 
         private void ShowCustomersView()
         {
             SetActiveButton(btnCustomers);
-            panelContent.Controls.Clear();
+            pnlContent.Controls.Clear();
 
             var customersView = new CustomersUserControl();
             customersView.Dock = DockStyle.Fill;
-            panelContent.Controls.Add(customersView);
+            pnlContent.Controls.Add(customersView);
         }
 
         private void ShowReportsView()
         {
             SetActiveButton(btnReports);
-            panelContent.Controls.Clear();
+            pnlContent.Controls.Clear();
 
             var reportsView = new ReportsUserControl();
             reportsView.Dock = DockStyle.Fill;
-            panelContent.Controls.Add(reportsView);
+            pnlContent.Controls.Add(reportsView);
         }
 
         private void SetActiveButton(Button activeButton)
