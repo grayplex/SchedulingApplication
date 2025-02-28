@@ -26,6 +26,7 @@ namespace SchedulingApplication
             // Setup event handlers
             cbFilter.SelectedIndexChanged += FilterChanged;
             dgvAppointments.SelectionChanged += DgvAppointments_SelectionChanged;
+            dgvAppointments.CellDoubleClick += DgvAppointments_CellDoubleClick;
             btnViewDetails.Click += BtnViewDetails_Click;
             btnEdit.Click += BtnEdit_Click;
             btnDelete.Click += BtnDelete_Click;
@@ -47,40 +48,44 @@ namespace SchedulingApplication
         {
             try
             {
+                // Start with query for this customer's appointments
                 var query = Program.DbContext.Appointments
                     .Include(a => a.User)
                     .Where(a => a.CustomerId == _customer.CustomerId);
+
+                // Get current time in UTC for database comparisons
+                var nowUtc = DateTime.UtcNow;
+
+                // Get dates for this month and year in UTC
+                var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+                var startOfMonthUtc = TimeZoneHelper.LocalToUtc(startOfMonth);
+                var endOfMonthUtc = TimeZoneHelper.LocalToUtc(endOfMonth);
+
+                var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
+                var endOfYear = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59);
+                var startOfYearUtc = TimeZoneHelper.LocalToUtc(startOfYear);
+                var endOfYearUtc = TimeZoneHelper.LocalToUtc(endOfYear);
 
                 // Apply filter
                 switch (cbFilter.SelectedItem.ToString())
                 {
                     case "Upcoming":
-                        query = query.Where(a => a.Start >= DateTime.Now);
+                        query = query.Where(a => a.Start >= nowUtc);
                         break;
                     case "Past":
-                        query = query.Where(a => a.Start < DateTime.Now);
+                        query = query.Where(a => a.Start < nowUtc);
                         break;
                     case "This Month":
-                        var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                        var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
-                        query = query.Where(a => a.Start >= startOfMonth && a.Start <= endOfMonth);
+                        query = query.Where(a => a.Start >= startOfMonthUtc && a.Start <= endOfMonthUtc);
                         break;
                     case "This Year":
-                        var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
-                        var endOfYear = new DateTime(DateTime.Now.Year, 12, 31);
-                        query = query.Where(a => a.Start >= startOfYear && a.Start <= endOfYear);
+                        query = query.Where(a => a.Start >= startOfYearUtc && a.Start <= endOfYearUtc);
                         break;
                 }
 
                 // Order and execute query
                 _appointments = query.OrderBy(a => a.Start).ToList();
-
-                // Convert times to user's local time
-                foreach (var appointment in _appointments)
-                {
-                    appointment.Start = TimeZoneHelper.ToUserTime(appointment.Start);
-                    appointment.End = TimeZoneHelper.ToUserTime(appointment.End);
-                }
 
                 // Clear existing rows
                 dgvAppointments.Rows.Clear();
@@ -93,8 +98,8 @@ namespace SchedulingApplication
                         appt.Title,
                         appt.User?.UserName ?? "Unknown",
                         appt.Type,
-                        appt.Start.ToString("MM/dd/yyyy hh:mm tt"),
-                        appt.End.ToString("MM/dd/yyyy hh:mm tt"),
+                        appt.LocalStartDateTime,
+                        appt.LocalEndDateTime,
                         appt.Location
                     );
                 }
@@ -127,6 +132,15 @@ namespace SchedulingApplication
             }
         }
 
+        private void DgvAppointments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < _appointments.Count)
+            {
+                _selectedAppointment = _appointments[e.RowIndex];
+                BtnViewDetails_Click(sender, e);
+            }
+        }
+
         private void UpdateButtonStates()
         {
             bool appointmentSelected = _selectedAppointment != null;
@@ -141,6 +155,9 @@ namespace SchedulingApplication
             {
                 var detailsForm = new AppointmentDetailsForm(_selectedAppointment);
                 detailsForm.ShowDialog(this);
+
+                // Refresh after viewing in case it was edited
+                LoadAppointments();
             }
         }
 
@@ -193,12 +210,20 @@ namespace SchedulingApplication
         private void BtnAddAppointment_Click(object sender, EventArgs e)
         {
             // Create a new appointment for this customer
+            // Default to starting now and lasting 1 hour
+            var startTime = DateTime.Now;
+            var endTime = startTime.AddHours(1);
+
+            // Convert to UTC for storage
+            var startUtc = TimeZoneHelper.LocalToUtc(startTime);
+            var endUtc = TimeZoneHelper.LocalToUtc(endTime);
+
             var appointment = new Appointment
             {
                 CustomerId = _customer.CustomerId,
                 UserId = LoginForm.LoggedInUser.UserId,
-                Start = DateTime.Today.AddHours(9), // Default to 9 AM
-                End = DateTime.Today.AddHours(10)   // Default to 1 hour duration
+                Start = startUtc,
+                End = endUtc
             };
 
             var editorForm = new AppointmentEditorForm(appointment, true);

@@ -1,4 +1,5 @@
 ﻿using SchedulingApplication.Models;
+using SchedulingApplication.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,6 +15,10 @@ namespace SchedulingApplication
         {
             InitializeComponent();
             _upcomingAppointments = upcomingAppointments;
+
+            // Set form title
+            this.Text = "Upcoming Appointment Alert";
+            lblHeader.Text = "Upcoming Appointment Alert";
 
             // Populate the list view
             PopulateAppointmentsList();
@@ -32,7 +37,7 @@ namespace SchedulingApplication
             foreach (var appointment in _upcomingAppointments)
             {
                 var item = new ListViewItem(new[] {
-                    appointment.Start.ToString("hh:mm tt"),
+                    appointment.LocalStartTime,
                     appointment.Title,
                     appointment.Customer?.CustomerName ?? "Unknown Customer"
                 });
@@ -45,6 +50,16 @@ namespace SchedulingApplication
 
             // Update appointments count label
             lblAppointmentCount.Text = $"Upcoming Appointments: {_upcomingAppointments.Count}";
+
+            // Add additional information about timeframe
+            if (_upcomingAppointments.Count > 0)
+            {
+                // Calculate minutes until first appointment
+                var firstAppt = _upcomingAppointments[0];
+                var minutesUntil = (int)(firstAppt.LocalStart - DateTime.Now).TotalMinutes;
+
+                lblHeader.Text += $" - {minutesUntil} minute{(minutesUntil != 1 ? "s" : "")} from now";
+            }
         }
 
         private void BtnViewDetails_Click(object sender, EventArgs e)

@@ -26,7 +26,7 @@ namespace SchedulingApplication
             lblWelcome.Text = string.Format(LocalizationManager.GetTranslation("WelcomeMessage"), _currentUser.UserName);
 
             // Show user's time zone info
-            lblTimeZone.Text = $"Your time zone: {TimeZoneHelper.GetUserTimeZone().DisplayName}";
+            lblTimeZone.Text = $"Your time zone: {TimeZoneHelper.GetLocalTimeZone().DisplayName}";
 
             // Load upcoming appointments
             LoadUpcomingAppointments();
@@ -55,7 +55,7 @@ namespace SchedulingApplication
                 lstUpcomingAppointments.Items.Clear();
                 foreach (var appointment in _upcomingAppointments)
                 {
-                    appointment.Start = TimeZoneHelper.ToUserTime(appointment.Start);
+                    appointment.Start = TimeZoneHelper.UtcToLocal(appointment.Start);
 
                     lstUpcomingAppointments.Items.Add(new ListViewItem
                     {
@@ -78,26 +78,24 @@ namespace SchedulingApplication
         {
             try
             {
-                DateTime now = DateTime.Now;
-                DateTime threshold = now.AddMinutes(15);
+                // Current time in UTC (for database comparison)
+                DateTime nowUtc = DateTime.UtcNow;
 
+                // 15 minutes from now in UTC
+                DateTime thresholdUtc = nowUtc.AddMinutes(15);
+
+                // Query appointments in the next 15 minutes
                 var upcomingAppointments = Program.DbContext.Appointments
+                    .Include("Customer")
                     .Where(a => a.UserId == _currentUser.UserId &&
-                              a.Start > now &&
-                              a.Start <= threshold)
+                              a.Start > nowUtc &&
+                              a.Start <= thresholdUtc)
                     .OrderBy(a => a.Start)
                     .ToList();
 
                 if (upcomingAppointments.Any())
                 {
-                    // Convert to local time
-                    foreach (var appointment in upcomingAppointments)
-                    {
-                        appointment.Start = TimeZoneHelper.ToUserTime(appointment.Start);
-                        appointment.End = TimeZoneHelper.ToUserTime(appointment.End);
-                    }
-
-                    // Show alert
+                    // Show alert dialog with the upcoming appointments
                     var alertForm = new AppointmentAlertForm(upcomingAppointments);
                     alertForm.ShowDialog();
                 }

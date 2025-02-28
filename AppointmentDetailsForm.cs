@@ -1,8 +1,7 @@
 ﻿using SchedulingApplication.Models;
 using SchedulingApplication.Utilities;
 using System;
-using System.Data;
-using System.Drawing.Drawing2D;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SchedulingApplication
@@ -30,30 +29,48 @@ namespace SchedulingApplication
                 lblTitle.Text = _appointment.Title;
                 lblCustomer.Text = _appointment.Customer?.CustomerName ?? "Unknown";
                 lblConsultant.Text = _appointment.User?.UserName ?? "Unknown";
-                lblType.Text = _appointment.Type;
+                lblType.Text = _appointment.Type ?? "";
 
-                // Ensure times are treated as UTC from database
-                DateTime utcStart = DateTime.SpecifyKind(_appointment.Start, DateTimeKind.Utc);
-                DateTime utcEnd = DateTime.SpecifyKind(_appointment.End, DateTimeKind.Utc);
+                // Times - Display in user's local time
+                lblStart.Text = _appointment.LocalStartDateTime;
+                lblEnd.Text = _appointment.LocalEndDateTime;
 
-                // Convert to user's local time for display
-                DateTime localStart = utcStart.ToLocalTime();
-                DateTime localEnd = utcEnd.ToLocalTime();
-
-                // Display times in user's timezone
-                lblStart.Text = localStart.ToString("MM/dd/yyyy hh:mm tt");
-                lblEnd.Text = localEnd.ToString("MM/dd/yyyy hh:mm tt");
-                lblTimeZone.Text = $"(Time Zone: {TimeZoneInfo.Local.DisplayName})";
+                // Add timezone information
+                TimeZoneInfo userTimeZone = TimeZoneHelper.GetLocalTimeZone();
+                lblTimeZone.Text = $"(Time Zone: {userTimeZone.DisplayName})";
 
                 // Additional Details
                 txtDescription.Text = _appointment.Description;
-                lblLocation.Text = _appointment.Location;
-                lblContact.Text = _appointment.Contact;
-                lblUrl.Text = _appointment.Url;
+                lblLocation.Text = _appointment.Location ?? "";
+                lblContact.Text = _appointment.Contact ?? "";
+                lblUrl.Text = _appointment.Url ?? "";
+
+                // Add business hours indicator
+                if (!_appointment.IsWithinBusinessHours)
+                {
+                    Panel warningPanel = new Panel
+                    {
+                        BackColor = Color.LightYellow,
+                        BorderStyle = BorderStyle.FixedSingle,
+                        Dock = DockStyle.Top,
+                        Height = 30
+                    };
+
+                    Label warningLabel = new Label
+                    {
+                        Text = "Note: This appointment is outside normal business hours.",
+                        ForeColor = Color.DarkGoldenrod,
+                        Dock = DockStyle.Fill,
+                        TextAlign = ContentAlignment.MiddleCenter
+                    };
+
+                    warningPanel.Controls.Add(warningLabel);
+                    groupSchedule.Controls.Add(warningPanel);
+                }
 
                 // Audit Information
-                lblCreatedBy.Text = $"{_appointment.CreatedBy} on {_appointment.CreateDate.ToString("MM/dd/yyyy hh:mm tt")}";
-                lblLastUpdated.Text = $"{_appointment.LastUpdateBy} on {_appointment.LastUpdate.ToString("MM/dd/yyyy hh:mm tt")}";
+                lblCreatedBy.Text = $"{_appointment.CreatedBy} on {_appointment.LocalCreateDate}";
+                lblLastUpdated.Text = $"{_appointment.LastUpdateBy} on {_appointment.LocalLastUpdate}";
             }
             catch (Exception ex)
             {
@@ -68,6 +85,10 @@ namespace SchedulingApplication
             var editorForm = new AppointmentEditorForm(_appointment, false);
             if (editorForm.ShowDialog() == DialogResult.OK)
             {
+                // If the appointment was edited, refresh this form
+                // First, reload the appointment from the database to get updated data
+                _appointment = Program.DbContext.Appointments.Find(_appointment.AppointmentId);
+
                 // Reload the details
                 LoadAppointmentDetails();
             }

@@ -2,11 +2,8 @@
 using SchedulingApplication.Utilities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SchedulingApplication
@@ -33,6 +30,7 @@ namespace SchedulingApplication
             btnViewDetails.Click += BtnViewDetails_Click;
             btnAddAppointment.Click += BtnAddAppointment_Click;
             dgvAppointments.CellClick += DgvAppointments_CellClick;
+            dgvAppointments.CellDoubleClick += DgvAppointments_CellDoubleClick;
 
             // Update the UI
             UpdateCalendarDisplay();
@@ -45,8 +43,18 @@ namespace SchedulingApplication
             if (e.RowIndex >= 0 && e.RowIndex < _selectedDateAppointments.Count)
             {
                 _selectedAppointment = _selectedDateAppointments[e.RowIndex];
+
                 // Enable or disable buttons based on selection
                 btnViewDetails.Enabled = (_selectedAppointment != null);
+            }
+        }
+
+        private void DgvAppointments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < _selectedDateAppointments.Count)
+            {
+                _selectedAppointment = _selectedDateAppointments[e.RowIndex];
+                BtnViewDetails_Click(sender, e);
             }
         }
 
@@ -82,10 +90,18 @@ namespace SchedulingApplication
         private void BtnAddAppointment_Click(object sender, EventArgs e)
         {
             // Create a new appointment for the selected day
+            // Start with the selected date at 9 AM and end at 10 AM
+            DateTime startLocal = _selectedDate.Date.AddHours(9);
+            DateTime endLocal = _selectedDate.Date.AddHours(10);
+
+            // Convert to UTC for storage
+            DateTime startUtc = TimeZoneHelper.LocalToUtc(startLocal);
+            DateTime endUtc = TimeZoneHelper.LocalToUtc(endLocal);
+
             var appointment = new Appointment
             {
-                Start = _selectedDate.Date.AddHours(9), // Default to 9 AM
-                End = _selectedDate.Date.AddHours(10),  // Default to 1 hour duration
+                Start = startUtc,
+                End = endUtc,
                 UserId = LoginForm.LoggedInUser.UserId
             };
 
@@ -115,9 +131,13 @@ namespace SchedulingApplication
 
             // Get appointments for the month to highlight days with appointments
             var appointmentsInMonth = GetAppointmentsForMonth(_displayMonth);
-            var daysWithAppointments = appointmentsInMonth.Select(a => a.Start.Date).Distinct().ToList();
 
-            // Create day buttons
+            // Group appointments by day for easy lookup
+            var appointmentsByDay = appointmentsInMonth
+                .GroupBy(a => TimeZoneHelper.UtcToLocal(a.Start).Date)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            // Create day buttons for the calendar
             for (int day = 1; day <= daysInMonth; day++)
             {
                 // Create a date for this day
@@ -149,8 +169,8 @@ namespace SchedulingApplication
                     dayButton.BackColor = Color.FromArgb(214, 233, 248); // Selected date
                 }
 
-                // Check if this day has any appointments
-                if (daysWithAppointments.Contains(currentDate.Date))
+                // Check if this day has any appointments and highlight it if so
+                if (appointmentsByDay.ContainsKey(currentDate.Date))
                 {
                     dayButton.ForeColor = Color.FromArgb(0, 120, 212);
                     dayButton.Font = new Font(dayButton.Font, FontStyle.Bold);
@@ -192,25 +212,15 @@ namespace SchedulingApplication
                 _selectedDateAppointments = GetAppointmentsForDay(_selectedDate);
 
                 // Clear the DataGridView
-                dgvAppointments.DataSource = null;
                 dgvAppointments.Rows.Clear();
 
                 if (_selectedDateAppointments.Count > 0)
                 {
-                    // Convert appointment times from database (UTC) to user's local time
+                    // Add rows to the DataGridView using the computed properties
                     foreach (var appointment in _selectedDateAppointments)
                     {
-                        // Ensure UTC kind is set explicitly
-                        appointment.Start = DateTime.SpecifyKind(appointment.Start, DateTimeKind.Utc);
-                        appointment.End = DateTime.SpecifyKind(appointment.End, DateTimeKind.Utc);
-
-                        // Convert to local time
-                        DateTime localStart = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local);
-                        DateTime localEnd = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, TimeZoneInfo.Local);
-
-                        // Use temporary variables for display only - don't modify the original appointment
                         int rowIndex = dgvAppointments.Rows.Add(
-                            localStart.ToString("hh:mm tt"),
+                            appointment.LocalStartTime,
                             appointment.Title,
                             appointment.Customer?.CustomerName ?? "Unknown",
                             appointment.Type
@@ -235,14 +245,18 @@ namespace SchedulingApplication
         {
             try
             {
-                // Get the start and end dates for the month
+                // Get the start and end dates for the month in local time
                 DateTime startDate = new DateTime(month.Year, month.Month, 1);
                 DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+                // Convert to UTC for database query
+                DateTime startDateUtc = TimeZoneHelper.LocalToUtc(startDate.Date);
+                DateTime endDateUtc = TimeZoneHelper.LocalToUtc(endDate.Date.AddDays(1).AddSeconds(-1));
 
                 // Query appointments for the current user in this month
                 var appointments = Program.DbContext.Appointments
                     .Where(a => a.UserId == LoginForm.LoggedInUser.UserId &&
-                           a.Start >= startDate && a.Start <= endDate)
+                           a.Start >= startDateUtc && a.Start <= endDateUtc)
                     .OrderBy(a => a.Start)
                     .ToList();
 
@@ -260,14 +274,18 @@ namespace SchedulingApplication
         {
             try
             {
-                // Convert local day to UTC day range for database query
-                DateTime startDate = DateTime.SpecifyKind(day.Date, DateTimeKind.Local).ToUniversalTime();
+                // Get the start and end dates for the day in local time
+                DateTime startDate = day.Date;
                 DateTime endDate = startDate.AddDays(1).AddSeconds(-1);
 
-                // Query appointments for the current user on this day in UTC time
+                // Convert to UTC for database query
+                DateTime startDateUtc = TimeZoneHelper.LocalToUtc(startDate);
+                DateTime endDateUtc = TimeZoneHelper.LocalToUtc(endDate);
+
+                // Query appointments for the current user on this day
                 var appointments = Program.DbContext.Appointments
                     .Where(a => a.UserId == LoginForm.LoggedInUser.UserId &&
-                           a.Start >= startDate && a.Start <= endDate)
+                           a.Start >= startDateUtc && a.Start <= endDateUtc)
                     .OrderBy(a => a.Start)
                     .ToList();
 

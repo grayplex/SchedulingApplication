@@ -3,7 +3,6 @@ using SchedulingApplication.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -26,7 +25,8 @@ namespace SchedulingApplication
             btnViewDetails.Click += BtnViewDetails_Click;
             btnEdit.Click += BtnEdit_Click;
             btnDelete.Click += BtnDelete_Click;
-            dgvAppointments.SelectionChanged += DgvAppointments_SelectionChanged;
+            dgvAppointments.CellClick += DgvAppointments_CellClick;
+            dgvAppointments.CellDoubleClick += DgvAppointments_CellDoubleClick;
 
             // Initialize time filter options
             cbTimeFilter.Items.AddRange(new string[] {
@@ -36,14 +36,19 @@ namespace SchedulingApplication
                 "By Date Range"
             });
             cbTimeFilter.SelectedIndex = 1; // Default to This Week
+
+            // Set date pickers to current values
+            dtStart.Value = DateTime.Today;
+            dtEnd.Value = DateTime.Today.AddDays(7);
+
+            // Initial load
+            LoadAppointments();
         }
 
         private void LoadAppointments()
         {
             try
             {
-                
-
                 var query = Program.DbContext.Appointments
                     .Include(a => a.Customer)
                     .Include(a => a.User)
@@ -56,40 +61,41 @@ namespace SchedulingApplication
                         var today = DateTime.Today;
                         var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
                         var endOfWeek = startOfWeek.AddDays(7);
-                        query = query.Where(a => a.Start >= startOfWeek && a.Start < endOfWeek);
+
+                        // Convert local dates to UTC for database query
+                        var startOfWeekUtc = TimeZoneHelper.LocalToUtc(startOfWeek);
+                        var endOfWeekUtc = TimeZoneHelper.LocalToUtc(endOfWeek);
+
+                        query = query.Where(a => a.Start >= startOfWeekUtc && a.Start < endOfWeekUtc);
                         break;
 
                     case "This Month":
                         var startOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
                         var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
-                        query = query.Where(a => a.Start >= startOfMonth && a.Start <= endOfMonth);
+
+                        // Convert local dates to UTC for database query
+                        var startOfMonthUtc = TimeZoneHelper.LocalToUtc(startOfMonth);
+                        var endOfMonthUtc = TimeZoneHelper.LocalToUtc(endOfMonth);
+
+                        query = query.Where(a => a.Start >= startOfMonthUtc && a.Start <= endOfMonthUtc);
                         break;
 
                     case "By Date Range":
-                        query = query.Where(a => a.Start >= dtStart.Value && a.Start <= dtEnd.Value.AddDays(1).AddSeconds(-1));
+                        // Convert selected dates to UTC for database query
+                        var startDateUtc = TimeZoneHelper.LocalToUtc(dtStart.Value.Date);
+                        var endDateUtc = TimeZoneHelper.LocalToUtc(dtEnd.Value.Date.AddDays(1).AddSeconds(-1));
+
+                        query = query.Where(a => a.Start >= startDateUtc && a.Start <= endDateUtc);
                         break;
                 }
 
                 // Order and execute query
                 _appointments = query.OrderBy(a => a.Start).ToList();
 
-                // Convert times to user's local time
-                foreach (var appt in _appointments)
-                {
-                    appt.Start = TimeZoneHelper.ToUserTime(appt.Start);
-                    appt.End = TimeZoneHelper.ToUserTime(appt.End);
-
-                    LogTimeInfo("Original Start from DB", appt.Start);
-                    LogTimeInfo("After UTC conversion", DateTime.SpecifyKind(appt.Start, DateTimeKind.Utc));
-                    LogTimeInfo("After local conversion", TimeZoneInfo.ConvertTimeFromUtc(
-                        DateTime.SpecifyKind(appt.Start, DateTimeKind.Utc),
-                        TimeZoneInfo.Local));
-                }
-
                 // Clear existing rows
                 dgvAppointments.Rows.Clear();
 
-                // Populate grid
+                // Populate grid with data
                 foreach (var appt in _appointments)
                 {
                     dgvAppointments.Rows.Add(
@@ -97,8 +103,8 @@ namespace SchedulingApplication
                         appt.Title,
                         appt.Customer?.CustomerName ?? "Unknown",
                         appt.Type,
-                        appt.Start.ToString("MM/dd/yyyy hh:mm tt"),
-                        appt.End.ToString("MM/dd/yyyy hh:mm tt"),
+                        appt.LocalStartDateTime,
+                        appt.LocalEndDateTime,
                         appt.Location
                     );
                 }
@@ -113,18 +119,12 @@ namespace SchedulingApplication
             }
         }
 
-        private void LogTimeInfo(string label, DateTime time)
-        {
-            Console.WriteLine($"{label}: {time} - Kind: {time.Kind} - " +
-                              $"Local: {TimeZoneInfo.Local.DisplayName} - " +
-                              $"UTC Offset: {TimeZoneInfo.Local.GetUtcOffset(time)}");
-        }
-
         private void FilterChanged(object sender, EventArgs e)
         {
             // Enable/disable date range fields
-            dtStart.Enabled = cbTimeFilter.SelectedItem.ToString() == "By Date Range";
-            dtEnd.Enabled = cbTimeFilter.SelectedItem.ToString() == "By Date Range";
+            bool useDateRange = cbTimeFilter.SelectedItem.ToString() == "By Date Range";
+            dtStart.Enabled = useDateRange;
+            dtEnd.Enabled = useDateRange;
 
             // Reload appointments with current filter
             LoadAppointments();
@@ -132,11 +132,11 @@ namespace SchedulingApplication
 
         private void BtnAddAppointment_Click(object sender, EventArgs e)
         {
-            // Create a new appointment
+            // Create a new appointment for the current user
             var appointment = new Appointment
             {
-                Start = DateTime.Today.AddHours(9), // Default to 9 AM
-                End = DateTime.Today.AddHours(10),  // Default to 1 hour duration
+                Start = DateTime.UtcNow, // Will be converted to local in the form
+                End = DateTime.UtcNow.AddHours(1),
                 UserId = LoginForm.LoggedInUser.UserId
             };
 
@@ -154,6 +154,9 @@ namespace SchedulingApplication
             {
                 var detailsForm = new AppointmentDetailsForm(_selectedAppointment);
                 detailsForm.ShowDialog();
+
+                // Refresh in case the appointment was edited from the details screen
+                LoadAppointments();
             }
         }
 
@@ -206,16 +209,21 @@ namespace SchedulingApplication
             }
         }
 
-        private void DgvAppointments_SelectionChanged(object sender, EventArgs e)
+        private void DgvAppointments_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvAppointments.SelectedRows.Count > 0)
+            if (e.RowIndex >= 0 && e.RowIndex < _appointments.Count)
             {
-                int selectedIndex = dgvAppointments.SelectedRows[0].Index;
-                if (selectedIndex >= 0 && selectedIndex < _appointments.Count)
-                {
-                    _selectedAppointment = _appointments[selectedIndex];
-                    UpdateButtonStates();
-                }
+                _selectedAppointment = _appointments[e.RowIndex];
+                UpdateButtonStates();
+            }
+        }
+
+        private void DgvAppointments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < _appointments.Count)
+            {
+                _selectedAppointment = _appointments[e.RowIndex];
+                BtnViewDetails_Click(sender, e);
             }
         }
 

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using SchedulingApplication.Utilities;
 
 namespace SchedulingApplication.Models
 {
@@ -63,27 +64,29 @@ namespace SchedulingApplication.Models
             }
         }
 
+        /// <summary>
+        /// Gets the formatted creation date/time in the user's local timezone
+        /// </summary>
+        [NotMapped]
+        public string LocalCreateDate
+        {
+            get { return TimeZoneHelper.UtcToLocal(CreateDate).ToString("MM/dd/yyyy hh:mm tt"); }
+        }
+
+        /// <summary>
+        /// Gets the formatted last update date/time in the user's local timezone
+        /// </summary>
+        [NotMapped]
+        public string LocalLastUpdate
+        {
+            get { return TimeZoneHelper.UtcToLocal(LastUpdate).ToString("MM/dd/yyyy hh:mm tt"); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected DateTime ToUtcForDatabase(DateTime localDateTime)
-        {
-            if (localDateTime.Kind == DateTimeKind.Utc)
-                return localDateTime;
-
-            return DateTime.SpecifyKind(localDateTime, DateTimeKind.Local).ToUniversalTime();
-        }
-
-        protected DateTime FromUtcToLocal(DateTime utcDateTime)
-        {
-            if (utcDateTime.Kind == DateTimeKind.Local)
-                return utcDateTime;
-
-            return DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc).ToLocalTime();
         }
     }
 }
