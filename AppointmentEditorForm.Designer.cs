@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace SchedulingApplication
 {
@@ -57,6 +58,7 @@ namespace SchedulingApplication
             this.lblTimezoneSelection = new System.Windows.Forms.Label();
             this.rbBusinessTimezone = new System.Windows.Forms.RadioButton();
             this.rbUserTimezone = new System.Windows.Forms.RadioButton();
+            this.lblTimePickerHelp = new System.Windows.Forms.Label();
             this.lblValidation = new System.Windows.Forms.Label();
             this.pnlButtons = new System.Windows.Forms.Panel();
             this.btnSave = new System.Windows.Forms.Button();
@@ -99,7 +101,7 @@ namespace SchedulingApplication
             this.pnlContent.Location = new System.Drawing.Point(0, 60);
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlContent.Size = new System.Drawing.Size(600, 500);
+            this.pnlContent.Size = new System.Drawing.Size(600, 680);
             this.pnlContent.TabIndex = 0;
             // 
             // grpBasicInfo
@@ -113,7 +115,7 @@ namespace SchedulingApplication
             this.grpBasicInfo.Controls.Add(this.lblDescription);
             this.grpBasicInfo.Controls.Add(this.txtDescription);
             this.grpBasicInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpBasicInfo.Location = new System.Drawing.Point(20, 220);
+            this.grpBasicInfo.Location = new System.Drawing.Point(20, 340);
             this.grpBasicInfo.Name = "grpBasicInfo";
             this.grpBasicInfo.Size = new System.Drawing.Size(560, 250);
             this.grpBasicInfo.TabIndex = 0;
@@ -192,7 +194,7 @@ namespace SchedulingApplication
             this.grpContactInfo.Controls.Add(this.lblUrl);
             this.grpContactInfo.Controls.Add(this.txtUrl);
             this.grpContactInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpContactInfo.Location = new System.Drawing.Point(20, 120);
+            this.grpContactInfo.Location = new System.Drawing.Point(20, 180);
             this.grpContactInfo.Name = "grpContactInfo";
             this.grpContactInfo.Size = new System.Drawing.Size(560, 160);
             this.grpContactInfo.TabIndex = 1;
@@ -253,6 +255,7 @@ namespace SchedulingApplication
             this.grpSchedule.Controls.Add(this.lblTimezoneSelection);
             this.grpSchedule.Controls.Add(this.rbBusinessTimezone);
             this.grpSchedule.Controls.Add(this.rbUserTimezone);
+            this.grpSchedule.Controls.Add(this.lblTimePickerHelp);
             this.grpSchedule.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpSchedule.Location = new System.Drawing.Point(20, 20);
             this.grpSchedule.Name = "grpSchedule";
@@ -263,9 +266,10 @@ namespace SchedulingApplication
             // 
             // lblStartDate
             // 
+            this.lblStartDate.AutoSize = true;
             this.lblStartDate.Location = new System.Drawing.Point(10, 30);
             this.lblStartDate.Name = "lblStartDate";
-            this.lblStartDate.Size = new System.Drawing.Size(100, 23);
+            this.lblStartDate.Size = new System.Drawing.Size(86, 13);
             this.lblStartDate.TabIndex = 0;
             this.lblStartDate.Text = "Start Date/Time:";
             // 
@@ -325,14 +329,28 @@ namespace SchedulingApplication
             this.rbUserTimezone.TabStop = true;
             this.rbUserTimezone.Text = "User\'s Timezone";
             // 
+            // lblTimePickerHelp
+            // 
+            this.lblTimePickerHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.lblTimePickerHelp.ForeColor = System.Drawing.Color.Navy;
+            this.lblTimePickerHelp.Location = new System.Drawing.Point(150, 50);
+            this.lblTimePickerHelp.Name = "lblTimePickerHelp";
+            this.lblTimePickerHelp.Size = new System.Drawing.Size(250, 23);
+            this.lblTimePickerHelp.TabIndex = 7;
+            this.lblTimePickerHelp.Text = "Tip: Right-click the time pickers for quick options";
+            // 
             // lblValidation
             // 
+            this.lblValidation.BackColor = System.Drawing.Color.MistyRose;
+            this.lblValidation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblValidation.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblValidation.ForeColor = System.Drawing.Color.Red;
-            this.lblValidation.Location = new System.Drawing.Point(20, 450);
+            this.lblValidation.Location = new System.Drawing.Point(20, 593);
             this.lblValidation.Name = "lblValidation";
-            this.lblValidation.Size = new System.Drawing.Size(560, 30);
+            this.lblValidation.Padding = new System.Windows.Forms.Padding(5);
+            this.lblValidation.Size = new System.Drawing.Size(560, 26);
             this.lblValidation.TabIndex = 3;
+            this.lblValidation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblValidation.Visible = false;
             // 
             // pnlButtons
@@ -340,7 +358,7 @@ namespace SchedulingApplication
             this.pnlButtons.Controls.Add(this.btnSave);
             this.pnlButtons.Controls.Add(this.btnCancel);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.Location = new System.Drawing.Point(0, 560);
+            this.pnlButtons.Location = new System.Drawing.Point(0, 740);
             this.pnlButtons.Name = "pnlButtons";
             this.pnlButtons.Size = new System.Drawing.Size(600, 60);
             this.pnlButtons.TabIndex = 1;
@@ -372,7 +390,7 @@ namespace SchedulingApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 750);
+            this.ClientSize = new System.Drawing.Size(600, 800);
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.pnlButtons);
             this.Controls.Add(this.pnlHeader);
@@ -428,5 +446,6 @@ namespace SchedulingApplication
         private System.Windows.Forms.RadioButton rbBusinessTimezone;
         private System.Windows.Forms.RadioButton rbUserTimezone;
         private System.Windows.Forms.Label lblTimezoneSelection;
+        private System.Windows.Forms.Label lblTimePickerHelp;
     }
 }
