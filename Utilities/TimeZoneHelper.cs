@@ -65,14 +65,27 @@ namespace SchedulingApplication.Utilities
         public static DateTime ConvertFromUtc(DateTime utcDateTime)
         {
             // Ensure the datetime is in UTC
-            var utcTime = DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc);
+            DateTime utcTime = DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc);
             return TimeZoneInfo.ConvertTimeFromUtc(utcTime, ActiveTimeZone);
         }
 
         // Convert a display timezone time to UTC for database storage
         public static DateTime ConvertToUtc(DateTime displayDateTime)
         {
-            // Convert based on active timezone
+            // If using business timezone but the datetime is not Unspecified, fix it
+            if (UseBusinessTimezone && displayDateTime.Kind != DateTimeKind.Unspecified)
+            {
+                displayDateTime = DateTime.SpecifyKind(displayDateTime, DateTimeKind.Unspecified);
+                return TimeZoneInfo.ConvertTimeToUtc(displayDateTime, BusinessTimeZone);
+            }
+            // If using local timezone but the datetime is not Local, fix it
+            else if (!UseBusinessTimezone && displayDateTime.Kind != DateTimeKind.Local)
+            {
+                displayDateTime = DateTime.SpecifyKind(displayDateTime, DateTimeKind.Local);
+                return TimeZoneInfo.ConvertTimeToUtc(displayDateTime, LocalTimeZone);
+            }
+
+            // Use appropriate conversion based on active timezone
             return TimeZoneInfo.ConvertTimeToUtc(displayDateTime, ActiveTimeZone);
         }
 
