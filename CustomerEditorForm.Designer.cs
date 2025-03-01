@@ -103,7 +103,7 @@
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // btnCancel
             // 
@@ -116,7 +116,7 @@
             this.btnCancel.TabIndex = 0;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // pnlContent
             // 
@@ -233,7 +233,7 @@
             this.cboCountry.Name = "cboCountry";
             this.cboCountry.Size = new System.Drawing.Size(350, 21);
             this.cboCountry.TabIndex = 5;
-            this.cboCountry.SelectedIndexChanged += new System.EventHandler(this.cboCountry_SelectedIndexChanged);
+            this.cboCountry.SelectedIndexChanged += new System.EventHandler(this.CboCountry_SelectedIndexChanged);
             // 
             // lblCountry
             // 

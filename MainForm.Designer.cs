@@ -80,7 +80,7 @@
             this.btnLogout.TabIndex = 2;
             this.btnLogout.Text = "Logout";
             this.btnLogout.UseVisualStyleBackColor = false;
-            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            this.btnLogout.Click += new System.EventHandler(this.BtnLogout_Click);
             // 
             // lblWelcome
             // 
@@ -187,7 +187,7 @@
             this.btnReports.Text = "Reports";
             this.btnReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnReports.UseVisualStyleBackColor = true;
-            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
+            this.btnReports.Click += new System.EventHandler(this.BtnReports_Click);
             // 
             // btnCustomers
             // 
@@ -202,7 +202,7 @@
             this.btnCustomers.Text = "Customers";
             this.btnCustomers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCustomers.UseVisualStyleBackColor = true;
-            this.btnCustomers.Click += new System.EventHandler(this.btnCustomers_Click);
+            this.btnCustomers.Click += new System.EventHandler(this.BtnCustomers_Click);
             // 
             // btnAppointments
             // 
@@ -217,7 +217,7 @@
             this.btnAppointments.Text = "Appointments";
             this.btnAppointments.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAppointments.UseVisualStyleBackColor = true;
-            this.btnAppointments.Click += new System.EventHandler(this.btnAppointments_Click);
+            this.btnAppointments.Click += new System.EventHandler(this.BtnAppointments_Click);
             // 
             // btnCalendar
             // 
@@ -232,7 +232,7 @@
             this.btnCalendar.Text = "Calendar";
             this.btnCalendar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCalendar.UseVisualStyleBackColor = true;
-            this.btnCalendar.Click += new System.EventHandler(this.btnCalendar_Click);
+            this.btnCalendar.Click += new System.EventHandler(this.BtnCalendar_Click);
             // 
             // pnlContent
             // 

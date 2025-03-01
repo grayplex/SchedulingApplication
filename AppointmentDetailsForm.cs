@@ -79,7 +79,7 @@ namespace SchedulingApplication
             }
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void BtnEdit_Click(object sender, EventArgs e)
         {
             // Open the appointment editor
             var editorForm = new AppointmentEditorForm(_appointment, false);
@@ -94,7 +94,7 @@ namespace SchedulingApplication
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }

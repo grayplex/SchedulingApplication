@@ -110,27 +110,27 @@ namespace SchedulingApplication
             }
         }
 
-        private void btnCalendar_Click(object sender, EventArgs e)
+        private void BtnCalendar_Click(object sender, EventArgs e)
         {
             ShowCalendarView();
         }
 
-        private void btnAppointments_Click(object sender, EventArgs e)
+        private void BtnAppointments_Click(object sender, EventArgs e)
         {
             ShowAppointmentsView();
         }
 
-        private void btnCustomers_Click(object sender, EventArgs e)
+        private void BtnCustomers_Click(object sender, EventArgs e)
         {
             ShowCustomersView();
         }
 
-        private void btnReports_Click(object sender, EventArgs e)
+        private void BtnReports_Click(object sender, EventArgs e)
         {
             ShowReportsView();
         }
 
-        private void btnLogout_Click(object sender, EventArgs e)
+        private void BtnLogout_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show(
                 LocalizationManager.GetTranslation("LogoutConfirmation"),

@@ -216,7 +216,7 @@ namespace SchedulingApplication
             return true;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
             try
             {
@@ -294,13 +294,13 @@ namespace SchedulingApplication
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        private void cboCountry_SelectedIndexChanged(object sender, EventArgs e)
+        private void CboCountry_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Load cities based on selected country
             LoadCities();

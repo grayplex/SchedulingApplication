@@ -56,14 +56,14 @@ namespace SchedulingApplication
             btnToggleLanguage.Text = _currentLanguage;
         }
 
-        private void btnToggleLanguage_Click(object sender, EventArgs e)
+        private void BtnToggleLanguage_Click(object sender, EventArgs e)
         {
             LocalizationManager.ToggleLanguage();
             _currentLanguage = LocalizationManager.CurrentCulture == "en-US" ? "English" : "Español";
             btnToggleLanguage.Text = _currentLanguage;
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace SchedulingApplication
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();

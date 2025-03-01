@@ -112,7 +112,7 @@
             this.btnViewAppointments.TabIndex = 2;
             this.btnViewAppointments.Text = "View Appointments";
             this.btnViewAppointments.UseVisualStyleBackColor = false;
-            this.btnViewAppointments.Click += new System.EventHandler(this.btnViewAppointments_Click);
+            this.btnViewAppointments.Click += new System.EventHandler(this.BtnViewAppointments_Click);
             // 
             // btnEdit
             // 
@@ -126,7 +126,7 @@
             this.btnEdit.TabIndex = 1;
             this.btnEdit.Text = "Edit";
             this.btnEdit.UseVisualStyleBackColor = false;
-            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            this.btnEdit.Click += new System.EventHandler(this.BtnEdit_Click);
             // 
             // btnClose
             // 
@@ -139,7 +139,7 @@
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
             // pnlContent
             // 
