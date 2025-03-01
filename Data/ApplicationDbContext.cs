@@ -1,5 +1,6 @@
 ﻿using SchedulingApplication.Models;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
@@ -114,7 +115,8 @@ namespace SchedulingApplication.Data
                     // Get entity type and properties
                     var entityType = entry.Entity.GetType();
                     var dateTimeProperties = entityType.GetProperties()
-                        .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+                        .Where(p => (p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?)) && 
+                        !p.GetCustomAttributes(typeof(NotMappedAttribute), true).Any());
 
 
                     // Ensure all DateTime properties are in UTC

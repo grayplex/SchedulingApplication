@@ -437,11 +437,12 @@ namespace SchedulingApplication
                         else
                         {
                             var existingAppointment = Program.DbContext.Appointments.Find(_appointment.AppointmentId);
+                            Program.DbContext.Entry(existingAppointment).CurrentValues.SetValues(_appointment);
                             if (existingAppointment == null)
                             {
                                 throw new Exception("Appointment not found.");
                             }
-
+                            /*
                             // Update all properties
                             existingAppointment.CustomerId = _appointment.CustomerId;
                             existingAppointment.UserId = _appointment.UserId;
@@ -455,6 +456,7 @@ namespace SchedulingApplication
                             existingAppointment.End = _appointment.End;
                             existingAppointment.LastUpdate = _appointment.LastUpdate;
                             existingAppointment.LastUpdateBy = _appointment.LastUpdateBy;
+                            */
                         }
 
                         Program.DbContext.SaveChanges();
