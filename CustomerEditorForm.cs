@@ -91,8 +91,7 @@ namespace SchedulingApplication
                 if (cboCountry.SelectedItem != null)
                 {
                     // Get the selected Country object directly
-                    Country selectedCountry = cboCountry.SelectedItem as Country;
-                    if (selectedCountry != null)
+                    if (cboCountry.SelectedItem is Country selectedCountry)
                     {
                         int countryId = selectedCountry.CountryId;
 

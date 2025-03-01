@@ -38,7 +38,8 @@ namespace SchedulingApplication
                 "This Month",
                 "By Date Range"
             });
-            cbTimeFilter.SelectedIndex = 1; // Default to This Week
+            //cbTimeFilter.SelectedIndex = 1; // Default to This Week
+            cbTimeFilter.SelectedIndex = 0; // All appointments for testing
 
             // Set date pickers to current values
             dtStart.Value = DateTime.Today;
