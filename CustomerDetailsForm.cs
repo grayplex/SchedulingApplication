@@ -36,8 +36,8 @@ namespace SchedulingApplication
                 lblPhone.Text = _customer.Address.Phone;
 
                 // Audit Information
-                lblCreatedBy.Text = $"{_customer.CreatedBy} on {_customer.CreateDate.ToString("MM/dd/yyyy hh:mm tt")}";
-                lblLastUpdated.Text = $"{_customer.LastUpdateBy} on {_customer.LastUpdate.ToString("MM/dd/yyyy hh:mm tt")}";
+                lblCreatedBy.Text = $"{_customer.CreatedBy} on {_customer.CreateDate:MM/dd/yyyy hh:mm tt}";
+                lblLastUpdated.Text = $"{_customer.LastUpdateBy} on {_customer.LastUpdate:MM/dd/yyyy hh:mm tt}";
             }
             catch (Exception ex)
             {
