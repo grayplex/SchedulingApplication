@@ -1,10 +1,10 @@
-﻿using SchedulingApplication.Models;
-using SchedulingApplication.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Forms;
+using SchedulingApplication.Models;
+using SchedulingApplication.Utilities;
 
 namespace SchedulingApplication
 {
@@ -102,6 +102,17 @@ namespace SchedulingApplication
                 // Populate grid with data
                 foreach (var appt in _appointments)
                 {
+                    appt.Start = DateTime.SpecifyKind(appt.Start, DateTimeKind.Utc);
+                    appt.End = DateTime.SpecifyKind(appt.End, DateTimeKind.Utc);
+
+                    // Debug log
+                    Console.WriteLine($"Appointment: {appt.Title}");
+                    Console.WriteLine($"  DB Start: {appt.Start} (Kind: {appt.Start.Kind})");
+                    Console.WriteLine($"  DB End: {appt.End} (Kind: {appt.End.Kind})");
+                    Console.WriteLine($"  Display Start: {appt.DisplayStart} (Kind: {appt.DisplayStart.Kind})");
+                    Console.WriteLine($"  Display End: {appt.DisplayEnd} (Kind: {appt.DisplayEnd.Kind})");
+                    Console.WriteLine($"  Active TZ: {TimeZoneHelper.ActiveTimeZone.Id}");
+
                     dgvAppointments.Rows.Add(
                         appt.AppointmentId,
                         appt.Title,
