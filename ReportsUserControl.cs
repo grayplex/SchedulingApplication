@@ -84,7 +84,7 @@ namespace SchedulingApplication
 
                 // Group by month and type
                 _appointmentTypesByMonth = appointments
-                    .GroupBy(a => new { Month = a.Start.Month, Type = a.Type ?? "Unspecified" })
+                    .GroupBy(a => new { a.Start.Month, Type = a.Type ?? "Unspecified" })
                     .Select(g => new AppointmentTypeByMonth
                     {
                         Month = g.Key.Month,
