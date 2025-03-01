@@ -95,8 +95,8 @@ namespace SchedulingApplication
             DateTime endLocal = _selectedDate.Date.AddHours(10);
 
             // Convert to UTC for storage
-            DateTime startUtc = TimeZoneHelper.LocalToUtc(startLocal);
-            DateTime endUtc = TimeZoneHelper.LocalToUtc(endLocal);
+            DateTime startUtc = TimeZoneHelper.ConvertToUtc(startLocal);
+            DateTime endUtc = TimeZoneHelper.ConvertToUtc(endLocal);
 
             var appointment = new Appointment
             {
@@ -134,7 +134,7 @@ namespace SchedulingApplication
 
             // Group appointments by day for easy lookup
             var appointmentsByDay = appointmentsInMonth
-                .GroupBy(a => TimeZoneHelper.UtcToLocal(a.Start).Date)
+                .GroupBy(a => TimeZoneHelper.ConvertFromUtc(a.Start).Date)
                 .ToDictionary(g => g.Key, g => g.Count());
 
             // Create day buttons for the calendar
@@ -220,7 +220,7 @@ namespace SchedulingApplication
                     foreach (var appointment in _selectedDateAppointments)
                     {
                         int rowIndex = dgvAppointments.Rows.Add(
-                            appointment.LocalStartTime,
+                            appointment.DisplayStartTime,
                             appointment.Title,
                             appointment.Customer?.CustomerName ?? "Unknown",
                             appointment.Type
@@ -250,8 +250,8 @@ namespace SchedulingApplication
                 DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
                 // Convert to UTC for database query
-                DateTime startDateUtc = TimeZoneHelper.LocalToUtc(startDate.Date);
-                DateTime endDateUtc = TimeZoneHelper.LocalToUtc(endDate.Date.AddDays(1).AddSeconds(-1));
+                DateTime startDateUtc = TimeZoneHelper.ConvertToUtc(startDate.Date);
+                DateTime endDateUtc = TimeZoneHelper.ConvertToUtc(endDate.Date.AddDays(1).AddSeconds(-1));
 
                 // Query appointments for the current user in this month
                 var appointments = Program.DbContext.Appointments
@@ -279,8 +279,8 @@ namespace SchedulingApplication
                 DateTime endDate = startDate.AddDays(1).AddSeconds(-1);
 
                 // Convert to UTC for database query
-                DateTime startDateUtc = TimeZoneHelper.LocalToUtc(startDate);
-                DateTime endDateUtc = TimeZoneHelper.LocalToUtc(endDate);
+                DateTime startDateUtc = TimeZoneHelper.ConvertToUtc(startDate);
+                DateTime endDateUtc = TimeZoneHelper.ConvertToUtc(endDate);
 
                 // Query appointments for the current user on this day
                 var appointments = Program.DbContext.Appointments

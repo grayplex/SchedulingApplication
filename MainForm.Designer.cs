@@ -47,6 +47,7 @@
             this.lblTimeZone = new System.Windows.Forms.Label();
             this.lblUser = new System.Windows.Forms.Label();
             this.lblCopyright = new System.Windows.Forms.Label();
+            this.chkUseBusinessTime = new System.Windows.Forms.CheckBox();
             this.pnlHeader.SuspendLayout();
             this.pnlNavigation.SuspendLayout();
             this.pnlUpcomingAppointments.SuspendLayout();
@@ -266,6 +267,15 @@
             this.lblTimeZone.Size = new System.Drawing.Size(253, 13);
             this.lblTimeZone.TabIndex = 2;
             this.lblTimeZone.Text = "Your time zone: Pacific Standard Time (Standard Time)";
+            //
+            // chkUseBusinessTime
+            //
+            this.chkUseBusinessTime.Text = "Use Business Hours (EST)";
+            this.chkUseBusinessTime.AutoSize = true;
+            this.chkUseBusinessTime.Location = new System.Drawing.Point(500, 12);
+            this.chkUseBusinessTime.CheckedChanged += ChkUseBusinessTime_CheckedChanged;
+            this.chkUseBusinessTime.Checked = SchedulingApplication.Utilities.TimeZoneHelper.UseBusinessTimezone;
+            this.pnlFooter.Controls.Add(this.chkUseBusinessTime);
             // 
             // lblUser
             // 
@@ -331,6 +341,7 @@
         private System.Windows.Forms.Label lblCopyright;
         private System.Windows.Forms.Label lblUser;
         private System.Windows.Forms.Label lblTimeZone;
+        private System.Windows.Forms.CheckBox chkUseBusinessTime;
     }
 }
 

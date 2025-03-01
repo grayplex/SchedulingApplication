@@ -26,7 +26,11 @@ namespace SchedulingApplication
             lblWelcome.Text = string.Format(LocalizationManager.GetTranslation("WelcomeMessage"), _currentUser.UserName);
 
             // Show user's time zone info
-            lblTimeZone.Text = $"Your time zone: {TimeZoneHelper.GetLocalTimeZone().DisplayName}";
+            lblTimeZone.Text = $"Your time zone: {TimeZoneHelper.LocalTimeZone}";
+
+            TimeZoneHelper.TimezonePreferenceChanged += (s, e) => UpdateTimezoneInfo();
+
+            UpdateTimezoneInfo();
 
             // Load upcoming appointments
             LoadUpcomingAppointments();
@@ -55,7 +59,7 @@ namespace SchedulingApplication
                 lstUpcomingAppointments.Items.Clear();
                 foreach (var appointment in _upcomingAppointments)
                 {
-                    appointment.Start = TimeZoneHelper.UtcToLocal(appointment.Start);
+                    appointment.Start = TimeZoneHelper.ConvertFromUtc(appointment.Start);
 
                     lstUpcomingAppointments.Items.Add(new ListViewItem
                     {
@@ -215,6 +219,21 @@ namespace SchedulingApplication
 
             // Highlight active button
             activeButton.BackColor = SystemColors.ControlLight;
+        }
+
+        private void ChkUseBusinessTime_CheckedChanged(object sender, EventArgs e)
+        {
+            // Update the timezone preference
+            TimeZoneHelper.UseBusinessTimezone = chkUseBusinessTime.Checked;
+
+            // Update timezone info display
+            UpdateTimezoneInfo();
+        }
+
+        private void UpdateTimezoneInfo()
+        {
+            // Update the timezone label in the status bar
+            lblTimeZone.Text = $"Timezone: {TimeZoneHelper.ActiveTimeZone.DisplayName}";
         }
     }
 }

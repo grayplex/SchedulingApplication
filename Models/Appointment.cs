@@ -7,9 +7,6 @@ namespace SchedulingApplication.Models
 {
     public class Appointment : BaseEntity
     {
-        private DateTime _start;
-        private DateTime _end;
-
         [Key]
         [Column("AppointmentId")]
         public int AppointmentId { get; set; }
@@ -44,36 +41,11 @@ namespace SchedulingApplication.Models
 
         [Required]
         [Column("start")]
-        public DateTime Start
-        {
-            get { return _start; }
-            set
-            {
-                _start = value;
-                OnPropertyChanged();
-                // Also notify that the local times have changed
-                OnPropertyChanged(nameof(LocalStart));
-                OnPropertyChanged(nameof(LocalStartTime));
-                OnPropertyChanged(nameof(LocalStartDate));
-                OnPropertyChanged(nameof(IsWithinBusinessHours));
-            }
-        }
+        public DateTime Start { get; set; }
 
         [Required]
         [Column("end")]
-        public DateTime End
-        {
-            get { return _end; }
-            set
-            {
-                _end = value;
-                OnPropertyChanged();
-                // Also notify that the local times have changed
-                OnPropertyChanged(nameof(LocalEnd));
-                OnPropertyChanged(nameof(LocalEndTime));
-                OnPropertyChanged(nameof(IsWithinBusinessHours));
-            }
-        }
+        public DateTime End { get; set; }
 
         // Navigation Properties
         [ForeignKey("CustomerId")]
@@ -82,141 +54,51 @@ namespace SchedulingApplication.Models
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
-        // Computed properties for the UI
-
-        /// <summary>
-        /// Gets the start time in the user's local timezone
-        /// </summary>
+        // Computed for UI
         [NotMapped]
-        public DateTime LocalStart
+        public DateTime DisplayStart
         {
-            get { return TimeZoneHelper.UtcToLocal(Start); }
+            get { return TimeZoneHelper.ConvertFromUtc(Start); }
         }
 
-        /// <summary>
-        /// Gets the end time in the user's local timezone
-        /// </summary>
         [NotMapped]
-        public DateTime LocalEnd
+        public DateTime DisplayEnd
         {
-            get { return TimeZoneHelper.UtcToLocal(End); }
+            get { return TimeZoneHelper.ConvertFromUtc(End); }
         }
 
-        /// <summary>
-        /// Gets the start time formatted for display in the user's local timezone
-        /// </summary>
         [NotMapped]
-        public string LocalStartTime
+        public string DisplayStartTime
         {
-            get { return LocalStart.ToString("hh:mm tt"); }
+            get { return DisplayStart.ToString("hh:mm tt"); }
         }
 
-        /// <summary>
-        /// Gets the end time formatted for display in the user's local timezone
-        /// </summary>
         [NotMapped]
-        public string LocalEndTime
+        public string DisplayEndTime
         {
-            get { return LocalEnd.ToString("hh:mm tt"); }
+            get { return DisplayEnd.ToString("hh:mm tt"); }
         }
 
-        /// <summary>
-        /// Gets the start date formatted for display in the user's local timezone
-        /// </summary>
         [NotMapped]
-        public string LocalStartDate
+        public string DisplayStartDateTime
         {
-            get { return LocalStart.ToString("MM/dd/yyyy"); }
+            get { return TimeZoneHelper.FormatWithTimezone(DisplayStart); }
         }
 
-        /// <summary>
-        /// Gets the full start date and time formatted for display
-        /// </summary>
         [NotMapped]
-        public string LocalStartDateTime
+        public string DisplayEndDateTime
         {
-            get { return LocalStart.ToString("MM/dd/yyyy hh:mm tt"); }
+            get { return TimeZoneHelper.FormatWithTimezone(DisplayEnd); }
         }
 
-        /// <summary>
-        /// Gets the full end date and time formatted for display
-        /// </summary>
-        [NotMapped]
-        public string LocalEndDateTime
-        {
-            get { return LocalEnd.ToString("MM/dd/yyyy hh:mm tt"); }
-        }
-
-        /// <summary>
-        /// Gets the appointment duration in minutes
-        /// </summary>
-        [NotMapped]
-        public int DurationMinutes
-        {
-            get { return (int)(End - Start).TotalMinutes; }
-        }
-
-        /// <summary>
-        /// Gets whether this appointment is within business hours
-        /// </summary>
         [NotMapped]
         public bool IsWithinBusinessHours
         {
             get
             {
-                // Convert to business time
-                DateTime startBusiness = TimeZoneHelper.UtcToBusinessTime(Start);
-                DateTime endBusiness = TimeZoneHelper.UtcToBusinessTime(End);
-
-                // Check weekday for both start and end
-                bool isWeekday = startBusiness.DayOfWeek != DayOfWeek.Saturday &&
-                                startBusiness.DayOfWeek != DayOfWeek.Sunday &&
-                                endBusiness.DayOfWeek != DayOfWeek.Saturday &&
-                                endBusiness.DayOfWeek != DayOfWeek.Sunday;
-
-                // Check business hours (9 AM to 5 PM)
-                TimeSpan businessStart = new TimeSpan(9, 0, 0);
-                TimeSpan businessEnd = new TimeSpan(17, 0, 0);
-
-                bool isWithinHours = startBusiness.TimeOfDay >= businessStart &&
-                                    endBusiness.TimeOfDay <= businessEnd;
-
-                return isWeekday && isWithinHours;
+                return TimeZoneHelper.IsWithinBusinessHours(Start) &&
+                         TimeZoneHelper.IsWithinBusinessHours(End);
             }
-        }
-
-        /// <summary>
-        /// Checks if this appointment overlaps with another appointment
-        /// </summary>
-        public bool OverlapsWith(Appointment other)
-        {
-            return (Start <= other.Start && End > other.Start) ||
-                   (Start < other.End && End >= other.End) ||
-                   (Start >= other.Start && End <= other.End);
-        }
-
-        /// <summary>
-        /// Creates a copy of this appointment
-        /// </summary>
-        public Appointment CreateCopy()
-        {
-            return new Appointment
-            {
-                CustomerId = this.CustomerId,
-                UserId = this.UserId,
-                Title = this.Title,
-                Description = this.Description,
-                Location = this.Location,
-                Contact = this.Contact,
-                Type = this.Type,
-                Url = this.Url,
-                Start = this.Start,
-                End = this.End,
-                CreateDate = DateTime.UtcNow,
-                CreatedBy = this.CreatedBy,
-                LastUpdate = DateTime.UtcNow,
-                LastUpdateBy = this.LastUpdateBy
-            };
         }
     }
 }

@@ -17,6 +17,9 @@ namespace SchedulingApplication
         {
             InitializeComponent();
 
+            // Subscribe to timezone changes
+            TimeZoneHelper.TimezonePreferenceChanged += (s, e) => LoadAppointments();
+
             // Setup event handlers
             cbTimeFilter.SelectedIndexChanged += FilterChanged;
             dtStart.ValueChanged += FilterChanged;
@@ -63,8 +66,8 @@ namespace SchedulingApplication
                         var endOfWeek = startOfWeek.AddDays(7);
 
                         // Convert local dates to UTC for database query
-                        var startOfWeekUtc = TimeZoneHelper.LocalToUtc(startOfWeek);
-                        var endOfWeekUtc = TimeZoneHelper.LocalToUtc(endOfWeek);
+                        var startOfWeekUtc = TimeZoneHelper.ConvertToUtc(startOfWeek);
+                        var endOfWeekUtc = TimeZoneHelper.ConvertToUtc(endOfWeek);
 
                         query = query.Where(a => a.Start >= startOfWeekUtc && a.Start < endOfWeekUtc);
                         break;
@@ -74,16 +77,16 @@ namespace SchedulingApplication
                         var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
 
                         // Convert local dates to UTC for database query
-                        var startOfMonthUtc = TimeZoneHelper.LocalToUtc(startOfMonth);
-                        var endOfMonthUtc = TimeZoneHelper.LocalToUtc(endOfMonth);
+                        var startOfMonthUtc = TimeZoneHelper.ConvertToUtc(startOfMonth);
+                        var endOfMonthUtc = TimeZoneHelper.ConvertToUtc(endOfMonth);
 
                         query = query.Where(a => a.Start >= startOfMonthUtc && a.Start <= endOfMonthUtc);
                         break;
 
                     case "By Date Range":
                         // Convert selected dates to UTC for database query
-                        var startDateUtc = TimeZoneHelper.LocalToUtc(dtStart.Value.Date);
-                        var endDateUtc = TimeZoneHelper.LocalToUtc(dtEnd.Value.Date.AddDays(1).AddSeconds(-1));
+                        var startDateUtc = TimeZoneHelper.ConvertToUtc(dtStart.Value.Date);
+                        var endDateUtc = TimeZoneHelper.ConvertToUtc(dtEnd.Value.Date.AddDays(1).AddSeconds(-1));
 
                         query = query.Where(a => a.Start >= startDateUtc && a.Start <= endDateUtc);
                         break;
@@ -103,8 +106,8 @@ namespace SchedulingApplication
                         appt.Title,
                         appt.Customer?.CustomerName ?? "Unknown",
                         appt.Type,
-                        appt.LocalStartDateTime,
-                        appt.LocalEndDateTime,
+                        appt.DisplayStartDateTime,
+                        appt.DisplayEndDateTime,
                         appt.Location
                     );
                 }

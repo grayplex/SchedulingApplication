@@ -1,148 +1,106 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace SchedulingApplication.Utilities
 {
-    /// <summary>
-    /// Helper class for managing timezone conversions throughout the application.
-    /// The application follows these timezone conventions:
-    /// - Database stores all times in UTC
-    /// - UI displays times in the user's local timezone
-    /// - Business hours are defined in Eastern Time
-    /// </summary>
     public static class TimeZoneHelper
     {
-        // Constants for timezone IDs
+        // Constants
         private const string BUSINESS_TIMEZONE_ID = "Eastern Standard Time";
 
-        /// <summary>
-        /// Gets the user's local timezone
-        /// </summary>
-        /// <returns>The user's local TimeZoneInfo</returns>
-        public static TimeZoneInfo GetLocalTimeZone()
-        {
-            try
-            {
-                return TimeZoneInfo.Local;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error getting local timezone: {ex.Message}. Falling back to UTC.");
-                return TimeZoneInfo.Utc;
-            }
-        }
+        // Current display timezone preference - defaults to local
+        private static bool _useBusinessTimezone = false;
 
-        /// <summary>
-        /// Gets the business timezone (Eastern Time)
-        /// </summary>
-        /// <returns>The business TimeZoneInfo</returns>
-        public static TimeZoneInfo GetBusinessTimeZone()
+        // Event for when timezone preference changes
+        public static event EventHandler TimezonePreferenceChanged;
+
+        // Property to get/set timezone preference
+        public static bool UseBusinessTimezone
         {
-            try
+            get { return _useBusinessTimezone; }
+            set
             {
-                return TimeZoneInfo.FindSystemTimeZoneById(BUSINESS_TIMEZONE_ID);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error getting business timezone: {ex.Message}. Falling back to UTC.");
-                return TimeZoneInfo.Utc;
+                if (_useBusinessTimezone != value)
+                {
+                    _useBusinessTimezone = value;
+                    TimezonePreferenceChanged?.Invoke(null, EventArgs.Empty);
+                }
             }
         }
 
-        /// <summary>
-        /// Converts UTC time to the user's local time
-        /// </summary>
-        /// <param name="utcTime">DateTime in UTC</param>
-        /// <returns>DateTime in user's local timezone</returns>
-        public static DateTime UtcToLocal(DateTime utcTime)
+        // Get the active timezone based on preference
+        public static TimeZoneInfo ActiveTimeZone
         {
-            if (utcTime.Kind != DateTimeKind.Utc)
-                utcTime = DateTime.SpecifyKind(utcTime, DateTimeKind.Utc);
-
-            return TimeZoneInfo.ConvertTimeFromUtc(utcTime, GetLocalTimeZone());
+            get
+            {
+                return _useBusinessTimezone ? BusinessTimeZone : LocalTimeZone;
+            }
         }
 
-        /// <summary>
-        /// Converts user's local time to UTC
-        /// </summary>
-        /// <param name="localTime">DateTime in user's local timezone</param>
-        /// <returns>DateTime in UTC</returns>
-        public static DateTime LocalToUtc(DateTime localTime)
+        // Get the local timezone
+        public static TimeZoneInfo LocalTimeZone
         {
-            if (localTime.Kind != DateTimeKind.Local && localTime.Kind != DateTimeKind.Unspecified)
-                localTime = DateTime.SpecifyKind(localTime, DateTimeKind.Local);
-
-            return TimeZoneInfo.ConvertTimeToUtc(localTime, GetLocalTimeZone());
+            get { return TimeZoneInfo.Local; }
         }
 
-        /// <summary>
-        /// Converts UTC time to business time (Eastern Time)
-        /// </summary>
-        /// <param name="utcTime">DateTime in UTC</param>
-        /// <returns>DateTime in Eastern Time</returns>
-        public static DateTime UtcToBusinessTime(DateTime utcTime)
+        // Get the business timezone (EST)
+        public static TimeZoneInfo BusinessTimeZone
         {
-            if (utcTime.Kind != DateTimeKind.Utc)
-                utcTime = DateTime.SpecifyKind(utcTime, DateTimeKind.Utc);
-
-            return TimeZoneInfo.ConvertTimeFromUtc(utcTime, GetBusinessTimeZone());
+            get
+            {
+                try
+                {
+                    return TimeZoneInfo.FindSystemTimeZoneById(BUSINESS_TIMEZONE_ID);
+                }
+                catch
+                {
+                    MessageBox.Show("Business timezone (Eastern Standard Time) not found. Falling back to UTC.",
+                        "Timezone Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return TimeZoneInfo.Utc;
+                }
+            }
         }
 
-        /// <summary>
-        /// Converts business time (Eastern Time) to UTC
-        /// </summary>
-        /// <param name="businessTime">DateTime in Eastern Time</param>
-        /// <returns>DateTime in UTC</returns>
-        public static DateTime BusinessTimeToUtc(DateTime businessTime)
+        // Convert a database UTC time to the display timezone
+        public static DateTime ConvertFromUtc(DateTime utcDateTime)
         {
-            return TimeZoneInfo.ConvertTimeToUtc(businessTime, GetBusinessTimeZone());
+            // Ensure the datetime is in UTC
+            var utcTime = DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc);
+            return TimeZoneInfo.ConvertTimeFromUtc(utcTime, ActiveTimeZone);
         }
 
-        /// <summary>
-        /// Converts local time to business time (Eastern Time)
-        /// </summary>
-        /// <param name="localTime">DateTime in user's local timezone</param>
-        /// <returns>DateTime in Eastern Time</returns>
-        public static DateTime LocalToBusinessTime(DateTime localTime)
+        // Convert a display timezone time to UTC for database storage
+        public static DateTime ConvertToUtc(DateTime displayDateTime)
         {
-            // Convert local to UTC first, then to business time
-            DateTime utcTime = LocalToUtc(localTime);
-            return UtcToBusinessTime(utcTime);
+            // Convert based on active timezone
+            return TimeZoneInfo.ConvertTimeToUtc(displayDateTime, ActiveTimeZone);
         }
 
-        /// <summary>
-        /// Checks if a given time (in local timezone) falls within business hours
-        /// Business hours are 9:00 AM - 5:00 PM Eastern Time, Monday through Friday
-        /// </summary>
-        /// <param name="localTime">DateTime in user's local timezone to check</param>
-        /// <returns>True if within business hours, false otherwise</returns>
-        public static bool IsWithinBusinessHours(DateTime localTime)
+        // Check if a time is within business hours (9 AM - 5 PM EST, weekdays)
+        public static bool IsWithinBusinessHours(DateTime utcDateTime)
         {
-            // Convert to business timezone
-            DateTime businessTime = LocalToBusinessTime(localTime);
+            // Convert to business time
+            var businessTime = TimeZoneInfo.ConvertTimeFromUtc(
+                DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc),
+                BusinessTimeZone);
 
-            // Check if it's a weekday
+            // Check if weekday
             bool isWeekday = businessTime.DayOfWeek != DayOfWeek.Saturday &&
-                            businessTime.DayOfWeek != DayOfWeek.Sunday;
+                             businessTime.DayOfWeek != DayOfWeek.Sunday;
 
-            // Check if it's between 9 AM and 5 PM
+            // Check if between 9 AM and 5 PM
             bool isBusinessHours = businessTime.Hour >= 9 && businessTime.Hour < 17;
 
             return isWeekday && isBusinessHours;
         }
 
-        /// <summary>
-        /// Formats a DateTime with the user's timezone information
-        /// </summary>
-        /// <param name="dateTime">The DateTime to format</param>
-        /// <param name="format">Optional format string (defaults to "MM/dd/yyyy hh:mm tt")</param>
-        /// <returns>Formatted string with timezone information</returns>
-        public static string FormatWithTimeZone(DateTime dateTime, string format = "MM/dd/yyyy hh:mm tt")
+        // Format a datetime for display with timezone info
+        public static string FormatWithTimezone(DateTime dateTime)
         {
-            TimeZoneInfo userTimeZone = GetLocalTimeZone();
-            bool isDST = userTimeZone.IsDaylightSavingTime(dateTime);
-            string dstIndicator = isDST ? " (DST)" : "";
+            string tzName = ActiveTimeZone.IsDaylightSavingTime(dateTime) ?
+                ActiveTimeZone.DaylightName : ActiveTimeZone.StandardName;
 
-            return $"{dateTime.ToString(format)} ({userTimeZone.DisplayName}{dstIndicator})";
+            return $"{dateTime:MM/dd/yyyy hh:mm tt} ({tzName})";
         }
     }
 }

@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using SchedulingApplication.Utilities;
 
 namespace SchedulingApplication.Models
 {
@@ -62,24 +61,6 @@ namespace SchedulingApplication.Models
                 _lastUpdateBy = value;
                 OnPropertyChanged();
             }
-        }
-
-        /// <summary>
-        /// Gets the formatted creation date/time in the user's local timezone
-        /// </summary>
-        [NotMapped]
-        public string LocalCreateDate
-        {
-            get { return TimeZoneHelper.UtcToLocal(CreateDate).ToString("MM/dd/yyyy hh:mm tt"); }
-        }
-
-        /// <summary>
-        /// Gets the formatted last update date/time in the user's local timezone
-        /// </summary>
-        [NotMapped]
-        public string LocalLastUpdate
-        {
-            get { return TimeZoneHelper.UtcToLocal(LastUpdate).ToString("MM/dd/yyyy hh:mm tt"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

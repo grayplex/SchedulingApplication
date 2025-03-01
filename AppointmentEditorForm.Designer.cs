@@ -56,8 +56,8 @@ namespace SchedulingApplication
             this.lblEndDate = new System.Windows.Forms.Label();
             this.dtEnd = new System.Windows.Forms.DateTimePicker();
             this.lblTimezoneSelection = new System.Windows.Forms.Label();
-            this.rbBusinessTimezone = new System.Windows.Forms.RadioButton();
-            this.rbUserTimezone = new System.Windows.Forms.RadioButton();
+            //this.rbBusinessTimezone = new System.Windows.Forms.RadioButton();
+            //this.rbUserTimezone = new System.Windows.Forms.RadioButton();
             this.lblTimePickerHelp = new System.Windows.Forms.Label();
             this.lblValidation = new System.Windows.Forms.Label();
             this.pnlButtons = new System.Windows.Forms.Panel();
@@ -253,8 +253,8 @@ namespace SchedulingApplication
             this.grpSchedule.Controls.Add(this.lblEndDate);
             this.grpSchedule.Controls.Add(this.dtEnd);
             this.grpSchedule.Controls.Add(this.lblTimezoneSelection);
-            this.grpSchedule.Controls.Add(this.rbBusinessTimezone);
-            this.grpSchedule.Controls.Add(this.rbUserTimezone);
+            //this.grpSchedule.Controls.Add(this.rbBusinessTimezone);
+            //this.grpSchedule.Controls.Add(this.rbUserTimezone);
             this.grpSchedule.Controls.Add(this.lblTimePickerHelp);
             this.grpSchedule.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpSchedule.Location = new System.Drawing.Point(20, 20);
@@ -311,6 +311,7 @@ namespace SchedulingApplication
             // 
             // rbBusinessTimezone
             // 
+            /*
             this.rbBusinessTimezone.AutoSize = true;
             this.rbBusinessTimezone.Location = new System.Drawing.Point(150, 110);
             this.rbBusinessTimezone.Name = "rbBusinessTimezone";
@@ -328,6 +329,7 @@ namespace SchedulingApplication
             this.rbUserTimezone.TabIndex = 6;
             this.rbUserTimezone.TabStop = true;
             this.rbUserTimezone.Text = "User\'s Timezone";
+            */
             // 
             // lblTimePickerHelp
             // 
@@ -443,8 +445,8 @@ namespace SchedulingApplication
         private System.Windows.Forms.DateTimePicker dtStart;
         private System.Windows.Forms.Label lblEndDate;
         private System.Windows.Forms.DateTimePicker dtEnd;
-        private System.Windows.Forms.RadioButton rbBusinessTimezone;
-        private System.Windows.Forms.RadioButton rbUserTimezone;
+        //private System.Windows.Forms.RadioButton rbBusinessTimezone;
+        //private System.Windows.Forms.RadioButton rbUserTimezone;
         private System.Windows.Forms.Label lblTimezoneSelection;
         private System.Windows.Forms.Label lblTimePickerHelp;
     }

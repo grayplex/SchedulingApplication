@@ -59,13 +59,13 @@ namespace SchedulingApplication
                 // Get dates for this month and year in UTC
                 var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
-                var startOfMonthUtc = TimeZoneHelper.LocalToUtc(startOfMonth);
-                var endOfMonthUtc = TimeZoneHelper.LocalToUtc(endOfMonth);
+                var startOfMonthUtc = TimeZoneHelper.ConvertToUtc(startOfMonth);
+                var endOfMonthUtc = TimeZoneHelper.ConvertToUtc(endOfMonth);
 
                 var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
                 var endOfYear = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59);
-                var startOfYearUtc = TimeZoneHelper.LocalToUtc(startOfYear);
-                var endOfYearUtc = TimeZoneHelper.LocalToUtc(endOfYear);
+                var startOfYearUtc = TimeZoneHelper.ConvertToUtc(startOfYear);
+                var endOfYearUtc = TimeZoneHelper.ConvertToUtc(endOfYear);
 
                 // Apply filter
                 switch (cbFilter.SelectedItem.ToString())
@@ -98,8 +98,8 @@ namespace SchedulingApplication
                         appt.Title,
                         appt.User?.UserName ?? "Unknown",
                         appt.Type,
-                        appt.LocalStartDateTime,
-                        appt.LocalEndDateTime,
+                        appt.DisplayStartDateTime,
+                        appt.DisplayEndDateTime,
                         appt.Location
                     );
                 }
@@ -215,8 +215,8 @@ namespace SchedulingApplication
             var endTime = startTime.AddHours(1);
 
             // Convert to UTC for storage
-            var startUtc = TimeZoneHelper.LocalToUtc(startTime);
-            var endUtc = TimeZoneHelper.LocalToUtc(endTime);
+            var startUtc = TimeZoneHelper.ConvertToUtc(startTime);
+            var endUtc = TimeZoneHelper.ConvertToUtc(endTime);
 
             var appointment = new Appointment
             {

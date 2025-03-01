@@ -131,13 +131,6 @@ namespace SchedulingApplication
             // Assign menus to date time pickers
             dtStart.ContextMenuStrip = _commonTimesMenu;
             dtEnd.ContextMenuStrip = _durationMenu;
-
-            // Update timezone selection labels
-            string businessTimeName = TimeZoneHelper.GetBusinessTimeZone().DisplayName;
-            rbBusinessTimezone.Text = $"Business Timezone ({businessTimeName})";
-
-            string localTimeName = TimeZoneHelper.GetLocalTimeZone().DisplayName;
-            rbUserTimezone.Text = $"Local Timezone ({localTimeName})";
         }
 
         private void PopulateAppointmentFields()
@@ -155,8 +148,8 @@ namespace SchedulingApplication
                     txtUrl.Text = _appointment.Url;
 
                     // Convert from UTC to local for display
-                    DateTime localStart = TimeZoneHelper.UtcToLocal(_appointment.Start);
-                    DateTime localEnd = TimeZoneHelper.UtcToLocal(_appointment.End);
+                    DateTime localStart = TimeZoneHelper.ConvertFromUtc(_appointment.Start);
+                    DateTime localEnd = TimeZoneHelper.ConvertFromUtc(_appointment.End);
 
                     dtStart.Value = localStart;
                     dtEnd.Value = localEnd;
@@ -169,53 +162,13 @@ namespace SchedulingApplication
                     dtEnd.Value = DateTime.Today.AddHours(10);  // 1 hour meeting by default
                 }
 
-                // Default to user's timezone
-                rbUserTimezone.Checked = true;
+                lblTimezoneSelection.Text = $"Times shown in: {TimeZoneHelper.ActiveTimeZone.DisplayName}";
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error populating appointment fields: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void TimezoneOption_CheckedChanged(object sender, EventArgs e)
-        {
-            // When switching between timezones, convert the values accordingly
-            if (sender == rbBusinessTimezone && rbBusinessTimezone.Checked)
-            {
-                // Convert from local to business time
-                DateTime businessStart = TimeZoneHelper.LocalToBusinessTime(dtStart.Value);
-                DateTime businessEnd = TimeZoneHelper.LocalToBusinessTime(dtEnd.Value);
-
-                // Update the UI without triggering events
-                dtStart.ValueChanged -= DtStart_ValueChanged;
-                dtEnd.ValueChanged -= DtEnd_ValueChanged;
-
-                dtStart.Value = businessStart;
-                dtEnd.Value = businessEnd;
-
-                dtStart.ValueChanged += DtStart_ValueChanged;
-                dtEnd.ValueChanged += DtEnd_ValueChanged;
-            }
-            else if (sender == rbUserTimezone && rbUserTimezone.Checked)
-            {
-                // Convert from business to local time
-                DateTime utcStart = TimeZoneHelper.BusinessTimeToUtc(dtStart.Value);
-                DateTime utcEnd = TimeZoneHelper.BusinessTimeToUtc(dtEnd.Value);
-
-                DateTime localStart = TimeZoneHelper.UtcToLocal(utcStart);
-                DateTime localEnd = TimeZoneHelper.UtcToLocal(utcEnd);
-
-                // Update the UI without triggering events
-                dtStart.ValueChanged -= DtStart_ValueChanged;
-                dtEnd.ValueChanged -= DtEnd_ValueChanged;
-
-                dtStart.Value = localStart;
-                dtEnd.Value = localEnd;
-
-                dtStart.ValueChanged += DtStart_ValueChanged;
-                dtEnd.ValueChanged += DtEnd_ValueChanged;
             }
         }
 
@@ -347,19 +300,8 @@ namespace SchedulingApplication
             // Validate business hours
             DateTime startTime, endTime;
 
-            // Get dates in the right timezone for business hours check
-            if (rbBusinessTimezone.Checked)
-            {
-                // We're already working in business time
-                startTime = dtStart.Value;
-                endTime = dtEnd.Value;
-            }
-            else
-            {
-                // Convert from local to business time
-                startTime = TimeZoneHelper.LocalToBusinessTime(dtStart.Value);
-                endTime = TimeZoneHelper.LocalToBusinessTime(dtEnd.Value);
-            }
+            startTime = dtStart.Value;
+            endTime = dtEnd.Value;
 
             // Check for weekday
             if (startTime.DayOfWeek == DayOfWeek.Saturday ||
@@ -411,18 +353,9 @@ namespace SchedulingApplication
             // Check for overlapping appointments for the same user
             DateTime startUtc, endUtc;
 
-            if (rbBusinessTimezone.Checked)
-            {
-                // Convert business time to UTC
-                startUtc = TimeZoneHelper.BusinessTimeToUtc(dtStart.Value);
-                endUtc = TimeZoneHelper.BusinessTimeToUtc(dtEnd.Value);
-            }
-            else
-            {
-                // Convert local time to UTC
-                startUtc = TimeZoneHelper.LocalToUtc(dtStart.Value);
-                endUtc = TimeZoneHelper.LocalToUtc(dtEnd.Value);
-            }
+            // Convert local time to UTC
+            startUtc = TimeZoneHelper.ConvertToUtc(dtStart.Value);
+            endUtc = TimeZoneHelper.ConvertToUtc(dtEnd.Value);
 
             var overlappingAppointments = Program.DbContext.Appointments
                 .Where(a => a.UserId == LoginForm.LoggedInUser.UserId &&
@@ -441,8 +374,8 @@ namespace SchedulingApplication
 
                 // Show details of the overlapping appointment
                 var overlap = overlappingAppointments.First();
-                DateTime overlapStartLocal = TimeZoneHelper.UtcToLocal(overlap.Start);
-                DateTime overlapEndLocal = TimeZoneHelper.UtcToLocal(overlap.End);
+                DateTime overlapStartLocal = TimeZoneHelper.ConvertFromUtc(overlap.Start);
+                DateTime overlapEndLocal = TimeZoneHelper.ConvertFromUtc(overlap.End);
 
                 MessageBox.Show(
                     $"Overlapping appointment found:\n" +
@@ -468,21 +401,9 @@ namespace SchedulingApplication
                     return;
                 }
 
-                // Convert times to UTC for database storage
-                DateTime startUtc, endUtc;
-
-                if (rbBusinessTimezone.Checked)
-                {
-                    // Convert from business time to UTC
-                    startUtc = TimeZoneHelper.BusinessTimeToUtc(dtStart.Value);
-                    endUtc = TimeZoneHelper.BusinessTimeToUtc(dtEnd.Value);
-                }
-                else
-                {
-                    // Convert from local time to UTC
-                    startUtc = TimeZoneHelper.LocalToUtc(dtStart.Value);
-                    endUtc = TimeZoneHelper.LocalToUtc(dtEnd.Value);
-                }
+                // Convert from display time to UTC for storage
+                _appointment.Start = TimeZoneHelper.ConvertToUtc(dtStart.Value);
+                _appointment.End = TimeZoneHelper.ConvertToUtc(dtEnd.Value);
 
                 // Update appointment properties
                 _appointment.CustomerId = (int)cboCustomer.SelectedValue;
@@ -493,8 +414,6 @@ namespace SchedulingApplication
                 _appointment.Contact = txtContact.Text.Trim();
                 _appointment.Type = cboType.Text;
                 _appointment.Url = txtUrl.Text.Trim();
-                _appointment.Start = startUtc;
-                _appointment.End = endUtc;
 
                 // Set audit fields
                 if (_isNewAppointment)

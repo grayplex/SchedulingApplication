@@ -37,7 +37,7 @@ namespace SchedulingApplication
             foreach (var appointment in _upcomingAppointments)
             {
                 var item = new ListViewItem(new[] {
-                    appointment.LocalStartTime,
+                    appointment.DisplayStartTime,
                     appointment.Title,
                     appointment.Customer?.CustomerName ?? "Unknown Customer"
                 });
@@ -56,7 +56,7 @@ namespace SchedulingApplication
             {
                 // Calculate minutes until first appointment
                 var firstAppt = _upcomingAppointments[0];
-                var minutesUntil = (int)(firstAppt.LocalStart - DateTime.Now).TotalMinutes;
+                var minutesUntil = (int)(firstAppt.DisplayStart - DateTime.Now).TotalMinutes;
 
                 lblHeader.Text += $" - {minutesUntil} minute{(minutesUntil != 1 ? "s" : "")} from now";
             }

@@ -98,23 +98,35 @@ namespace SchedulingApplication.Data
                     // Check if it's our entity type with DateTime properties
                     if (entry.Entity is BaseEntity)
                     {
-                        // Get entity props
-                        var entityType = entry.Entity.GetType();
-                        var properties = entityType.GetProperties()
-                            .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+                        // Update audit timestamps
+                        var entity = entry.Entity as BaseEntity;
 
-                        // For all DateTime properties, ensure they're UTC
-                        foreach (var prop in properties)
+                        if (entry.State == EntityState.Added)
                         {
-                            // Get current value
-                            var value = prop.GetValue(entry.Entity) as DateTime?;
+                            entity.CreateDate = DateTime.UtcNow;
+                            entity.CreatedBy = LoginForm.LoggedInUser?.UserName ?? "system";
+                        }
 
-                            if (value.HasValue && value.Value.Kind != DateTimeKind.Utc)
-                            {
-                                // Convert to UTC and set back
-                                DateTime utcValue = DateTime.SpecifyKind(value.Value, DateTimeKind.Local).ToUniversalTime();
-                                prop.SetValue(entry.Entity, utcValue);
-                            }
+                        entity.LastUpdate = DateTime.UtcNow;
+                        entity.LastUpdateBy = LoginForm.LoggedInUser?.UserName ?? "system";
+                    }
+
+                    // Get entity type and properties
+                    var entityType = entry.Entity.GetType();
+                    var dateTimeProperties = entityType.GetProperties()
+                        .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+
+
+                    // Ensure all DateTime properties are in UTC
+                    foreach (var prop in dateTimeProperties)
+                    {
+                        // Get current value
+                        var value = prop.GetValue(entry.Entity) as DateTime?;
+
+                        if (value.HasValue && value.Value.Kind != DateTimeKind.Utc)
+                        {
+                            // Set value back as UTC
+                            prop.SetValue(entry.Entity, DateTime.SpecifyKind(value.Value, DateTimeKind.Utc));
                         }
                     }
                 }

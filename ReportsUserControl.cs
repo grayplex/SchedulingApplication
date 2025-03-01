@@ -139,8 +139,8 @@ namespace SchedulingApplication
                 // Convert times to user's local time
                 foreach (var appointment in _consultantSchedule)
                 {
-                    appointment.Start = TimeZoneHelper.UtcToLocal(appointment.Start);
-                    appointment.End = TimeZoneHelper.UtcToLocal(appointment.End);
+                    appointment.Start = TimeZoneHelper.ConvertFromUtc(appointment.Start);
+                    appointment.End = TimeZoneHelper.ConvertFromUtc(appointment.End);
                 }
 
                 // Populate DataGridView

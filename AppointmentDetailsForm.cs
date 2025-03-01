@@ -32,11 +32,11 @@ namespace SchedulingApplication
                 lblType.Text = _appointment.Type ?? "";
 
                 // Times - Display in user's local time
-                lblStart.Text = _appointment.LocalStartDateTime;
-                lblEnd.Text = _appointment.LocalEndDateTime;
+                lblStart.Text = _appointment.DisplayStartDateTime;
+                lblEnd.Text = _appointment.DisplayEndDateTime;
 
                 // Add timezone information
-                TimeZoneInfo userTimeZone = TimeZoneHelper.GetLocalTimeZone();
+                TimeZoneInfo userTimeZone = TimeZoneHelper.ActiveTimeZone;
                 lblTimeZone.Text = $"(Time Zone: {userTimeZone.DisplayName})";
 
                 // Additional Details
@@ -69,8 +69,8 @@ namespace SchedulingApplication
                 }
 
                 // Audit Information
-                lblCreatedBy.Text = $"{_appointment.CreatedBy} on {_appointment.LocalCreateDate}";
-                lblLastUpdated.Text = $"{_appointment.LastUpdateBy} on {_appointment.LocalLastUpdate}";
+                lblCreatedBy.Text = $"{_appointment.CreatedBy} on {_appointment.CreateDate}";
+                lblLastUpdated.Text = $"{_appointment.LastUpdateBy} on {_appointment.LastUpdate}";
             }
             catch (Exception ex)
             {
