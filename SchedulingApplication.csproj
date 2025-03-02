@@ -207,6 +207,9 @@
     <EmbeddedResource Include="AppointmentEditorForm.resx">
       <DependentUpon>AppointmentEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CalendarUserControl.resx">
+      <DependentUpon>CalendarUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomerAppointmentsForm.resx">
       <DependentUpon>CustomerAppointmentsForm.cs</DependentUpon>
     </EmbeddedResource>

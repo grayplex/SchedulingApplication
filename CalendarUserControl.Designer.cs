@@ -112,7 +112,7 @@
             this.btnNextMonth.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNextMonth.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNextMonth.ForeColor = System.Drawing.Color.White;
-            this.btnNextMonth.Location = new System.Drawing.Point(500, 8);
+            this.btnNextMonth.Location = new System.Drawing.Point(560, 8);
             this.btnNextMonth.Name = "btnNextMonth";
             this.btnNextMonth.Size = new System.Drawing.Size(40, 33);
             this.btnNextMonth.TabIndex = 2;
@@ -137,7 +137,7 @@
             this.btnPreviousMonth.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPreviousMonth.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPreviousMonth.ForeColor = System.Drawing.Color.White;
-            this.btnPreviousMonth.Location = new System.Drawing.Point(350, 8);
+            this.btnPreviousMonth.Location = new System.Drawing.Point(300, 8);
             this.btnPreviousMonth.Name = "btnPreviousMonth";
             this.btnPreviousMonth.Size = new System.Drawing.Size(40, 33);
             this.btnPreviousMonth.TabIndex = 0;
