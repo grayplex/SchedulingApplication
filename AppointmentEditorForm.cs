@@ -110,8 +110,15 @@ namespace SchedulingApplication
 
         private void SetupTimeMenus()
         {
-            // Common business hour start times (in local timezone)
+            // Create context menus for time selection
             _commonTimesMenu = new ContextMenuStrip();
+            _durationMenu = new ContextMenuStrip();
+
+            // Create time options that reflect business hours in the current timezone
+            UpdateTimeMenuOptions();
+
+            // Common business hour start times (in local timezone)
+            /*
             _commonTimesMenu.Items.Add("9:00 AM", null, (s, e) => SetTimeOnly(dtStart, 9, 0));
             _commonTimesMenu.Items.Add("10:00 AM", null, (s, e) => SetTimeOnly(dtStart, 10, 0));
             _commonTimesMenu.Items.Add("11:00 AM", null, (s, e) => SetTimeOnly(dtStart, 11, 0));
@@ -120,9 +127,9 @@ namespace SchedulingApplication
             _commonTimesMenu.Items.Add("2:00 PM", null, (s, e) => SetTimeOnly(dtStart, 14, 0));
             _commonTimesMenu.Items.Add("3:00 PM", null, (s, e) => SetTimeOnly(dtStart, 15, 0));
             _commonTimesMenu.Items.Add("4:00 PM", null, (s, e) => SetTimeOnly(dtStart, 16, 0));
+            */
 
             // Common durations
-            _durationMenu = new ContextMenuStrip();
             _durationMenu.Items.Add("30 Minutes", null, (s, e) => SetDuration(30));
             _durationMenu.Items.Add("1 Hour", null, (s, e) => SetDuration(60));
             _durationMenu.Items.Add("1.5 Hours", null, (s, e) => SetDuration(90));
@@ -131,6 +138,45 @@ namespace SchedulingApplication
             // Assign menus to date time pickers
             dtStart.ContextMenuStrip = _commonTimesMenu;
             dtEnd.ContextMenuStrip = _durationMenu;
+
+            // Subscribe to Timezone change event
+            TimeZoneHelper.TimezonePreferenceChanged += (s, e) => UpdateTimeMenuOptions();
+        }
+
+        private void UpdateTimeMenuOptions()
+        {
+            // Clear existing items
+            _commonTimesMenu.Items.Clear();
+
+            // Business hours in UTC (14:00 - 22:00)
+            DateTime utcBusinessStart = DateTime.SpecifyKind(DateTime.UtcNow.Date.AddHours(14), DateTimeKind.Utc);
+            DateTime utcBusinessEnd = DateTime.SpecifyKind(DateTime.UtcNow.Date.AddHours(22), DateTimeKind.Utc);
+
+            // Convert UTC business hours to the active timezone
+            DateTime localBusinessStart = TimeZoneHelper.ConvertFromUtc(utcBusinessStart);
+            DateTime localBusinessEnd = TimeZoneHelper.ConvertFromUtc(utcBusinessEnd);
+
+            // Get hour range in local timezone
+            int startHour = localBusinessStart.Hour;
+            int endHour = localBusinessEnd.Hour;
+
+            // Create menu items for each hour in the business hour range
+            for (int hour = startHour; hour < endHour; hour++)
+            {
+                int displayHour = hour > 12 ? hour - 12 : hour;
+                string amPm = hour >= 12 ? "PM" : "AM";
+                string timeText = $"{displayHour}:00 {amPm}";
+
+                // For 12 AM/PM special case
+                if (displayHour == 0)
+                {
+                    timeText = $"12:00 {amPm}";
+                }
+
+                // Create the menu item with a closure to capture the current hour
+                int capturedHour = hour;
+                _commonTimesMenu.Items.Add(timeText, null, (s, e) => SetTimeOnly(dtStart, capturedHour, 0));
+            }
         }
 
         private void PopulateAppointmentFields()
