@@ -28,7 +28,7 @@ namespace SchedulingApplication
             // Show user's time zone info
             lblTimeZone.Text = $"Your time zone: {TimeZoneHelper.LocalTimeZone}";
 
-            TimeZoneHelper.TimezonePreferenceChanged += (s, e) => UpdateTimezoneInfo();
+            TimeZoneHelper.TimezonePreferenceChanged += TimezonePreferenceChanged_Handler;
 
             UpdateTimezoneInfo();
 
@@ -225,15 +225,44 @@ namespace SchedulingApplication
         {
             // Update the timezone preference
             TimeZoneHelper.UseBusinessTimezone = chkUseBusinessTime.Checked;
-
-            // Update timezone info display
-            UpdateTimezoneInfo();
         }
 
         private void UpdateTimezoneInfo()
         {
             // Update the timezone label in the status bar
             lblTimeZone.Text = $"Timezone: {TimeZoneHelper.ActiveTimeZone.DisplayName}";
+        }
+
+        private void TimezonePreferenceChanged_Handler(object sender, EventArgs e)
+        {
+            // Update timezone info display
+            UpdateTimezoneInfo();
+
+            // Refresh the upcoming appointments list
+            LoadUpcomingAppointments();
+
+            // Refresh the active view as well, since it might need to display times
+            RefreshActiveView();
+        }
+
+        private void RefreshActiveView()
+        {
+            // Determine which view is currently active and refresh it
+            if (pnlContent.Controls.Count > 0)
+            {
+                if (pnlContent.Controls[0] is CalendarUserControl calendarView)
+                {
+                    calendarView.RefreshData();
+                }
+                else if (pnlContent.Controls[0] is AppointmentsUserControl appointmentsView)
+                {
+                    appointmentsView.RefreshData();
+                }
+                else if (pnlContent.Controls[0] is CustomersUserControl customersView)
+                {
+                    customersView.RefreshData();
+                }
+            }
         }
     }
 }

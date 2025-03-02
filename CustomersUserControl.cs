@@ -94,6 +94,8 @@ namespace SchedulingApplication
                     }
                 }
 
+                dgvCustomers.ClearSelection();
+
                 // Update button states
                 UpdateButtonStates();
             }

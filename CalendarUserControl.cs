@@ -32,11 +32,16 @@ namespace SchedulingApplication
             dgvAppointments.CellClick += DgvAppointments_CellClick;
             dgvAppointments.CellDoubleClick += DgvAppointments_CellDoubleClick;
 
+            // Subscribe to timezone preference changes
+            TimeZoneHelper.TimezonePreferenceChanged += TimezonePreferenceChanged_Handler;
+
             // Update the UI
             UpdateCalendarDisplay();
             UpdateMonthDisplay();
             LoadSelectedDayAppointments();
         }
+
+
 
         private void DgvAppointments_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -228,6 +233,8 @@ namespace SchedulingApplication
                     }
                 }
 
+                dgvAppointments.ClearSelection();
+
                 // Show/hide no appointments message and update buttons
                 lblNoAppointments.Visible = _selectedDateAppointments.Count == 0;
                 dgvAppointments.Visible = _selectedDateAppointments.Count > 0;
@@ -297,6 +304,14 @@ namespace SchedulingApplication
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return new List<Appointment>();
             }
+        }
+
+        private void TimezonePreferenceChanged_Handler(object sender, EventArgs e)
+        {
+            // Refresh the appointments view when timezone changes
+            LoadSelectedDayAppointments();
+            // Also refresh calendar display as it may have appointment indicators
+            UpdateCalendarDisplay();
         }
 
         // Method to refresh data from outside the control
