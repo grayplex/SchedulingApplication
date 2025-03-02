@@ -88,7 +88,7 @@ namespace SchedulingApplication.Data
                 .HasColumnName("address2");
         }
 
-        // In ApplicationDbContext.cs
+        /*
         public override int SaveChanges()
         {
             // Iterate through all Added/Modified entities
@@ -136,5 +136,6 @@ namespace SchedulingApplication.Data
 
             return base.SaveChanges();
         }
+        */
     }
 }

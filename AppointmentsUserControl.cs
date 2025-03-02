@@ -102,16 +102,26 @@ namespace SchedulingApplication
                 // Populate grid with data
                 foreach (var appt in _appointments)
                 {
+
+                    Console.WriteLine($"Raw Start from DB: {appt.Start} (Kind: {appt.Start.Kind})");
+
                     appt.Start = DateTime.SpecifyKind(appt.Start, DateTimeKind.Utc);
                     appt.End = DateTime.SpecifyKind(appt.End, DateTimeKind.Utc);
 
+                    Console.WriteLine($"After fixing Kind: {appt.Start} (Kind: {appt.Start.Kind})");
+                    Console.WriteLine($"DisplayStart: {appt.DisplayStart} (Kind: {appt.DisplayStart.Kind})");
+
+
+
                     // Debug log
+                    /*
                     Console.WriteLine($"Appointment: {appt.Title}");
                     Console.WriteLine($"  DB Start: {appt.Start} (Kind: {appt.Start.Kind})");
                     Console.WriteLine($"  DB End: {appt.End} (Kind: {appt.End.Kind})");
                     Console.WriteLine($"  Display Start: {appt.DisplayStart} (Kind: {appt.DisplayStart.Kind})");
                     Console.WriteLine($"  Display End: {appt.DisplayEnd} (Kind: {appt.DisplayEnd.Kind})");
                     Console.WriteLine($"  Active TZ: {TimeZoneHelper.ActiveTimeZone.Id}");
+                    */
 
                     dgvAppointments.Rows.Add(
                         appt.AppointmentId,

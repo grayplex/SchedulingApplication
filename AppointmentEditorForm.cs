@@ -316,10 +316,14 @@ namespace SchedulingApplication
             }
 
             // Check business hours (9 AM to 5 PM)
-            var businessStart = new TimeSpan(9, 0, 0);
-            var businessEnd = new TimeSpan(17, 0, 0);
+            //var businessStart = new TimeSpan(9, 0, 0);
+            //var businessEnd = new TimeSpan(17, 0, 0);
+            var utcBusnessStart = new TimeSpan(14, 0, 0);
+            var utcBusinessEnd = new TimeSpan(22, 0, 0);
+            var utcStartTime = TimeZoneHelper.ConvertToUtc(startTime);
+            var utcEndTime = TimeZoneHelper.ConvertToUtc(endTime);
 
-            if (startTime.TimeOfDay < businessStart || startTime.TimeOfDay >= businessEnd)
+            if (utcStartTime.TimeOfDay < utcBusnessStart || utcStartTime.TimeOfDay >= utcBusinessEnd)
             {
                 lblValidation.Text = "Appointment start time must be between 9:00 AM and 5:00 PM Eastern Time.";
                 lblValidation.Visible = true;
@@ -327,7 +331,7 @@ namespace SchedulingApplication
                 return false;
             }
 
-            if (endTime.TimeOfDay <= businessStart || endTime.TimeOfDay > businessEnd)
+            if (utcEndTime.TimeOfDay <= utcBusnessStart || utcEndTime.TimeOfDay > utcBusinessEnd)
             {
                 lblValidation.Text = "Appointment end time must be between 9:00 AM and 5:00 PM Eastern Time.";
                 lblValidation.Visible = true;

@@ -59,14 +59,14 @@ namespace SchedulingApplication
                 lstUpcomingAppointments.Items.Clear();
                 foreach (var appointment in _upcomingAppointments)
                 {
-                    appointment.Start = TimeZoneHelper.ConvertFromUtc(appointment.Start);
+                    var localStart = TimeZoneHelper.ConvertFromUtc(appointment.Start);
 
                     lstUpcomingAppointments.Items.Add(new ListViewItem
                     {
                         Text = appointment.Title,
                         SubItems =
                     {
-                        appointment.Start.ToString("MM/dd/yyyy hh:mm tt")
+                        localStart.ToString("MM/dd/yyyy hh:mm tt")
                     }
                     });
                 }

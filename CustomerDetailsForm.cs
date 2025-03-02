@@ -1,4 +1,5 @@
 ﻿using SchedulingApplication.Models;
+using SchedulingApplication.Utilities;
 using System;
 using System.Windows.Forms;
 
@@ -36,8 +37,10 @@ namespace SchedulingApplication
                 lblPhone.Text = _customer.Address.Phone;
 
                 // Audit Information
-                lblCreatedBy.Text = $"{_customer.CreatedBy} on {_customer.CreateDate:MM/dd/yyyy hh:mm tt}";
-                lblLastUpdated.Text = $"{_customer.LastUpdateBy} on {_customer.LastUpdate:MM/dd/yyyy hh:mm tt}";
+                var displayCreateDate = TimeZoneHelper.ConvertFromUtc(_customer.CreateDate);
+                var displayUpdateDate = TimeZoneHelper.ConvertFromUtc(_customer.LastUpdate);
+                lblCreatedBy.Text = $"{_customer.CreatedBy} on {displayCreateDate:MM/dd/yyyy hh:mm tt}";
+                lblLastUpdated.Text = $"{_customer.LastUpdateBy} on {displayUpdateDate:MM/dd/yyyy hh:mm tt}";
             }
             catch (Exception ex)
             {
