@@ -90,7 +90,7 @@
             this.lblWelcome.ForeColor = System.Drawing.Color.White;
             this.lblWelcome.Location = new System.Drawing.Point(927, 25);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(142, 17);
+            this.lblWelcome.Size = new System.Drawing.Size(139, 17);
             this.lblWelcome.TabIndex = 1;
             this.lblWelcome.Text = "Welcome, Username";
             // 
@@ -101,7 +101,7 @@
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(24, 21);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(222, 24);
+            this.lblTitle.Size = new System.Drawing.Size(226, 24);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Scheduling Application";
             // 
@@ -122,8 +122,8 @@
             // 
             // pnlUpcomingAppointments
             // 
-            this.pnlUpcomingAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.pnlUpcomingAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlUpcomingAppointments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(249)))), ((int)(((byte)(255)))));
             this.pnlUpcomingAppointments.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -136,8 +136,8 @@
             // 
             // lstUpcomingAppointments
             // 
-            this.lstUpcomingAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.lstUpcomingAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstUpcomingAppointments.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colTitle,
@@ -162,7 +162,7 @@
             // 
             // lblUpcomingAppointments
             // 
-            this.lblUpcomingAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblUpcomingAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblUpcomingAppointments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(212)))));
             this.lblUpcomingAppointments.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -176,7 +176,7 @@
             // 
             // btnReports
             // 
-            this.btnReports.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnReports.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReports.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -191,7 +191,7 @@
             // 
             // btnCustomers
             // 
-            this.btnCustomers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnCustomers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCustomers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomers.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -206,7 +206,7 @@
             // 
             // btnAppointments
             // 
-            this.btnAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnAppointments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAppointments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAppointments.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -221,7 +221,7 @@
             // 
             // btnCalendar
             // 
-            this.btnCalendar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnCalendar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCalendar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCalendar.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -236,8 +236,8 @@
             // 
             // pnlContent
             // 
-            this.pnlContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.pnlContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlContent.BackColor = System.Drawing.Color.White;
             this.pnlContent.Location = new System.Drawing.Point(240, 64);
@@ -251,6 +251,7 @@
             this.pnlFooter.Controls.Add(this.lblTimeZone);
             this.pnlFooter.Controls.Add(this.lblUser);
             this.pnlFooter.Controls.Add(this.lblCopyright);
+            this.pnlFooter.Controls.Add(this.chkUseBusinessTime);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlFooter.Location = new System.Drawing.Point(240, 689);
             this.pnlFooter.Name = "pnlFooter";
@@ -262,28 +263,19 @@
             this.lblTimeZone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTimeZone.AutoSize = true;
             this.lblTimeZone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
-            this.lblTimeZone.Location = new System.Drawing.Point(689, 12);
+            this.lblTimeZone.Location = new System.Drawing.Point(485, 12);
             this.lblTimeZone.Name = "lblTimeZone";
-            this.lblTimeZone.Size = new System.Drawing.Size(253, 13);
+            this.lblTimeZone.Size = new System.Drawing.Size(265, 13);
             this.lblTimeZone.TabIndex = 2;
             this.lblTimeZone.Text = "Your time zone: Pacific Standard Time (Standard Time)";
-            //
-            // chkUseBusinessTime
-            //
-            this.chkUseBusinessTime.Text = "Use Business Hours (EST)";
-            this.chkUseBusinessTime.AutoSize = true;
-            this.chkUseBusinessTime.Location = new System.Drawing.Point(500, 12);
-            this.chkUseBusinessTime.CheckedChanged += ChkUseBusinessTime_CheckedChanged;
-            this.chkUseBusinessTime.Checked = SchedulingApplication.Utilities.TimeZoneHelper.UseBusinessTimezone;
-            this.pnlFooter.Controls.Add(this.chkUseBusinessTime);
             // 
             // lblUser
             // 
             this.lblUser.AutoSize = true;
             this.lblUser.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
-            this.lblUser.Location = new System.Drawing.Point(365, 12);
+            this.lblUser.Location = new System.Drawing.Point(186, 12);
             this.lblUser.Name = "lblUser";
-            this.lblUser.Size = new System.Drawing.Size(108, 13);
+            this.lblUser.Size = new System.Drawing.Size(91, 13);
             this.lblUser.TabIndex = 1;
             this.lblUser.Text = "Logged in as: test";
             // 
@@ -293,9 +285,18 @@
             this.lblCopyright.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(112)))), ((int)(((byte)(112)))));
             this.lblCopyright.Location = new System.Drawing.Point(20, 12);
             this.lblCopyright.Name = "lblCopyright";
-            this.lblCopyright.Size = new System.Drawing.Size(172, 13);
+            this.lblCopyright.Size = new System.Drawing.Size(160, 13);
             this.lblCopyright.TabIndex = 0;
             this.lblCopyright.Text = "© 2025 - Scheduling Application";
+            // 
+            // chkUseBusinessTime
+            // 
+            this.chkUseBusinessTime.AutoSize = true;
+            this.chkUseBusinessTime.Location = new System.Drawing.Point(328, 12);
+            this.chkUseBusinessTime.Name = "chkUseBusinessTime";
+            this.chkUseBusinessTime.Size = new System.Drawing.Size(151, 17);
+            this.chkUseBusinessTime.TabIndex = 3;
+            this.chkUseBusinessTime.Text = "Use Business Hours (EST)";
             // 
             // MainForm
             // 
