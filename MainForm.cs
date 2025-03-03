@@ -40,6 +40,9 @@ namespace SchedulingApplication
 
             // Check for upcoming appointments alert
             CheckForUpcomingAppointments();
+
+            chkUseBusinessTime.CheckedChanged += ChkUseBusinessTime_CheckedChanged;
+            chkUseBusinessTime.Checked = TimeZoneHelper.UseBusinessTimezone;
         }
 
         private void LoadUpcomingAppointments()
@@ -174,8 +177,10 @@ namespace SchedulingApplication
             SetActiveButton(btnCalendar);
             pnlContent.Controls.Clear();
 
-            var calendarView = new CalendarUserControl();
-            calendarView.Dock = DockStyle.Fill;
+            var calendarView = new CalendarUserControl
+            {
+                Dock = DockStyle.Fill
+            };
             pnlContent.Controls.Add(calendarView);
         }
 
@@ -184,8 +189,10 @@ namespace SchedulingApplication
             SetActiveButton(btnAppointments);
             pnlContent.Controls.Clear();
 
-            var appointmentsView = new AppointmentsUserControl();
-            appointmentsView.Dock = DockStyle.Fill;
+            var appointmentsView = new AppointmentsUserControl
+            {
+                Dock = DockStyle.Fill
+            };
             pnlContent.Controls.Add(appointmentsView);
         }
 
@@ -194,8 +201,10 @@ namespace SchedulingApplication
             SetActiveButton(btnCustomers);
             pnlContent.Controls.Clear();
 
-            var customersView = new CustomersUserControl();
-            customersView.Dock = DockStyle.Fill;
+            var customersView = new CustomersUserControl
+            {
+                Dock = DockStyle.Fill
+            };
             pnlContent.Controls.Add(customersView);
         }
 
@@ -204,8 +213,10 @@ namespace SchedulingApplication
             SetActiveButton(btnReports);
             pnlContent.Controls.Clear();
 
-            var reportsView = new ReportsUserControl();
-            reportsView.Dock = DockStyle.Fill;
+            var reportsView = new ReportsUserControl
+            {
+                Dock = DockStyle.Fill
+            };
             pnlContent.Controls.Add(reportsView);
         }
 
