@@ -3,6 +3,7 @@ using SchedulingApplication.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
@@ -25,6 +26,13 @@ namespace SchedulingApplication
         //private bool _businessTimezoneActive = false;
         //private TimeZoneInfo _businessTimeZone;
         //private TimeZoneInfo _userTimeZone;
+        private Dictionary<Control, bool> _requiredFields = new Dictionary<Control, bool>();
+        private Dictionary<Control, Color> _originalColors = new Dictionary<Control, Color>();
+        private readonly Color InvalidFieldColor = Color.MistyRose;
+        private readonly Color ValidFieldColor = Color.White;
+        private readonly Color RequiredLabelColor = Color.FromArgb(192, 0, 0); // Dark red
+
+
 
         public AppointmentEditorForm(Appointment appointment, bool isNewAppointment)
         {
@@ -37,6 +45,8 @@ namespace SchedulingApplication
             // Set window title
             Text = isNewAppointment ? "Add New Appointment" : "Edit Appointment";
             lblWindowTitle.Text = Text;
+
+            RegisterRequiredFields();
 
             // Load reference data
             LoadReferenceData();
@@ -53,6 +63,114 @@ namespace SchedulingApplication
             dtStart.ValueChanged += DtStart_ValueChanged;
             //rbUserTimezone.CheckedChanged += RbUserTimezone_CheckedChanged;
             //rbBusinessTimezone.CheckedChanged += RbBusinessTimezone_CheckedChanged;
+            txtTitle.TextChanged += RequiredField_Changed;
+            txtDescription.TextChanged += RequiredField_Changed;
+            txtLocation.TextChanged += RequiredField_Changed;
+            txtContact.TextChanged += RequiredField_Changed;
+            txtUrl.TextChanged += RequiredField_Changed;
+            cboCustomer.SelectedIndexChanged += RequiredField_Changed;
+            cboType.SelectedIndexChanged += RequiredField_Changed;
+
+            ValidateAllFields();
+        }
+
+        private void RegisterRequiredFields()
+        {
+            _requiredFields[txtTitle] = false;
+            _requiredFields[txtDescription] = false;
+            _requiredFields[txtLocation] = false;
+            _requiredFields[txtContact] = false;
+            _requiredFields[txtUrl] = false;
+            _requiredFields[cboCustomer] = false;
+            _requiredFields[cboType] = false;
+
+            // store original colors
+            foreach (var control in _requiredFields.Keys)
+            {
+                _originalColors[control] = control.BackColor;
+            }
+
+            // Style the labels
+            StyleRequiredFieldLabels();
+        }
+
+        private void StyleRequiredFieldLabels()
+        {
+            // Add asterisks and make required field labels red
+            lblTitle.Text += " *";
+            lblTitle.ForeColor = RequiredLabelColor;
+
+            lblDescription.Text += " *";
+            lblDescription.ForeColor = RequiredLabelColor;
+
+            lblLocation.Text += " *";
+            lblLocation.ForeColor = RequiredLabelColor;
+
+            lblContact.Text += " *";
+            lblContact.ForeColor = RequiredLabelColor;
+
+            lblUrl.Text += " *";
+            lblUrl.ForeColor = RequiredLabelColor;
+
+            lblCustomer.Text += " *";
+            lblCustomer.ForeColor = RequiredLabelColor;
+
+            lblType.Text += " *";
+            lblType.ForeColor = RequiredLabelColor;
+
+            // Add a legend for required fields
+            Label lblRequiredLegend = new Label
+            {
+                Text = "* Required Field",
+                ForeColor = RequiredLabelColor,
+                AutoSize = true,
+                Location = new Point(20, 590)
+            };
+            this.pnlContent.Controls.Add(lblRequiredLegend);
+        }
+
+        private void RequiredField_Changed(object sender, EventArgs e)
+        {
+            if (sender is Control control && _requiredFields.ContainsKey(control))
+            {
+                ValidateControl(control);
+                UpdateSaveButtonState();
+            }
+        }
+
+        private void ValidateControl(Control control)
+        {
+            bool isValid = false;
+
+            if (control is TextBox textBox)
+            {
+                isValid = !string.IsNullOrWhiteSpace(textBox.Text);
+            }
+            else if (control is ComboBox comboBox)
+            {
+                isValid = comboBox.SelectedItem != null;
+            }
+
+            // Update the control's appearance
+            control.BackColor = isValid ? ValidFieldColor : InvalidFieldColor;
+
+            // Update validation state
+            _requiredFields[control] = isValid;
+        }
+
+        private void ValidateAllFields()
+        {
+            foreach (var control in _requiredFields.Keys.ToList())
+            {
+                ValidateControl(control);
+            }
+            UpdateSaveButtonState();
+        }
+
+        private void UpdateSaveButtonState()
+        {
+            // Enable the save button only if all required fields are valid
+            btnSave.Enabled = _requiredFields.Values.All(valid => valid);
         }
 
         private void LoadReferenceData()
@@ -258,6 +376,14 @@ namespace SchedulingApplication
             lblValidation.Text = string.Empty;
             lblValidation.Visible = false;
 
+            // First check if all required fields are valid
+            if (!_requiredFields.Values.All(valid => valid))
+            {
+                lblValidation.Text = "Please fill in all required fields.";
+                lblValidation.Visible = true;
+                return false;
+            }
+
             // Validate required fields
             if (cboCustomer.SelectedItem == null)
             {
@@ -307,7 +433,6 @@ namespace SchedulingApplication
                 return false;
             }
 
-            // URL is not required, but if provided should be valid
             if (!string.IsNullOrWhiteSpace(txtUrl.Text))
             {
                 try
@@ -445,6 +570,9 @@ namespace SchedulingApplication
         {
             try
             {
+                // Validate all fields first
+                ValidateAllFields();
+
                 // Validate appointment
                 if (!ValidateAppointment())
                 {
