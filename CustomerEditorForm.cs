@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -12,7 +13,13 @@ namespace SchedulingApplication
         private Customer _customer;
         private Address _address;
         private bool _isNewCustomer;
-        private string _validationMessage;
+
+        private Dictionary<Control, bool> _requiredFields = new Dictionary<Control, bool>();
+        private Dictionary<Control, Color> _originalColors = new Dictionary<Control, Color>();
+        private readonly Color InvalidFieldColor = Color.MistyRose;
+        private readonly Color ValidFieldColor = Color.White;
+        private readonly Color RequiredLabelColor = Color.FromArgb(192, 0, 0); // Dark red
+
 
         public CustomerEditorForm(Customer customer, bool isNewCustomer)
         {
@@ -22,6 +29,8 @@ namespace SchedulingApplication
             // Update title based on mode
             this.Text = isNewCustomer ? "Add New Customer" : "Edit Customer";
             lblWindowTitle.Text = this.Text;
+
+            RegisterRequiredFields();
 
             if (isNewCustomer)
             {
@@ -56,8 +65,118 @@ namespace SchedulingApplication
                 }
             }
 
+            // Setup validation event handlers
+            txtCustomerName.TextChanged += RequiredField_Changed;
+            txtAddress1.TextChanged += RequiredField_Changed;
+            txtPostalCode.TextChanged += RequiredField_Changed;
+            txtPhone.TextChanged += RequiredField_Changed;
+            cboCity.SelectedIndexChanged += RequiredField_Changed;
+            cboCountry.SelectedIndexChanged += RequiredField_Changed;
+
             // Load reference data
             LoadCountries();
+
+            // Initial validation
+            ValidateAllFields();
+
+            // Add handler for the save button
+            btnSave.Click += BtnSave_Click;
+            btnCancel.Click += BtnCancel_Click;
+        }
+
+        private void RegisterRequiredFields()
+        {
+            // Register all required fields with initial invalid state
+            _requiredFields[txtCustomerName] = false;
+            _requiredFields[txtAddress1] = false;
+            _requiredFields[txtPostalCode] = false;
+            _requiredFields[txtPhone] = false;
+            _requiredFields[cboCity] = false;
+            _requiredFields[cboCountry] = false;
+
+            // Store original colors
+            foreach (var control in _requiredFields.Keys)
+            {
+                _originalColors[control] = control.BackColor;
+            }
+
+            // Style the labels for required fields
+            StyleRequiredFieldLabels();
+        }
+
+        private void StyleRequiredFieldLabels()
+        {
+            // Add style for labels that already have asterisks in the designer
+            lblCustomerName.ForeColor = RequiredLabelColor;
+            lblAddress1.ForeColor = RequiredLabelColor;
+            lblCity.ForeColor = RequiredLabelColor;
+            lblCountry.ForeColor = RequiredLabelColor;
+            lblPostalCode.ForeColor = RequiredLabelColor;
+            lblPhone.ForeColor = RequiredLabelColor;
+
+            // Add a legend for required fields
+            Label lblRequiredLegend = new Label
+            {
+                Text = "* Required Field",
+                ForeColor = RequiredLabelColor,
+                AutoSize = true,
+                Location = new Point(20, 430) // Adjust position as needed
+            };
+            this.pnlContent.Controls.Add(lblRequiredLegend);
+        }
+
+        private void RequiredField_Changed(object sender, EventArgs e)
+        {
+            if (sender is Control control && _requiredFields.ContainsKey(control))
+            {
+                ValidateControl(control);
+                UpdateSaveButtonState();
+            }
+        }
+
+        private void ValidateControl(Control control)
+        {
+            bool isValid = false;
+
+            if (control is TextBox textBox)
+            {
+                // For phone field, add additional validation
+                if (control == txtPhone)
+                {
+                    string phone = textBox.Text.Trim();
+                    isValid = !string.IsNullOrWhiteSpace(phone) &&
+                             System.Text.RegularExpressions.Regex.IsMatch(phone, @"^[0-9\-]+$");
+                }
+                else
+                {
+                    isValid = !string.IsNullOrWhiteSpace(textBox.Text);
+                }
+            }
+            else if (control is ComboBox comboBox)
+            {
+                isValid = comboBox.SelectedItem != null;
+            }
+
+            // Update the control's appearance
+            control.BackColor = isValid ? ValidFieldColor : InvalidFieldColor;
+
+            // Update validation state
+            _requiredFields[control] = isValid;
+        }
+
+        private void ValidateAllFields()
+        {
+            foreach (var control in _requiredFields.Keys.ToList())
+            {
+                ValidateControl(control);
+            }
+            UpdateSaveButtonState();
+        }
+
+        private void UpdateSaveButtonState()
+        {
+            // Enable the save button only if all required fields are valid
+            btnSave.Enabled = _requiredFields.Values.All(valid => valid);
         }
 
         private void LoadCountries()
@@ -76,6 +195,8 @@ namespace SchedulingApplication
                 {
                     cboCountry.SelectedValue = _address.City.CountryId;
                 }
+
+                ValidateControl(cboCountry);
             }
             catch (Exception ex)
             {
@@ -134,6 +255,8 @@ namespace SchedulingApplication
                     cboCity.DataSource = null;
                     cboCity.Items.Clear();
                 }
+
+                ValidateControl(cboCity);
             }
             catch (Exception ex)
             {
@@ -144,74 +267,18 @@ namespace SchedulingApplication
 
         private bool ValidateCustomer()
         {
-            _validationMessage = string.Empty;
             lblValidationMessage.Text = string.Empty;
             lblValidationMessage.Visible = false;
 
-            // Trim values to handle whitespace
-            string customerName = txtCustomerName.Text?.Trim() ?? "";
-            string addressLine = txtAddress1.Text?.Trim() ?? "";
-            string addressLine2 = txtAddress2.Text?.Trim() ?? "";
-            string postalCode = txtPostalCode.Text?.Trim() ?? "";
-            string phone = txtPhone.Text?.Trim() ?? "";
-
-            // Required fields - check after trimming
-            if (string.IsNullOrWhiteSpace(customerName))
+            // Check if all required fields are valid
+            if (!_requiredFields.Values.All(valid => valid))
             {
-                _validationMessage = "Customer name is required.";
-                lblValidationMessage.Text = _validationMessage;
+                lblValidationMessage.Text = "Please fill in all required fields correctly.";
                 lblValidationMessage.Visible = true;
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(addressLine))
-            {
-                _validationMessage = "Address is required.";
-                lblValidationMessage.Text = _validationMessage;
-                lblValidationMessage.Visible = true;
-                return false;
-            }
-
-            if (cboCity.SelectedItem == null)
-            {
-                _validationMessage = "City is required.";
-                lblValidationMessage.Text = _validationMessage;
-                lblValidationMessage.Visible = true;
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(postalCode))
-            {
-                _validationMessage = "Postal code is required.";
-                lblValidationMessage.Text = _validationMessage;
-                lblValidationMessage.Visible = true;
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(phone))
-            {
-                _validationMessage = "Phone number is required.";
-                lblValidationMessage.Text = _validationMessage;
-                lblValidationMessage.Visible = true;
-                return false;
-            }
-
-            // Phone number format validation - only digits and dashes
-            if (!System.Text.RegularExpressions.Regex.IsMatch(phone, @"^[0-9\-]+$"))
-            {
-                _validationMessage = "Phone number can only contain digits and dashes.";
-                lblValidationMessage.Text = _validationMessage;
-                lblValidationMessage.Visible = true;
-                return false;
-            }
-
-            // Update trimmed values back to the text boxes
-            txtCustomerName.Text = customerName;
-            txtAddress1.Text = addressLine;
-            txtAddress2.Text = addressLine2;
-            txtPostalCode.Text = postalCode;
-            txtPhone.Text = phone;
-
+            // Additional validation can be added here if needed
             return true;
         }
 
@@ -219,6 +286,8 @@ namespace SchedulingApplication
         {
             try
             {
+                ValidateAllFields();
+
                 // Validate customer data
                 if (!ValidateCustomer())
                 {
@@ -287,8 +356,7 @@ namespace SchedulingApplication
             }
             catch (Exception ex)
             {
-                _validationMessage = $"Error saving customer: {ex.Message}";
-                lblValidationMessage.Text = _validationMessage;
+                lblValidationMessage.Text = $"Error saving customer: {ex.Message}";
                 lblValidationMessage.Visible = true;
             }
         }
@@ -303,6 +371,7 @@ namespace SchedulingApplication
         {
             // Load cities based on selected country
             LoadCities();
+            ValidateControl(cboCountry);
         }
     }
 }
