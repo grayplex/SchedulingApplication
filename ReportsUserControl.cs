@@ -197,7 +197,7 @@ namespace SchedulingApplication
                     .ToList();
 
                 // Populate DataGridView
-                dgvReport.DataSource = _customerStats;
+                dgvCustomerStats.DataSource = _customerStats;
 
                 if (_customerStats.Count == 0)
                 {

@@ -35,22 +35,28 @@
             this.lblAppointmentTypesYear = new System.Windows.Forms.Label();
             this.cbYear = new System.Windows.Forms.ComboBox();
             this.btnAppointmentTypes = new System.Windows.Forms.Button();
-            this.dgvReport = new System.Windows.Forms.DataGridView();
+            this.dgvAppointmentTypes = new System.Windows.Forms.DataGridView();
             this.tabConsultantSchedule = new System.Windows.Forms.TabPage();
             this.lblConsultant = new System.Windows.Forms.Label();
             this.cbConsultant = new System.Windows.Forms.ComboBox();
             this.btnConsultantSchedule = new System.Windows.Forms.Button();
+            this.dgvConsultantSchedule = new System.Windows.Forms.DataGridView();
             this.tabCustomerStats = new System.Windows.Forms.TabPage();
             this.btnCustomerStats = new System.Windows.Forms.Button();
-            this.dgvAppointmentTypes = new System.Windows.Forms.DataGridView();
-            this.dgvConsultantSchedule = new System.Windows.Forms.DataGridView();
+            this.dgvCustomerStats = new System.Windows.Forms.DataGridView();
+            this.pnlAppointmentTypes = new System.Windows.Forms.Panel();
+            this.pnlConsultant = new System.Windows.Forms.Panel();
+            this.pnlCustomerStats = new System.Windows.Forms.Panel();
             this.pnlTabs.SuspendLayout();
             this.tabAppointmentTypes.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvReport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointmentTypes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConsultantSchedule)).BeginInit();
             this.tabConsultantSchedule.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConsultantSchedule)).BeginInit();
             this.tabCustomerStats.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCustomerStats)).BeginInit();
+            this.pnlAppointmentTypes.SuspendLayout();
+            this.pnlConsultant.SuspendLayout();
+            this.pnlCustomerStats.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlHeader
@@ -89,9 +95,7 @@
             // 
             // tabAppointmentTypes
             // 
-            this.tabAppointmentTypes.Controls.Add(this.lblAppointmentTypesYear);
-            this.tabAppointmentTypes.Controls.Add(this.cbYear);
-            this.tabAppointmentTypes.Controls.Add(this.btnAppointmentTypes);
+            this.tabAppointmentTypes.Controls.Add(this.pnlAppointmentTypes);
             this.tabAppointmentTypes.Controls.Add(this.dgvAppointmentTypes);
             this.tabAppointmentTypes.Location = new System.Drawing.Point(4, 22);
             this.tabAppointmentTypes.Name = "tabAppointmentTypes";
@@ -101,7 +105,7 @@
             // 
             // lblAppointmentTypesYear
             // 
-            this.lblAppointmentTypesYear.Location = new System.Drawing.Point(10, 20);
+            this.lblAppointmentTypesYear.Location = new System.Drawing.Point(3, 24);
             this.lblAppointmentTypesYear.Name = "lblAppointmentTypesYear";
             this.lblAppointmentTypesYear.Size = new System.Drawing.Size(50, 23);
             this.lblAppointmentTypesYear.TabIndex = 0;
@@ -110,33 +114,33 @@
             // cbYear
             // 
             this.cbYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbYear.Location = new System.Drawing.Point(70, 17);
+            this.cbYear.Location = new System.Drawing.Point(59, 21);
             this.cbYear.Name = "cbYear";
             this.cbYear.Size = new System.Drawing.Size(100, 21);
             this.cbYear.TabIndex = 1;
             // 
             // btnAppointmentTypes
             // 
-            this.btnAppointmentTypes.Location = new System.Drawing.Point(200, 17);
+            this.btnAppointmentTypes.Location = new System.Drawing.Point(165, 21);
             this.btnAppointmentTypes.Name = "btnAppointmentTypes";
             this.btnAppointmentTypes.Size = new System.Drawing.Size(120, 23);
             this.btnAppointmentTypes.TabIndex = 2;
             this.btnAppointmentTypes.Text = "Generate Report";
-            //
+            // 
             // dgvAppointmentTypes
-            //
-            this.dgvAppointmentTypes.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dgvAppointmentTypes.Size = new System.Drawing.Size(892, 450);
-            this.dgvAppointmentTypes.Location = new System.Drawing.Point(0, 50);
+            // 
             this.dgvAppointmentTypes.AllowUserToAddRows = false;
             this.dgvAppointmentTypes.AllowUserToDeleteRows = false;
+            this.dgvAppointmentTypes.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvAppointmentTypes.Location = new System.Drawing.Point(0, 74);
+            this.dgvAppointmentTypes.Name = "dgvAppointmentTypes";
             this.dgvAppointmentTypes.ReadOnly = true;
+            this.dgvAppointmentTypes.Size = new System.Drawing.Size(892, 450);
+            this.dgvAppointmentTypes.TabIndex = 3;
             // 
             // tabConsultantSchedule
             // 
-            this.tabConsultantSchedule.Controls.Add(this.lblConsultant);
-            this.tabConsultantSchedule.Controls.Add(this.cbConsultant);
-            this.tabConsultantSchedule.Controls.Add(this.btnConsultantSchedule);
+            this.tabConsultantSchedule.Controls.Add(this.pnlConsultant);
             this.tabConsultantSchedule.Controls.Add(this.dgvConsultantSchedule);
             this.tabConsultantSchedule.Location = new System.Drawing.Point(4, 22);
             this.tabConsultantSchedule.Name = "tabConsultantSchedule";
@@ -167,20 +171,22 @@
             this.btnConsultantSchedule.Size = new System.Drawing.Size(120, 23);
             this.btnConsultantSchedule.TabIndex = 2;
             this.btnConsultantSchedule.Text = "Generate Report";
-            //
+            // 
             // dgvConsultantSchedule
-            //
-            this.dgvConsultantSchedule.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dgvConsultantSchedule.Size = new System.Drawing.Size(892, 450);
-            this.dgvConsultantSchedule.Location = new System.Drawing.Point(0, 50);
+            // 
             this.dgvConsultantSchedule.AllowUserToAddRows = false;
             this.dgvConsultantSchedule.AllowUserToDeleteRows = false;
+            this.dgvConsultantSchedule.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvConsultantSchedule.Location = new System.Drawing.Point(0, 74);
+            this.dgvConsultantSchedule.Name = "dgvConsultantSchedule";
             this.dgvConsultantSchedule.ReadOnly = true;
+            this.dgvConsultantSchedule.Size = new System.Drawing.Size(892, 450);
+            this.dgvConsultantSchedule.TabIndex = 3;
             // 
             // tabCustomerStats
             // 
-            this.tabCustomerStats.Controls.Add(this.btnCustomerStats);
-            this.tabCustomerStats.Controls.Add(this.dgvReport);
+            this.tabCustomerStats.Controls.Add(this.pnlCustomerStats);
+            this.tabCustomerStats.Controls.Add(this.dgvCustomerStats);
             this.tabCustomerStats.Location = new System.Drawing.Point(4, 22);
             this.tabCustomerStats.Name = "tabCustomerStats";
             this.tabCustomerStats.Size = new System.Drawing.Size(892, 524);
@@ -195,17 +201,48 @@
             this.btnCustomerStats.TabIndex = 0;
             this.btnCustomerStats.Text = "Generate Report";
             // 
-            // dgvReport
+            // dgvCustomerStats
             // 
-            this.dgvReport.AllowUserToAddRows = false;
-            this.dgvReport.AllowUserToDeleteRows = false;
-            this.dgvReport.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dgvReport.Location = new System.Drawing.Point(0, 50);
-            this.dgvReport.Name = "dgvReport";
-            this.dgvReport.ReadOnly = true;
-            this.dgvReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvReport.Size = new System.Drawing.Size(892, 450);
-            this.dgvReport.TabIndex = 3;
+            this.dgvCustomerStats.AllowUserToAddRows = false;
+            this.dgvCustomerStats.AllowUserToDeleteRows = false;
+            this.dgvCustomerStats.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvCustomerStats.Location = new System.Drawing.Point(0, 74);
+            this.dgvCustomerStats.Name = "dgvCustomerStats";
+            this.dgvCustomerStats.ReadOnly = true;
+            this.dgvCustomerStats.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCustomerStats.Size = new System.Drawing.Size(892, 450);
+            this.dgvCustomerStats.TabIndex = 3;
+            // 
+            // pnlAppointmentTypes
+            // 
+            this.pnlAppointmentTypes.Controls.Add(this.btnAppointmentTypes);
+            this.pnlAppointmentTypes.Controls.Add(this.cbYear);
+            this.pnlAppointmentTypes.Controls.Add(this.lblAppointmentTypesYear);
+            this.pnlAppointmentTypes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlAppointmentTypes.Location = new System.Drawing.Point(0, 0);
+            this.pnlAppointmentTypes.Name = "pnlAppointmentTypes";
+            this.pnlAppointmentTypes.Size = new System.Drawing.Size(892, 75);
+            this.pnlAppointmentTypes.TabIndex = 4;
+            // 
+            // pnlConsultant
+            // 
+            this.pnlConsultant.Controls.Add(this.btnConsultantSchedule);
+            this.pnlConsultant.Controls.Add(this.cbConsultant);
+            this.pnlConsultant.Controls.Add(this.lblConsultant);
+            this.pnlConsultant.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlConsultant.Location = new System.Drawing.Point(0, 0);
+            this.pnlConsultant.Name = "pnlConsultant";
+            this.pnlConsultant.Size = new System.Drawing.Size(892, 75);
+            this.pnlConsultant.TabIndex = 4;
+            // 
+            // pnlCustomerStats
+            // 
+            this.pnlCustomerStats.Controls.Add(this.btnCustomerStats);
+            this.pnlCustomerStats.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlCustomerStats.Location = new System.Drawing.Point(0, 0);
+            this.pnlCustomerStats.Name = "pnlCustomerStats";
+            this.pnlCustomerStats.Size = new System.Drawing.Size(892, 75);
+            this.pnlCustomerStats.TabIndex = 4;
             // 
             // ReportsUserControl
             // 
@@ -215,11 +252,14 @@
             this.Size = new System.Drawing.Size(900, 600);
             this.pnlTabs.ResumeLayout(false);
             this.tabAppointmentTypes.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvReport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointmentTypes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvConsultantSchedule)).EndInit();
             this.tabConsultantSchedule.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvConsultantSchedule)).EndInit();
             this.tabCustomerStats.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCustomerStats)).EndInit();
+            this.pnlAppointmentTypes.ResumeLayout(false);
+            this.pnlConsultant.ResumeLayout(false);
+            this.pnlCustomerStats.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -239,8 +279,11 @@
         private System.Windows.Forms.ComboBox cbConsultant;
         private System.Windows.Forms.Button btnConsultantSchedule;
         private System.Windows.Forms.Button btnCustomerStats;
-        private System.Windows.Forms.DataGridView dgvReport;
+        private System.Windows.Forms.DataGridView dgvCustomerStats;
         private System.Windows.Forms.DataGridView dgvAppointmentTypes;
         private System.Windows.Forms.DataGridView dgvConsultantSchedule;
+        private System.Windows.Forms.Panel pnlAppointmentTypes;
+        private System.Windows.Forms.Panel pnlConsultant;
+        private System.Windows.Forms.Panel pnlCustomerStats;
     }
 }
