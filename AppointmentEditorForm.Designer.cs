@@ -115,7 +115,7 @@ namespace SchedulingApplication
             this.grpBasicInfo.Controls.Add(this.lblDescription);
             this.grpBasicInfo.Controls.Add(this.txtDescription);
             this.grpBasicInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpBasicInfo.Location = new System.Drawing.Point(20, 340);
+            this.grpBasicInfo.Location = new System.Drawing.Point(20, 291);
             this.grpBasicInfo.Name = "grpBasicInfo";
             this.grpBasicInfo.Size = new System.Drawing.Size(560, 250);
             this.grpBasicInfo.TabIndex = 0;
@@ -194,7 +194,7 @@ namespace SchedulingApplication
             this.grpContactInfo.Controls.Add(this.lblUrl);
             this.grpContactInfo.Controls.Add(this.txtUrl);
             this.grpContactInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpContactInfo.Location = new System.Drawing.Point(20, 180);
+            this.grpContactInfo.Location = new System.Drawing.Point(20, 131);
             this.grpContactInfo.Name = "grpContactInfo";
             this.grpContactInfo.Size = new System.Drawing.Size(560, 160);
             this.grpContactInfo.TabIndex = 1;
@@ -259,7 +259,7 @@ namespace SchedulingApplication
             this.grpSchedule.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpSchedule.Location = new System.Drawing.Point(20, 20);
             this.grpSchedule.Name = "grpSchedule";
-            this.grpSchedule.Size = new System.Drawing.Size(560, 160);
+            this.grpSchedule.Size = new System.Drawing.Size(560, 111);
             this.grpSchedule.TabIndex = 2;
             this.grpSchedule.TabStop = false;
             this.grpSchedule.Text = "Schedule";
@@ -347,7 +347,7 @@ namespace SchedulingApplication
             this.lblValidation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblValidation.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblValidation.ForeColor = System.Drawing.Color.Red;
-            this.lblValidation.Location = new System.Drawing.Point(20, 593);
+            this.lblValidation.Location = new System.Drawing.Point(20, 634);
             this.lblValidation.Name = "lblValidation";
             this.lblValidation.Padding = new System.Windows.Forms.Padding(5);
             this.lblValidation.Size = new System.Drawing.Size(560, 26);
