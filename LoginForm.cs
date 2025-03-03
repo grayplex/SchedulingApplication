@@ -17,9 +17,8 @@ namespace SchedulingApplication
     {
         private string _username;
         private string _password;
-        private string _errorMessage;
-        private bool _isLoading;
-        private string _userLocation;
+        //private bool _isLoading;
+        //private readonly string _userLocation;
         private string _currentLanguage;
 
         public static User LoggedInUser { get; private set; }
@@ -30,7 +29,7 @@ namespace SchedulingApplication
 
             // Initialize location and language
             _currentLanguage = LocalizationManager.CurrentCulture == "en-US" ? "English" : "Español";
-            _userLocation = string.Format(LocalizationManager.GetTranslation("YourLocation"), LocalizationManager.UserLocation);
+            //_userLocation = string.Format(LocalizationManager.GetTranslation("YourLocation"), LocalizationManager.UserLocation);
 
             // Subscribe to language changes
             LocalizationManager.LanguageChanged += OnLanguageChanged;
@@ -68,7 +67,7 @@ namespace SchedulingApplication
             try
             {
                 lblError.Text = "";
-                _isLoading = true;
+                //_isLoading = true;
 
                 // Show loading indicator
                 panelLoading.Visible = true;
@@ -107,7 +106,7 @@ namespace SchedulingApplication
                                 // Invalid creds
                                 lblError.Text = LocalizationManager.GetTranslation("InvalidCredentials");
                                 panelLoading.Visible = false;
-                                _isLoading = false;
+                                //_isLoading = false;
                             }
                         });
                     }
@@ -118,7 +117,7 @@ namespace SchedulingApplication
                         {
                             lblError.Text = LocalizationManager.GetTranslation("LoginError", ex.Message);
                             panelLoading.Visible = false;
-                            _isLoading = false;
+                            //_isLoading = false;
                         });
                     }
                 });
@@ -127,7 +126,7 @@ namespace SchedulingApplication
             {
                 lblError.Text = LocalizationManager.GetTranslation("LoginError", ex.Message);
                 panelLoading.Visible = false;
-                _isLoading = false;
+                //_isLoading = false;
             }
         }
 

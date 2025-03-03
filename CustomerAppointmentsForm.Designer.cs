@@ -36,13 +36,13 @@
             this.btnAddAppointment = new System.Windows.Forms.Button();
             this.pnlGrid = new System.Windows.Forms.Panel();
             this.dgvAppointments = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Consultant = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Start = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.End = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Location = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colConsultant = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlButtons = new System.Windows.Forms.Panel();
             this.btnViewDetails = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
@@ -136,13 +136,13 @@
             this.dgvAppointments.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAppointments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Id,
-            this.Title,
-            this.Consultant,
-            this.Type,
-            this.Start,
-            this.End,
-            this.Location});
+            this.colId,
+            this.colTitle,
+            this.colConsultant,
+            this.colType,
+            this.colStart,
+            this.colEnd,
+            this.colLocation});
             this.dgvAppointments.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAppointments.Location = new System.Drawing.Point(10, 10);
             this.dgvAppointments.MultiSelect = false;
@@ -154,52 +154,52 @@
             // 
             // Id
             // 
-            this.Id.HeaderText = "ID";
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            this.Id.Visible = false;
+            this.colId.HeaderText = "ID";
+            this.colId.Name = "Id";
+            this.colId.ReadOnly = true;
+            this.colId.Visible = false;
             // 
             // Title
             // 
-            this.Title.HeaderText = "Title";
-            this.Title.Name = "Title";
-            this.Title.ReadOnly = true;
-            this.Title.Width = 180;
+            this.colTitle.HeaderText = "Title";
+            this.colTitle.Name = "Title";
+            this.colTitle.ReadOnly = true;
+            this.colTitle.Width = 180;
             // 
             // Consultant
             // 
-            this.Consultant.HeaderText = "Consultant";
-            this.Consultant.Name = "Consultant";
-            this.Consultant.ReadOnly = true;
-            this.Consultant.Width = 120;
+            this.colConsultant.HeaderText = "Consultant";
+            this.colConsultant.Name = "Consultant";
+            this.colConsultant.ReadOnly = true;
+            this.colConsultant.Width = 120;
             // 
             // Type
             // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            this.Type.Width = 120;
+            this.colType.HeaderText = "Type";
+            this.colType.Name = "Type";
+            this.colType.ReadOnly = true;
+            this.colType.Width = 120;
             // 
             // Start
             // 
-            this.Start.HeaderText = "Start";
-            this.Start.Name = "Start";
-            this.Start.ReadOnly = true;
-            this.Start.Width = 170;
+            this.colStart.HeaderText = "Start";
+            this.colStart.Name = "Start";
+            this.colStart.ReadOnly = true;
+            this.colStart.Width = 170;
             // 
             // End
             // 
-            this.End.HeaderText = "End";
-            this.End.Name = "End";
-            this.End.ReadOnly = true;
-            this.End.Width = 170;
+            this.colEnd.HeaderText = "End";
+            this.colEnd.Name = "End";
+            this.colEnd.ReadOnly = true;
+            this.colEnd.Width = 170;
             // 
             // Location
             // 
-            this.Location.HeaderText = "Location";
-            this.Location.Name = "Location";
-            this.Location.ReadOnly = true;
-            this.Location.Width = 150;
+            this.colLocation.HeaderText = "Location";
+            this.colLocation.Name = "Location";
+            this.colLocation.ReadOnly = true;
+            this.colLocation.Width = 150;
             // 
             // pnlButtons
             // 
@@ -305,6 +305,18 @@
         private System.Windows.Forms.Button btnAddAppointment;
         private System.Windows.Forms.Panel pnlGrid;
         private System.Windows.Forms.DataGridView dgvAppointments;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn colId;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn colTitle;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn colConsultant;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn colType;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn colStart;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn colEnd;
+        //private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
+        private System.Windows.Forms.Panel pnlButtons;
+        private System.Windows.Forms.Button btnViewDetails;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTitle;
         private System.Windows.Forms.DataGridViewTextBoxColumn colConsultant;
@@ -312,17 +324,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colStart;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEnd;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLocation;
-        private System.Windows.Forms.Panel pnlButtons;
-        private System.Windows.Forms.Button btnViewDetails;
-        private System.Windows.Forms.Button btnEdit;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Title;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Consultant;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Start;
-        private System.Windows.Forms.DataGridViewTextBoxColumn End;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Location;
     }
 }

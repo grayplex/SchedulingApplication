@@ -162,8 +162,8 @@
         private System.Windows.Forms.ColumnHeader colCustomer;
         private System.Windows.Forms.Button btnViewDetails;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Panel pnlButtons;
+        //private System.Windows.Forms.Panel pnlHeader;
+        //private System.Windows.Forms.Panel pnlButtons;
         private System.Windows.Forms.Panel panel1;
     }
 }

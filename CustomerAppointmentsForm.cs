@@ -10,7 +10,7 @@ namespace SchedulingApplication
 {
     public partial class CustomerAppointmentsForm : Form
     {
-        private Customer _customer;
+        private readonly Customer _customer;
         private List<Appointment> _appointments;
         private Appointment _selectedAppointment;
 

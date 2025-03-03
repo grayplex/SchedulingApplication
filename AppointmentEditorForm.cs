@@ -12,8 +12,8 @@ namespace SchedulingApplication
 {
     public partial class AppointmentEditorForm : Form
     {
-        private Appointment _appointment;
-        private bool _isNewAppointment;
+        private readonly Appointment _appointment;
+        private readonly bool _isNewAppointment;
         //private string _validationMessage;
         private List<Customer> _customers;
         private List<string> _appointmentTypes;
@@ -26,8 +26,8 @@ namespace SchedulingApplication
         //private bool _businessTimezoneActive = false;
         //private TimeZoneInfo _businessTimeZone;
         //private TimeZoneInfo _userTimeZone;
-        private Dictionary<Control, bool> _requiredFields = new Dictionary<Control, bool>();
-        private Dictionary<Control, Color> _originalColors = new Dictionary<Control, Color>();
+        private readonly Dictionary<Control, bool> _requiredFields = new Dictionary<Control, bool>();
+        private readonly Dictionary<Control, Color> _originalColors = new Dictionary<Control, Color>();
         private readonly Color InvalidFieldColor = Color.MistyRose;
         private readonly Color ValidFieldColor = Color.White;
         private readonly Color RequiredLabelColor = Color.FromArgb(192, 0, 0); // Dark red

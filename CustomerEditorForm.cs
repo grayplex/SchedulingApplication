@@ -10,12 +10,12 @@ namespace SchedulingApplication
 {
     public partial class CustomerEditorForm : Form
     {
-        private Customer _customer;
-        private Address _address;
-        private bool _isNewCustomer;
+        private readonly Customer _customer;
+        private readonly Address _address;
+        private readonly bool _isNewCustomer;
 
-        private Dictionary<Control, bool> _requiredFields = new Dictionary<Control, bool>();
-        private Dictionary<Control, Color> _originalColors = new Dictionary<Control, Color>();
+        private readonly Dictionary<Control, bool> _requiredFields = new Dictionary<Control, bool>();
+        private readonly Dictionary<Control, Color> _originalColors = new Dictionary<Control, Color>();
         private readonly Color InvalidFieldColor = Color.MistyRose;
         private readonly Color ValidFieldColor = Color.White;
         private readonly Color RequiredLabelColor = Color.FromArgb(192, 0, 0); // Dark red
