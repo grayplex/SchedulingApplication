@@ -3,6 +3,7 @@ using SchedulingApplication.Utilities;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace SchedulingApplication
 {
@@ -48,24 +49,12 @@ namespace SchedulingApplication
                 // Add business hours indicator
                 if (!_appointment.IsWithinBusinessHours)
                 {
-                    Panel warningPanel = new Panel
-                    {
-                        BackColor = Color.LightYellow,
-                        BorderStyle = BorderStyle.FixedSingle,
-                        Dock = DockStyle.Top,
-                        Height = 30
-                    };
-
-                    Label warningLabel = new Label
-                    {
-                        Text = "Note: This appointment is outside normal business hours.",
-                        ForeColor = Color.DarkGoldenrod,
-                        Dock = DockStyle.Fill,
-                        TextAlign = ContentAlignment.MiddleCenter
-                    };
-
-                    warningPanel.Controls.Add(warningLabel);
-                    groupSchedule.Controls.Add(warningPanel);
+                    pnlWarning.Visible = true;
+                    lblTimeZone.Location = new Point(lblTimeZone.Location.X, lblTimeZone.Location.Y + 20);
+                    lblEnd.Location = new Point(lblEnd.Location.X, lblEnd.Location.Y + 20);
+                    lblStart.Location = new Point(lblStart.Location.X, lblStart.Location.Y + 20);
+                    lblEndLabel.Location = new Point(lblEndLabel.Location.X, lblEndLabel.Location.Y + 20);
+                    lblStartLabel.Location = new Point(lblStartLabel.Location.X, lblStartLabel.Location.Y + 20);
                 }
 
                 // Audit Information

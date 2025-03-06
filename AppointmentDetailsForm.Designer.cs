@@ -1,4 +1,6 @@
-﻿namespace SchedulingApplication
+﻿using System.Drawing;
+
+namespace SchedulingApplication
 {
     partial class AppointmentDetailsForm
     {
@@ -54,6 +56,8 @@
             this.lblStart = new System.Windows.Forms.Label();
             this.lblEndLabel = new System.Windows.Forms.Label();
             this.lblStartLabel = new System.Windows.Forms.Label();
+            this.pnlWarning = new System.Windows.Forms.Panel();
+            this.lblWarning = new System.Windows.Forms.Label();
             this.groupBasic = new System.Windows.Forms.GroupBox();
             this.lblType = new System.Windows.Forms.Label();
             this.lblConsultant = new System.Windows.Forms.Label();
@@ -71,6 +75,7 @@
             this.groupSystemInfo.SuspendLayout();
             this.groupDetails.SuspendLayout();
             this.groupSchedule.SuspendLayout();
+            this.pnlWarning.SuspendLayout();
             this.groupBasic.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -153,7 +158,7 @@
             this.groupSystemInfo.Controls.Add(this.lblCreatedBy);
             this.groupSystemInfo.Controls.Add(this.lblCreatedByLabel);
             this.groupSystemInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupSystemInfo.Location = new System.Drawing.Point(20, 428);
+            this.groupSystemInfo.Location = new System.Drawing.Point(20, 427);
             this.groupSystemInfo.Name = "groupSystemInfo";
             this.groupSystemInfo.Size = new System.Drawing.Size(544, 100);
             this.groupSystemInfo.TabIndex = 3;
@@ -209,7 +214,7 @@
             this.groupDetails.Controls.Add(this.lblLocationLabel);
             this.groupDetails.Controls.Add(this.lblDescriptionLabel);
             this.groupDetails.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupDetails.Location = new System.Drawing.Point(20, 268);
+            this.groupDetails.Location = new System.Drawing.Point(20, 267);
             this.groupDetails.Name = "groupDetails";
             this.groupDetails.Size = new System.Drawing.Size(544, 160);
             this.groupDetails.TabIndex = 2;
@@ -297,15 +302,17 @@
             // 
             // groupSchedule
             // 
+            this.groupSchedule.AutoSize = true;
             this.groupSchedule.Controls.Add(this.lblTimeZone);
             this.groupSchedule.Controls.Add(this.lblEnd);
             this.groupSchedule.Controls.Add(this.lblStart);
             this.groupSchedule.Controls.Add(this.lblEndLabel);
             this.groupSchedule.Controls.Add(this.lblStartLabel);
+            this.groupSchedule.Controls.Add(this.pnlWarning);
             this.groupSchedule.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupSchedule.Location = new System.Drawing.Point(20, 168);
             this.groupSchedule.Name = "groupSchedule";
-            this.groupSchedule.Size = new System.Drawing.Size(544, 100);
+            this.groupSchedule.Size = new System.Drawing.Size(544, 99);
             this.groupSchedule.TabIndex = 1;
             this.groupSchedule.TabStop = false;
             this.groupSchedule.Text = "Schedule";
@@ -357,6 +364,30 @@
             this.lblStartLabel.Size = new System.Drawing.Size(38, 13);
             this.lblStartLabel.TabIndex = 0;
             this.lblStartLabel.Text = "Start:";
+            // 
+            // pnlWarning
+            // 
+            this.pnlWarning.BackColor = System.Drawing.Color.LightYellow;
+            this.pnlWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlWarning.Controls.Add(this.lblWarning);
+            this.pnlWarning.Location = new System.Drawing.Point(13, 16);
+            this.pnlWarning.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.pnlWarning.Name = "pnlWarning";
+            this.pnlWarning.Size = new System.Drawing.Size(518, 30);
+            this.pnlWarning.TabIndex = 5;
+            this.pnlWarning.Visible = false;
+            // 
+            // lblWarning
+            // 
+            this.lblWarning.AutoSize = true;
+            this.lblWarning.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblWarning.ForeColor = System.Drawing.Color.DarkGoldenrod;
+            this.lblWarning.Location = new System.Drawing.Point(0, 0);
+            this.lblWarning.Name = "lblWarning";
+            this.lblWarning.Size = new System.Drawing.Size(274, 13);
+            this.lblWarning.TabIndex = 0;
+            this.lblWarning.Text = "Note: This appointment is outside normal business hours.";
+            this.lblWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBasic
             // 
@@ -491,12 +522,15 @@
             this.pnlHeader.PerformLayout();
             this.pnlButtons.ResumeLayout(false);
             this.pnlContent.ResumeLayout(false);
+            this.pnlContent.PerformLayout();
             this.groupSystemInfo.ResumeLayout(false);
             this.groupSystemInfo.PerformLayout();
             this.groupDetails.ResumeLayout(false);
             this.groupDetails.PerformLayout();
             this.groupSchedule.ResumeLayout(false);
             this.groupSchedule.PerformLayout();
+            this.pnlWarning.ResumeLayout(false);
+            this.pnlWarning.PerformLayout();
             this.groupBasic.ResumeLayout(false);
             this.groupBasic.PerformLayout();
             this.ResumeLayout(false);
@@ -542,6 +576,8 @@
         private System.Windows.Forms.Label lblCustomerLabel;
         private System.Windows.Forms.Label lblTitleLabel;
         private System.Windows.Forms.Label lblAppointmentIdLabel;
+        private System.Windows.Forms.Panel pnlWarning;
+        private System.Windows.Forms.Label lblWarning;
 
     }
 }
